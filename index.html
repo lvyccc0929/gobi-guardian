@@ -1,28 +1,57 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>序章 · 戈壁守护者</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>戈壁守望者 · GUARDIAN OF THE GOBI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:"Noto Serif SC","Noto Sans SC",sans-serif;-webkit-text-size-adjust:100%!important}
-#app{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+:root{--safe-top:env(safe-area-inset-top,44px);--safe-bottom:env(safe-area-inset-bottom,34px)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow-x:hidden;background:#0b0906;font-family:'Noto Sans SC',sans-serif;color:#e8e0d5;-webkit-tap-highlight-color:transparent}
 
-#gps-dot{width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 10px rgba(0,255,136,0.6),0 0 25px rgba(0,255,136,0.3);opacity:1;margin-bottom:24px;z-index:2}
-#title{font-family:"Noto Serif SC",serif;font-size:min(7vw,8vh,56px);font-weight:700;color:#F5F0E8;letter-spacing:0.15em;text-shadow:0 0 16px rgba(200,170,100,0.3),0 2px 4px rgba(0,0,0,0.5);opacity:0;transition:opacity 0.6s;z-index:2;text-align:center;line-height:1.3;padding:0 16px}
-#loc{font-family:"Noto Serif SC",serif;font-size:min(3.5vw,4vh,18px);color:#8B7355;letter-spacing:0.25em;opacity:0;transition:opacity 0.8s;margin-top:min(20px,3vh);z-index:2;text-align:center}
-#subtitle{font-family:"Noto Sans SC",sans-serif;font-size:min(3vw,3.5vh,16px);color:#8B7355;letter-spacing:0.25em;opacity:0;transition:opacity 0.5s;margin-top:min(14px,2vh);z-index:2;text-align:center}
-#tag{font-family:"Noto Serif SC",serif;font-size:min(3.8vw,4vh,19px);color:#C4A46C;letter-spacing:0.2em;opacity:0;transition:opacity 0.6s;margin-top:min(28px,4vh);z-index:2;text-align:center;line-height:1.8;padding:0 16px}
+#app{max-width:420px;margin:0 auto;padding:0 24px;min-height:100vh;position:relative;z-index:1}
 
-#chapter-outro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99999;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
-#chapter-outro .co-text{font-family:"Noto Serif SC",serif;font-size:min(17px,3.5vw);color:#C4A46C;text-align:center;max-width:min(300px,80vw);line-height:1.8;margin-bottom:32px;padding:0 16px}
-#chapter-outro .co-next{font-family:"Noto Sans SC",sans-serif;font-size:14px;color:#8B7355;text-align:center;animation:coPulse 2s infinite}
-@keyframes coPulse{0%,100%{opacity:.5}50%{opacity:1}}
+#hero{padding:56px 0 20px;text-align:center;position:relative}
+#hero .en{font-family:'Noto Serif SC',serif;font-size:9px;letter-spacing:6px;color:rgba(200,170,100,0.35);margin-bottom:14px}
+#hero h1{font-family:'Noto Serif SC',serif;font-size:36px;font-weight:900;letter-spacing:8px;line-height:1.2;
+  background:linear-gradient(180deg,#dcc680 0%,#b89450 40%,#967538 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6));
+}
+#hero .tagline{font-size:12px;color:rgba(200,180,140,0.4);margin-top:12px;letter-spacing:3px}
 
+#rule{width:32px;height:1px;background:rgba(200,170,100,0.3);margin:0 auto 28px;position:relative}
+#rule::after{content:'';position:absolute;left:50%;top:50%;width:4px;height:4px;background:#FFD700;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(255,215,0,0.5)}
+
+#arc{position:relative;padding:12px 0 32px;text-align:center}
+#arc .arc-label{font-size:7px;fill:rgba(200,180,140,0.25);letter-spacing:2px}
+
+.scene{display:flex;align-items:flex-start;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;text-decoration:none;color:inherit;transition:all 0.25s;-webkit-tap-highlight-color:transparent;position:relative}
+.scene:active{background:rgba(200,170,100,0.04);margin:0 -24px;padding-left:24px;padding-right:24px}
+.scene .s-num{flex:0 0 36px;font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;color:rgba(200,170,100,0.25);line-height:1;padding-top:2px}
+.scene .s-body{flex:1;min-width:0}
+.scene .s-title{font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600;color:#e8e0d5;line-height:1.3}
+.scene .s-en{font-size:10px;color:rgba(200,180,140,0.3);letter-spacing:2px;margin-top:2px}
+.scene .s-desc{font-size:11px;color:rgba(255,255,255,0.25);line-height:1.6;margin-top:5px}
+.scene .s-arrow{flex:0 0 24px;font-size:14px;color:rgba(200,170,100,0.2);text-align:right;padding-top:4px;transition:all 0.25s}
+.scene:active .s-arrow{color:rgba(200,170,100,0.6);transform:translateX(3px)}
+.s-badge{display:inline-block;font-size:8px;font-weight:600;padding:1px 6px;border-radius:3px;margin-left:6px;letter-spacing:1px;vertical-align:middle}
+.badge-done{background:rgba(0,255,136,0.1);color:#00FF88}
+.badge-new{background:rgba(255,215,0,0.1);color:#FFD700}
+
+#foot{padding:36px 0 52px;text-align:center}
+#foot .ft-line{font-size:10px;color:rgba(255,255,255,0.15);letter-spacing:2px;line-height:2}
+#foot .ft-dot{display:inline-block;width:4px;height:4px;background:rgba(200,170,100,0.25);border-radius:50%;margin:8px 0}
+
+#grain{position:fixed;inset:0;z-index:0;opacity:0.025;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 微信引导 */
 #wx-guide{position:fixed;inset:0;z-index:999999;display:none;flex-direction:column;align-items:center;justify-content:flex-start;background:rgba(0,0,0,0.95);color:#e8e0d5;padding-top:12vh;font-family:"Noto Serif SC",serif}
 #wx-guide.show{display:flex}
-#wx-guide .wx-arrow{font-size:60px;margin-bottom:8px;animation:wxBounce 1.5s ease-in-out infinite;align-self:flex-end;margin-right:20px}
+#wx-guide .wx-arrow{font-size:60px;margin-bottom:8px;animation:wxB 1.5s ease-in-out infinite;align-self:flex-end;margin-right:20px}
 #wx-guide .wx-icon{width:50px;height:50px;border-radius:50%;border:2px solid rgba(200,170,100,0.5);display:flex;align-items:center;justify-content:center;margin:20px auto 16px}
 #wx-guide .wx-icon svg{width:28px;height:28px;fill:#c8aa64}
 #wx-guide .wx-title{font-size:20px;color:#c8aa64;letter-spacing:2px;margin-bottom:12px}
@@ -34,109 +63,135 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 #wx-guide .wx-copy:active{background:rgba(200,170,100,0.3)}
 #wx-guide .wx-copied{margin-top:10px;font-size:11px;color:#00FF88;opacity:0;transition:opacity 0.3s}
 #wx-guide .wx-copied.show{opacity:1}
-@keyframes wxBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-
-#wx-guide{position:fixed;inset:0;z-index:999999;display:none;flex-direction:column;align-items:center;justify-content:flex-start;background:rgba(0,0,0,0.95);color:#e8e0d5;padding-top:12vh;font-family:"Noto Serif SC",serif}
-#wx-guide.show{display:flex}
-#wx-guide .wx-arrow{font-size:60px;margin-bottom:8px;animation:wxBounce 1.5s ease-in-out infinite;align-self:flex-end;margin-right:20px}
-#wx-guide .wx-icon{width:50px;height:50px;border-radius:50%;border:2px solid rgba(200,170,100,0.5);display:flex;align-items:center;justify-content:center;margin:20px auto 16px}
-#wx-guide .wx-icon svg{width:28px;height:28px;fill:#c8aa64}
-#wx-guide .wx-title{font-size:20px;color:#c8aa64;letter-spacing:2px;margin-bottom:12px}
-#wx-guide .wx-desc{font-size:14px;color:rgba(232,224,213,0.6);text-align:center;line-height:2;padding:0 32px}
-#wx-guide .wx-desc b{color:#FFD700;font-weight:700}
-#wx-guide .wx-browsers{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;justify-content:center;padding:0 20px}
-#wx-guide .wx-browsers span{font-size:12px;color:rgba(232,224,213,0.4);padding:6px 16px;border:1px solid rgba(200,170,100,0.2);border-radius:16px}
-#wx-guide .wx-copy{margin-top:24px;padding:10px 32px;background:rgba(200,170,100,0.15);border:1px solid rgba(200,170,100,0.4);border-radius:20px;color:#c8aa64;font-size:13px;cursor:pointer}
-#wx-guide .wx-copy:active{background:rgba(200,170,100,0.3)}
-#wx-guide .wx-copied{margin-top:10px;font-size:11px;color:#00FF88;opacity:0;transition:opacity 0.3s}
-#wx-guide .wx-copied.show{opacity:1}
-@keyframes wxBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}</style>
+@keyframes wxB{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}</style>
 </head>
 <body>
 
 <div id="wx-guide">
-  <div class="wx-arrow">&#x2197;</div>
-  <div class="wx-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2"/><circle cx="12" cy="19" r="2"/></svg></div>
-  <div class="wx-title">请用浏览器打开</div>
-  <div class="wx-desc">点击右上角 <b>···</b><br>选择 <b>「在浏览器打开」</b></div>
-  <div class="wx-browsers"><span>夸克</span><span>百度</span><span>Safari</span><span>Chrome</span></div>
-  <div class="wx-copy" onclick="copyLink()">&#x1F4CB; 复制链接</div>
-  <div class="wx-copied" id="wx-copied">链接已复制</div>
+<div class="wx-arrow">&#x2197;</div>
+<div class="wx-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2"/><circle cx="12" cy="19" r="2"/></svg></div>
+<div class="wx-title">请用浏览器打开</div>
+<div class="wx-desc">点击右上角 <b>···</b><br>选择 <b>「在浏览器打开」</b></div>
+<div class="wx-browsers"><span>夸克</span><span>百度</span><span>Safari</span><span>Chrome</span></div>
+<div class="wx-copy" onclick="copyLink()">&#x1F4CB; 复制链接</div>
+<div class="wx-copied" id="wx-copied">链接已复制</div>
 </div>
-
 <script>
 var isWeChat=/MicroMessenger/i.test(navigator.userAgent);
 if(isWeChat)document.getElementById("wx-guide").classList.add("show");
-window.copyLink=function(){
-  var u=location.href;
-  if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){var e=document.getElementById("wx-copied");e.classList.add("show");setTimeout(function(){e.classList.remove("show")},2500)}).catch(function(){})}
-  else{var t=document.createElement("textarea");t.value=u;t.style.cssText="position:fixed;left:-9999px";document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);var e=document.getElementById("wx-copied");e.classList.add("show");setTimeout(function(){e.classList.remove("show")},2500)}
-};
+function copyLink(){
+var u=location.href;
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){var e=document.getElementById("wx-copied");e.classList.add("show");setTimeout(function(){e.classList.remove("show")},2500)}).catch(function(){})}
+else{var t=document.createElement("textarea");t.value=u;t.style.cssText="position:fixed;left:-9999px";document.body.appendChild(t);t.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(t);document.getElementById("wx-copied").classList.add("show");setTimeout(function(){document.getElementById("wx-copied").classList.remove("show")},2500)}
+}
 </script>
 
-
-<div id="wx-guide">
-  <div class="wx-arrow">&#x2197;</div>
-  <div class="wx-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2"/><circle cx="12" cy="19" r="2"/></svg></div>
-  <div class="wx-title">请用浏览器打开</div>
-  <div class="wx-desc">点击右上角 <b>···</b><br>选择 <b>「在浏览器打开」</b></div>
-  <div class="wx-browsers"><span>夸克</span><span>百度</span><span>Safari</span><span>Chrome</span></div>
-  <div class="wx-copy" onclick="copyLink()">&#x1F4CB; 复制链接</div>
-  <div class="wx-copied" id="wx-copied">链接已复制</div>
-</div>
-
-<div id="hint" style="display:none;position:fixed;inset:0;z-index:99999;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:Noto Serif SC,serif">
-  <div style="font-size:56px;margin-bottom:20px">&#x1F4F1;</div>
-  <div style="font-size:20px;color:#C4A46C;text-align:center;line-height:2.4">请旋转手机横屏观看<br><span style="font-size:14px;color:#8B7355">Please rotate your phone</span></div>
-</div>
-
+<div id="grain"></div>
 <div id="app">
-  <div id="gps-dot"></div>
-  <div id="title">戈壁守护者</div>
-  <div id="loc"></div>
-  <div id="subtitle"></div>
-  <div id="tag"></div>
+  <div id="hero">
+    <div class="en">GUARDIAN OF THE GOBI</div>
+    <h1>戈壁守望者</h1>
+    <div class="tagline">基于真实事件改编 · 8 幕互动叙事</div>
+  </div>
+
+  <div id="rule"></div>
+
+  <div id="arc">
+    <svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 70 Q 50 -10 160 65 Q 270 140 310 65" fill="none" stroke="rgba(200,170,100,0.12)" stroke-width="1"/>
+      <circle cx="10" cy="70" r="1.5" fill="rgba(0,255,136,0.5)"/>
+      <circle cx="310" cy="65" r="1.5" fill="rgba(255,215,0,0.5)"/>
+      <text x="8" y="82" class="arc-label">虚空</text>
+      <text x="296" y="78" class="arc-label">人间</text>
+      <text x="152" y="18" class="arc-label" style="font-size:6px;fill:rgba(200,180,140,0.18)">环形叙事</text>
+    </svg>
+  </div>
+
+  <a class="scene" href="demo-p0.html">
+    <div class="s-num">P0</div>
+    <div class="s-body">
+      <div class="s-title">启动序列<span class="s-badge badge-done">完成</span></div>
+      <div class="s-en">AWAKENING</div>
+      <div class="s-desc">粒子聚拢成形 · 标题浮现 · 氛围定调</div>
+    </div>
+    <div class="s-arrow"></div>
+  </a>
+
+  <a class="scene" href="demo-p1.html">
+    <div class="s-num">P1</div>
+    <div class="s-body">
+      <div class="s-title">卫星发现<span class="s-badge badge-done">完成</span></div>
+      <div class="s-en">DISCOVERY</div>
+      <div class="s-desc">3D 地球 · 双指缩放 · 异常检测 · 前后对比</div>
+    </div>
+    <div class="s-arrow"></div>
+  </a>
+
+  <a class="scene" href="demo-p2.html">
+    <div class="s-num">P2</div>
+    <div class="s-body">
+      <div class="s-title">奔赴戈壁<span class="s-badge badge-done">完成</span></div>
+      <div class="s-en">JOURNEY</div>
+      <div class="s-desc">地图穿越 2,168km · 11 个地名节点 · 历史卡片</div>
+    </div>
+    <div class="s-arrow"></div>
+  </a>
+
+  <a class="scene" href="demo-p3.html">
+    <div class="s-num">P3</div>
+    <div class="s-body">
+      <div class="s-title">寻石记<span class="s-badge badge-done">完成</span></div>
+      <div class="s-en">THE STONES</div>
+      <div class="s-desc">5 层 Canvas 戈壁 · 漫画风石头 · 拖拽比对</div>
+    </div>
+    <div class="s-arrow"></div>
+  </a>
+
+  <a class="scene" href="demo-p4.html">
+    <div class="s-num">P4</div>
+    <div class="s-body">
+      <div class="s-title">戈壁一日<span class="s-badge badge-done">完成</span></div>
+      <div class="s-en">RESTORATION</div>
+      <div class="s-desc">固定镜头 · 24 天时间轴 · 逐日修复动画</div>
+    </div>
+    <div class="s-arrow"></div>
+  </a>
+
+  <a class="scene" href="demo-p5.html">
+    <div class="s-num">P5</div>
+    <div class="s-body">
+      <div class="s-title">卫星确认<span class="s-badge badge-done">完成</span></div>
+      <div class="s-en">CONFIRMATION</div>
+      <div class="s-desc">倒计时 · 扫描线 · 修复前后对比</div>
+    </div>
+    <div class="s-arrow"></div>
+  </a>
+
+  <a class="scene" href="demo-p6.html">
+    <div class="s-num">P6</div>
+    <div class="s-body">
+      <div class="s-title">回响<span class="s-badge badge-done">完成</span></div>
+      <div class="s-en">ECHOES</div>
+      <div class="s-desc">评论气泡浮升 · 时间线卡片 · 社会反响</div>
+    </div>
+    <div class="s-arrow"></div>
+  </a>
+
+  <a class="scene" href="demo-p7.html">
+    <div class="s-num">P7</div>
+    <div class="s-body">
+      <div class="s-title">终章 · 海报<span class="s-badge badge-done">完成</span></div>
+      <div class="s-en">POSTER</div>
+      <div class="s-desc">金色标语 · 统计数据 · 分享保存</div>
+    </div>
+    <div class="s-arrow"></div>
+  </a>
+
+  <div id="foot">
+    <div class="ft-line">1967 · 八航校 · 哈密戈壁</div>
+    <div class="ft-dot"></div>
+    <div class="ft-line">2025 · 路遥 · 守护</div>
+  </div>
 </div>
-
-<script>
-// === 横屏检测（纯JS，不依赖CSS media query）===
-(function(){
-  var hint=document.getElementById("hint");
-  function isLandscape(){return window.innerWidth>window.innerHeight}
-  function check(){
-    if(isLandscape()){hint.style.display="none";try{document.documentElement.webkitRequestFullscreen();document.documentElement.requestFullscreen()}catch(e){}}
-    else{hint.style.display="flex"}
-  }
-  check();
-  window.addEventListener("resize",check);
-  window.addEventListener("orientationchange",function(){setTimeout(check,50)});
-})();
-
-// === 微信 ===
-var isWeChat=/MicroMessenger/i.test(navigator.userAgent);
-if(isWeChat){document.getElementById("wx-guide").classList.add("show");document.getElementById("hint").style.display="none"}
-window.copyLink=function(){
-  var u=location.href;
-  if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){document.getElementById("wx-copied").classList.add("show");setTimeout(function(){document.getElementById("wx-copied").classList.remove("show")},2500)}).catch(function(){})}
-  else{var t=document.createElement("textarea");t.value=u;t.style.cssText="position:fixed;left:-9999px";document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);document.getElementById("wx-copied").classList.add("show");setTimeout(function(){document.getElementById("wx-copied").classList.remove("show")},2500)}
-};
-
-// === 动画（非微信）===
-if(!isWeChat){
-(function(){
-var locEl=document.getElementById("loc"),tagEl=document.getElementById("tag"),titleEl=document.getElementById("title"),subtitleEl=document.getElementById("subtitle");
-var active=true,startTime=0,titleShown=false,subtitleComplete=false,timer=0;
-function update(elapsed){
-  if(elapsed>=0.8&&locEl.style.opacity==="0"){locEl.textContent="2025年10月 · 新疆哈密戈壁";locEl.style.opacity="1";setTimeout(function(){locEl.style.opacity="0"},2000)}
-  if(elapsed>=1.2&&!titleShown){titleShown=true;titleEl.style.opacity="1"}
-  if(elapsed>=2.0&&!subtitleComplete){var full="GUARDIAN OF THE GOBI";timer+=16;var n=Math.min(Math.floor(timer/45),full.length);subtitleEl.textContent=full.slice(0,n)+(n<full.length?"|":"");subtitleEl.style.opacity="1";if(n>=full.length){subtitleComplete=true;subtitleEl.textContent=full;setTimeout(function(){tagEl.innerHTML='两千公里，二十四个日夜，一场修复之旅<br><span style="font-size:min(13px,2.5vw);color:#8B7355">基于真实事件改编</span>';tagEl.style.opacity="1";setTimeout(function(){if(window.showOutro)window.showOutro()},2500)},400)}}
-}
-function loop(t){if(!active)return;if(!startTime)startTime=t;var elapsed=(t-startTime)/1000;if(elapsed>12)return;update(elapsed);requestAnimationFrame(loop)}
-requestAnimationFrame(loop);
-})();
-}
-</script>
-<div id="chapter-outro"><div class="co-text">2025年，新疆哈密戈壁。一段被风沙掩埋的故事，即将展开。</div><div class="co-next">本章结束<br><span style="font-size:16px;color:#FFD700;margin-top:8px;display:inline-block">点击进入下一章</span></div></div>
-<script>(function(){var outro=document.getElementById("chapter-outro");window.showOutro=function(){if(outro){outro.style.display="flex";setTimeout(function(){outro.style.opacity="1"},50);outro.addEventListener("click",function(){window.location.href="demo-p1.html"})}}})()</script>
 </body>
 </html>
