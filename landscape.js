@@ -8,20 +8,21 @@
     if (!window.__LH) window.__LH = {};
     window.__LH.active = portrait;
     window.__LH.getWidth = function () {
-      return portrait ? (document.documentElement.clientWidth || window.innerWidth) : window.innerWidth;
+      return portrait ? document.documentElement.clientWidth : window.innerWidth;
     };
     window.__LH.getHeight = function () {
-      return portrait ? (document.documentElement.clientHeight || window.innerHeight) : window.innerHeight;
+      return portrait ? document.documentElement.clientHeight : window.innerHeight;
     };
 
     if (portrait) {
-      s.textContent = [
-        "html{position:fixed;top:0;left:0;width:100vh;height:100vw;",
-        "transform:rotate(90deg);transform-origin:0 0;margin-left:100vw;overflow:hidden}",
-        "body{width:100%;height:100%;overflow:hidden;position:static;transform:none}"
-      ].join("");
+      s.textContent =
+        "html{position:fixed;top:0;left:100%;width:100vh;height:100vw;" +
+        "transform:rotate(90deg);transform-origin:top left;overflow:hidden}" +
+        "body{width:100%;height:100%;overflow:hidden;position:static;transform:none}";
     } else {
-      s.textContent = "html{position:static;width:100%;height:100%;transform:none;margin-left:0;overflow:hidden}body{width:100%;height:100%;overflow:hidden;position:static;transform:none}";
+      s.textContent =
+        "html{position:static;width:100%;height:100%;left:auto;transform:none;overflow:hidden}" +
+        "body{width:100%;height:100%;overflow:hidden;position:static;transform:none}";
     }
   }
 
