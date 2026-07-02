@@ -33,9 +33,9 @@ canvas{display:block}
 #drop-hint{font-size:min(3vw,12px);color:rgba(255,255,255,0.4);margin-top:10px;text-align:center;animation:floatV 2.5s ease-in-out infinite;pointer-events:none}
 @keyframes floatV{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
-#stone-shelf{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:4;transition:opacity 0.6s}#stone-shelf.darken{opacity:0.2;pointer-events:none}
+#stone-shelf{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:4;transition:opacity 0.6s}#stone-shelf.darken{opacity:0.2;pointer-events:none}
 .stone-wrapper{display:flex;flex-direction:column;align-items:center;gap:6px}
-.stone{width:125px;height:111px;cursor:grab;position:relative;touch-action:none;-webkit-touch-callout:none;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.5))}
+.stone{width:90px;height:80px;cursor:grab;position:relative;touch-action:none;-webkit-touch-callout:none;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.5))}
 .stone:active{cursor:grabbing}
 .stone.dragging{transform:scale(1.2);z-index:20;filter:drop-shadow(0 10px 25px rgba(0,0,0,0.7))}
 .stone canvas{width:100%;height:100%;pointer-events:none}
@@ -130,25 +130,25 @@ canvas{display:block}
   <div id="stone-shelf">
     <div class="stone-wrapper">
       <div class="stone" id="stone-a" data-color="yellow">
-        <canvas width="280" height="248"></canvas>
+        <canvas width="180" height="160"></canvas>
       </div>
       <div class="stone-label">土黄砾石</div>
     </div>
     <div class="stone-wrapper">
       <div class="stone" id="stone-b" data-color="white">
-        <canvas width="280" height="248"></canvas>
+        <canvas width="180" height="160"></canvas>
       </div>
       <div class="stone-label">米白碱土</div>
     </div>
     <div class="stone-wrapper">
       <div class="stone" id="stone-c" data-color="black">
-        <canvas width="280" height="248"></canvas>
+        <canvas width="180" height="160"></canvas>
       </div>
       <div class="stone-label">黑褐砾石</div>
     </div>
   </div>
   <canvas id="particle-canvas"></canvas>
-  <div id="drag-clone"><canvas width="280" height="248"></canvas></div>
+  <div id="drag-clone"><canvas width="180" height="160"></canvas></div>
 </div>
 <script>
 (function(){
