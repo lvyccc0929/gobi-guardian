@@ -58,12 +58,32 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 (function(){
 var h=document.getElementById("rotate-hint");
 function isL(){return window.innerWidth>window.innerHeight}
-function check(){if(isL()){h.style.display="none"}else{h.style.display="flex"}}
+function check(){if(isL()){h.style.display="none";if(window._startGlobalLoader)window._startGlobalLoader()}else{h.style.display="flex"}}
 check();
 window.addEventListener("resize",check);
 window.addEventListener("orientationchange",function(){setTimeout(check,50)});
 })();
 </script>
+<div id="global-loader" style="display:none;position:fixed;inset:0;z-index:99998;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:Noto Serif SC,serif">
+<div style="font-size:min(5vw,20px);color:#C4A46C;text-align:center;margin-bottom:24px">正在加载作品...</div>
+<div id="loader-bar" style="width:60%;max-width:260px;height:3px;background:rgba(200,170,100,0.15);border-radius:2px;overflow:hidden"><div id="loader-fill" style="width:0%;height:100%;background:#C4A46C;transition:width 0.3s"></div></div>
+<div id="loader-pct" style="font-size:min(3vw,12px);color:rgba(200,170,100,0.4);margin-top:10px">0%</div>
+</div>
+<script>
+(function(){
+var assets=["assets/p1-earth.jpg","assets/p1-terrain.jpg","assets/p2-panorama.png","assets/p4-00.jpg","assets/p4-01.jpg","assets/p4-02.jpg","assets/p4-03.jpg","assets/city-icons/成都.png","assets/city-icons/广元.png","assets/city-icons/陇南.png","assets/city-icons/天水.png","assets/city-icons/兰州.png","assets/city-icons/张掖.png","assets/city-icons/哈密（目的地）.png"];
+var total=assets.length,loaded=0;
+var loader=document.getElementById("global-loader");
+var fill=document.getElementById("loader-fill");
+var pct=document.getElementById("loader-pct");
+function update(){var p=Math.round(loaded/total*100);fill.style.width=p+"%";pct.textContent=p+"%";if(loaded>=total)finish()}
+function finish(){setTimeout(function(){loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none"},500)},400)}
+assets.forEach(function(url){var img=new Image();img.onload=function(){loaded++;update()};img.onerror=function(){loaded++;update()};img.src=url});
+setTimeout(function(){if(loaded<total){loaded=total;update()}},6000);
+window._startGlobalLoader=function(){loader.style.display="flex"};
+})();
+</script>
+
 <div id="app">
   <div id="gps-dot"></div>
   <div id="title">戈壁守护者</div>
