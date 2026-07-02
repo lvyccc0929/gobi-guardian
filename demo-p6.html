@@ -135,7 +135,7 @@ var platforms=[
 ];
 var cardPool=[];
 platforms.forEach(function(p){p.files.forEach(function(fn){cardPool.push({dir:p.dir,file:fn,badge:p.badge,label:p.label})})});
-for(var i=cardPool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=cardPool[i];cardPool[i]=cardPool[j];cardPool[j]=t}
+cardPool=cardPool.concat(cardPool.slice());for(var i=cardPool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=cardPool[i];cardPool[i]=cardPool[j];cardPool[j]=t}
 var groups=[];for(var gi=0;gi<cardPool.length;gi+=5)groups.push(cardPool.slice(gi,gi+5));
 var ww=window.innerWidth,wh=window.innerHeight,activeRects=[];
 function overlaps(a,b){return!(a.right<b.left||a.left>b.right||a.bottom<b.top||a.top>b.bottom)}
@@ -149,14 +149,14 @@ var img=new Image();
 img.onload=function(){imageCache[url]={w:img.naturalWidth,h:img.naturalHeight}}
 img.src=url;
 });
-setTimeout(function(){startShow()},500);
+setTimeout(function(){startShow()},200);
 
 var gi2=0;
 function showNextGroup(){
 if(gi2>=groups.length){gi2=0;activeRects=[]}
 var group=groups[gi2];
 activeRects=activeRects.filter(function(r){return r.el&&r.el.parentNode});
-var canSpawn=9-activeRects.length;if(canSpawn<=0)return;
+var canSpawn=12-activeRects.length;if(canSpawn<=0)return;
 var spawned=0;
 group.slice(0,canSpawn).forEach(function(c){
 var url=imgUrl(c.dir,c.file);
@@ -196,7 +196,7 @@ spawned++;
 });
 if(spawned>0)gi2++;else{gi2=0;activeRects=[]}
 }
-function startShow(){if(started)return;started=true;showNextGroup();setInterval(showNextGroup,1200)}
+function startShow(){if(started)return;started=true;showNextGroup();setInterval(showNextGroup,800)}
 window.addEventListener("resize",function(){ww=window.innerWidth;wh=window.innerHeight});
 resizeBg();goTimeline(0);var tf=document.getElementById("tl-final");if(tf)tf.addEventListener("click",function(){window.location.href='demo-p7.html'});
 })();

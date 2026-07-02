@@ -87,7 +87,7 @@ var pct=document.getElementById("loader-pct");
 function update(){var p=Math.round(loaded/total*100);fill.style.width=p+"%";pct.textContent=p+"%";if(loaded>=total)finish()}
 function finish(){setTimeout(function(){loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)},400)}
 assets.forEach(function(url){var img=new Image();img.onload=function(){loaded++;update()};img.onerror=function(){loaded++;update()};img.src=url});
-setTimeout(function(){if(loaded<total){loaded=total;update()}},20000);
+setTimeout(function(){if(loaded<total){loaded=total;update()}},30000);
 window._startGlobalLoader=function(){loader.style.display="flex"};
 })();
 </script>
