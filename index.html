@@ -1,14 +1,22 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script src="landscape.js?v=3"></script>
+<script src="landscape.js"></script>
 <title>序章 · 戈壁守护者</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:"Noto Serif SC","Noto Sans SC",sans-serif;-webkit-text-size-adjust:100%!important}
 #app{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+/* 横屏提示 */
+#landscape-hint{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:"Noto Serif SC",serif}
+@media(orientation:landscape){#landscape-hint{display:none!important}}
+@keyframes rhSpin{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
 
 #gps-dot{width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 10px rgba(0,255,136,0.6),0 0 25px rgba(0,255,136,0.3);opacity:1;margin-bottom:24px;z-index:2}
 #title{font-family:"Noto Serif SC",serif;font-size:min(7vw,8vh,56px);font-weight:700;color:#F5F0E8;letter-spacing:0.15em;text-shadow:0 0 16px rgba(200,170,100,0.3),0 2px 4px rgba(0,0,0,0.5);opacity:0;transition:opacity 0.6s;z-index:2;text-align:center;line-height:1.3;padding:0 16px}
@@ -21,7 +29,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 #chapter-outro .co-next{font-family:"Noto Sans SC",sans-serif;font-size:14px;color:#8B7355;text-align:center;animation:coPulse 2s infinite}
 @keyframes coPulse{0%,100%{opacity:.5}50%{opacity:1}}
 
-/* ── 微信引导层 ── */
+/* 微信引导层 */
 #wx-guide{position:fixed;inset:0;z-index:999999;display:none;flex-direction:column;align-items:center;justify-content:flex-start;background:rgba(0,0,0,0.95);color:#e8e0d5;padding-top:12vh}
 #wx-guide.show{display:flex}
 #wx-guide .wx-arrow{font-size:60px;margin-bottom:8px;animation:wxBounce 1.5s ease-in-out infinite;align-self:flex-end;margin-right:20px}
@@ -37,23 +45,18 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 #wx-guide .wx-copied{margin-top:10px;font-size:11px;color:#00FF88;opacity:0;transition:opacity 0.3s}
 #wx-guide .wx-copied.show{opacity:1}
 @keyframes wxBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-/* 横屏提示——CSS 控制，不依赖 JS */
-#landscape-hint{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:"Noto Serif SC",serif}
-@media(orientation:landscape){#landscape-hint{display:none!important}}
-@keyframes rhSpin{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}</style>
+</style>
 </head>
 <body>
-<div id="landscape-hint"><div style="font-size:56px;margin-bottom:20px;animation:rhSpin 2s ease-in-out infinite">&#x1F4F1;</div><div style="font-size:20px;color:#C4A46C;text-align:center;line-height:2.4">请旋转手机横屏观看<br><span style="font-size:14px;color:#8B7355">Please rotate your phone</span></div></div><body>
-<!-- 微信引导层：仅微信浏览器显示 -->
+<div id="landscape-hint"><div style="font-size:56px;margin-bottom:20px;animation:rhSpin 2s ease-in-out infinite">&#x1F4F1;</div><div style="font-size:20px;color:#C4A46C;text-align:center;line-height:2.4">请旋转手机横屏观看<br><span style="font-size:14px;color:#8B7355">Please rotate your phone</span></div></div>
+
 <div id="wx-guide">
-  <div class="wx-arrow">↗</div>
+  <div class="wx-arrow">&#x2197;</div>
   <div class="wx-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2"/><circle cx="12" cy="19" r="2"/></svg></div>
   <div class="wx-title">请用浏览器打开</div>
   <div class="wx-desc">点击右上角 <b>···</b><br>选择 <b>「在浏览器打开」</b></div>
-  <div class="wx-browsers">
-    <span>夸克</span><span>百度</span><span>Safari</span><span>Chrome</span>
-  </div>
-  <div class="wx-copy" onclick="copyLink()">📋 复制链接</div>
+  <div class="wx-browsers"><span>夸克</span><span>百度</span><span>Safari</span><span>Chrome</span></div>
+  <div class="wx-copy" onclick="copyLink()">&#x1F4CB; 复制链接</div>
   <div class="wx-copied" id="wx-copied">链接已复制，请粘贴到浏览器打开</div>
 </div>
 
@@ -66,39 +69,27 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 </div>
 
 <script>
-// ── 微信检测 ──
 var isWeChat=/MicroMessenger/i.test(navigator.userAgent);
-if(isWeChat){window.__noForceLandscape=true;
-  document.getElementById("wx-guide").classList.add("show");
-}
+if(isWeChat){window.__noForceLandscape=true;document.getElementById("wx-guide").classList.add("show")}
 window.copyLink=function(){
   var url=location.href;
   if(navigator.clipboard&&navigator.clipboard.writeText){
     navigator.clipboard.writeText(url).then(function(){
-      var el=document.getElementById("wx-copied");
-      el.classList.add("show");
+      var el=document.getElementById("wx-copied");el.classList.add("show");
       setTimeout(function(){el.classList.remove("show")},2500);
     }).catch(function(){});
   }else{
-    // 兜底：创建临时 input
-    var ta=document.createElement("textarea");
-    ta.value=url;ta.style.position="fixed";ta.style.left="-9999px";
+    var ta=document.createElement("textarea");ta.value=url;ta.style.position="fixed";ta.style.left="-9999px";
     document.body.appendChild(ta);ta.select();
     try{document.execCommand("copy")}catch(e){}
     document.body.removeChild(ta);
-    var el=document.getElementById("wx-copied");
-    el.classList.add("show");
+    var el=document.getElementById("wx-copied");el.classList.add("show");
     setTimeout(function(){el.classList.remove("show")},2500);
   }
 };
-
-// ── 原有动画逻辑（非微信才执行） ──
 if(!isWeChat){
 (function(){
-var locEl=document.getElementById("loc");
-var tagEl=document.getElementById("tag");
-var titleEl=document.getElementById("title");
-var subtitleEl=document.getElementById("subtitle");
+var locEl=document.getElementById("loc"),tagEl=document.getElementById("tag"),titleEl=document.getElementById("title"),subtitleEl=document.getElementById("subtitle");
 var active=true,startTime=0,titleShown=false,subtitleComplete=false,timer=0;
 function update(elapsed){
   if(elapsed>=0.8&&locEl.style.opacity==="0"){locEl.textContent="2025年10月 · 新疆哈密戈壁";locEl.style.opacity="1";setTimeout(function(){locEl.style.opacity="0"},2000)}
