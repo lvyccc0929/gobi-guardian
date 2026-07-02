@@ -49,7 +49,7 @@ canvas{display:block}
 #drag-clone canvas{width:100%;height:100%}
 
 /* Result */
-#result-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0);transition:background 0.6s}
+#result-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0);transition:background 0.6s}
 #result-overlay.show{display:flex;pointer-events:auto}
 #result-overlay.darken{background:rgba(0,0,0,0.72)}
 #result-icon{font-size:min(12vw,56px);opacity:0;transform:scale(0);transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1)}
@@ -58,7 +58,7 @@ canvas{display:block}
 #result-text.show{opacity:1;transform:translateY(0)}
 #result-detail{font-family:'Noto Sans SC',sans-serif;font-size:min(3vw,13px);color:rgba(255,255,255,0.7);text-align:center;padding:0 28px;margin-top:10px;opacity:0;transform:translateY(20px);transition:all 0.5s 0.6s;line-height:1.8}
 #result-detail.show{opacity:1;transform:translateY(0)}
-#retry-btn,#next-btn{margin-top:20px;position:relative;z-index:51;padding:10px 32px;border-radius:24px;font-family:'Noto Sans SC',sans-serif;font-size:min(3vw,13px);font-weight:500;cursor:pointer;opacity:0;transform:translateY(20px);transition:all 0.5s 0.8s;border:none}
+#retry-btn,#next-btn{margin-top:20px;position:relative;z-index:201;padding:10px 32px;border-radius:24px;font-family:'Noto Sans SC',sans-serif;font-size:min(3vw,13px);font-weight:500;cursor:pointer;opacity:0;transform:translateY(20px);transition:all 0.5s 0.8s;border:none}
 #retry-btn.show,#next-btn.show{opacity:1;transform:translateY(0)}
 #retry-btn{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)}
 #next-btn{background:#FFD700;color:#1a1410}
@@ -117,7 +117,7 @@ canvas{display:block}
       <canvas id="gobi-canvas"></canvas>
       <div id="gobi-label">戈壁地表颜色参考</div>
     </div>
-    <div id="info-banner" style="position:absolute;top:10px;right:8px;padding:6px 10px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);border-radius:8px;max-width:130px;text-align:left;pointer-events:none;z-index:10"><div style="font-family:Noto Sans SC,sans-serif;font-size:min(2vw,8px);font-weight:400;color:rgba(255,215,0,0.6);line-height:1.4">戈壁地表覆盖<b>黑褐色砾石</b>，只有颜色完全匹配的石料才能不留痕迹地修复。</div></div><div id="drop-hint"> 将石料拖拽到此处比对 </div>
+    <div id="info-banner" style="position:absolute;top:50%;left:2px;transform:translateY(-50%);padding:6px 3px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);border-radius:4px;max-width:45px;text-align:center;pointer-events:none;z-index:4;writing-mode:vertical-rl"><div style="font-family:Noto Sans SC,sans-serif;font-size:6px;font-weight:400;color:rgba(255,215,0,0.5);line-height:1.6">戈壁地表覆盖<b>黑褐色砾石</b></div></div><div id="drop-hint"> 将石料拖拽到此处比对 </div>
     <!-- Reason banner: shown before selection -->
     <div id="result-overlay">
       <div id="result-icon"></div>
@@ -728,7 +728,7 @@ function onCorrect(pos){var ib=document.getElementById('info-banner');if(ib)ib.s
   resultDetail.innerHTML='"我们跑遍哈密所有矿业公司和砂厂，终于找到了颜色完全匹配的黑色砾石。这就是戈壁地表本来的颜色。"';
   resultDetail.classList.add('show');
   retryBtn.style.display='none';nextBtn.classList.add('show');
-  nextBtn.style.pointerEvents='auto';nextBtn.onclick=function(){spawnSparkles(W()/2,H()/2);setTimeout(function(){window.showOutro()},800)};
+  nextBtn.style.pointerEvents='auto';nextBtn.style.display='block';nextBtn.style.cursor='pointer';nextBtn.onclick=function(e){e.stopPropagation();e.preventDefault();spawnSparkles(W()/2,H()/2);setTimeout(function(){if(window.showOutro)window.showOutro()},800)};nextBtn.addEventListener('touchend',function(e){e.stopPropagation();e.preventDefault();spawnSparkles(W()/2,H()/2);setTimeout(function(){if(window.showOutro)window.showOutro()},800)});
   triedStones[color]=true;
 }
 

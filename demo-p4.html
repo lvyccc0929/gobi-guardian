@@ -7,7 +7,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"PingFang SC","Microsoft YaHei",sans-serif;user-select:none}
-#scene{position:absolute;inset:0;z-index:1}
+#scene{position:absolute;inset:0;z-index:1;visibility:hidden}
 #scene img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.6s}
 #scene img.active{opacity:1}
 #page-dots{position:absolute;bottom:36px;left:0;right:0;z-index:5;display:flex;justify-content:center;gap:8px;pointer-events:none}
@@ -40,11 +40,19 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"Pi
 <body>
 <button id="back-btn" title="返回上一章">&#10094;</button>
 <script>
-// 预加载所有图片，一次性全部加载
 var p4Preload=["assets/p4-00.png","assets/p4-01.png","assets/p4-02.png","assets/p4-03.png"];
+var p4Loaded=0;
 p4Preload.forEach(function(src){
-  var img=new Image();img.src=src;
+  var img=new Image();
+  img.onload=img.onerror=function(){
+    p4Loaded++;
+    if(p4Loaded>=p4Preload.length){
+      document.getElementById("scene").style.visibility="visible";
+    }
+  };
+  img.src=src;
 });
+setTimeout(function(){document.getElementById("scene").style.visibility="visible"},3000);
 </script>
 <div id="scene">
 <img loading="eager" src="assets/p4-00.png" class="active" id="img0">

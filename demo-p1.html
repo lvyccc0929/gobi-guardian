@@ -200,14 +200,14 @@ function loop(t){
     // Phase 0: Space - smooth zoom toward Earth
     if(elapsed<0.8){
       spaceZoom=0; // Hold wide view
-      if(elapsed>0.3&&l1.style.opacity==="0"||l1.style.opacity===""){
-        l1.innerHTML='';
+      if(elapsed>0.3&&(l1.style.opacity==="0"||l1.style.opacity==="")){
+        l1.innerHTML=lines[0].text;
         l1.classList.add("show");
       }
     }else if(elapsed<4.5){
       spaceZoom=(elapsed-0.8)/3.7; // 01 over 3.7s
-      if(elapsed>1.8&&l2.style.opacity==="0"||l2.style.opacity===""){
-        l2.innerHTML='';
+      if(elapsed>1.8&&(l2.style.opacity==="0"||l2.style.opacity==="")){
+        l2.innerHTML=lines[1].text;
         l2.classList.add("show");
       }
     }
