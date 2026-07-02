@@ -136,18 +136,19 @@ var imageCache={},loaded=0,started=false;
 cardPool.forEach(function(c){
 var url=imgUrl(c.dir,c.file);
 var img=new Image();
-img.onload=function(){imageCache[url]={w:img.naturalWidth,h:img.naturalHeight};loaded++;if(loaded>=2)startShow()};
-img.onerror=function(){loaded++;if(loaded>=2)startShow()};
+img.onload=function(){imageCache[url]={w:img.naturalWidth,h:img.naturalHeight};loaded++;if(loaded>=10)startShow()};
+img.onerror=function(){loaded++;if(loaded>=10)startShow()};
 img.src=url;
 });
-startShow();
+setTimeout(function(){if(!started)startShow()},3000);
 
 var gi2=0;
 function showNextGroup(){
 if(gi2>=groups.length){gi2=0;activeRects=[]}
-var group=groups[gi2];gi2++;
+var group=groups[gi2];
 activeRects=activeRects.filter(function(r){return r.el&&r.el.parentNode});
 var canSpawn=9-activeRects.length;if(canSpawn<=0)return;
+var spawned=0;
 group.slice(0,canSpawn).forEach(function(c){
 var url=imgUrl(c.dir,c.file);
 var dims=imageCache[url];if(!dims)return;
@@ -180,7 +181,10 @@ else if(t>0.75)el.style.opacity=Math.max(0,(1-(t-0.75)/0.25)).toFixed(2);
 else el.style.opacity="1";
 rec.top=sy-dist*t;rec.bottom=sy-dist*t+th;
 requestAnimationFrame(anim)}
-requestAnimationFrame(anim)});
+requestAnimationFrame(anim);
+spawned++;
+});
+if(spawned>0)gi2++;else{gi2=0;activeRects=[]}
 }
 function startShow(){if(started)return;started=true;showNextGroup();setInterval(showNextGroup,1200)}
 window.addEventListener("resize",function(){ww=window.innerWidth;wh=window.innerHeight});
