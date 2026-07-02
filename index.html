@@ -1,7 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<link rel="preload" as="image" href="assets/p1-earth.jpg"><link rel="preload" as="image" href="assets/p1-terrain.jpg"><link rel="preload" as="image" href="assets/p2-panorama.png"><link rel="preload" as="image" href="assets/p4-00.jpg"><link rel="preload" as="image" href="assets/p4-01.jpg"><link rel="preload" as="image" href="assets/p4-02.jpg"><link rel="preload" as="image" href="assets/p4-03.jpg">
+<link rel="preload" as="image" href="assets/p1-earth.jpg"><link rel="preload" as="image" href="assets/p1-terrain.jpg"><link rel="preload" as="image" href="assets/p2-panorama.jpg"><link rel="preload" as="image" href="assets/p4-00.jpg"><link rel="preload" as="image" href="assets/p4-01.jpg"><link rel="preload" as="image" href="assets/p4-02.jpg"><link rel="preload" as="image" href="assets/p4-03.jpg">
+<link rel="preload" as="image" href="assets/city-icons/成都.jpg">
+<link rel="preload" as="image" href="assets/city-icons/广元.jpg">
+<link rel="preload" as="image" href="assets/city-icons/陇南.jpg">
+<link rel="preload" as="image" href="assets/city-icons/天水.jpg">
+<link rel="preload" as="image" href="assets/city-icons/兰州.jpg">
+<link rel="preload" as="image" href="assets/city-icons/张掖.jpg">
+<link rel="preload" as="image" href="assets/city-icons/哈密（目的地）.jpg">
+<link rel="preload" as="image" href="assets/航拍图破损.jpg">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>序章 · 戈壁守护者</title>
@@ -71,7 +79,7 @@ window.addEventListener("orientationchange",function(){setTimeout(check,50)});
 </div>
 <script>
 (function(){
-var assets=["assets/p1-earth.jpg","assets/p1-terrain.jpg","assets/p2-panorama.png","assets/航拍图破损.png","assets/p4-00.png","assets/p4-01.png","assets/p4-02.png","assets/p4-03.png","assets/city-icons/成都.png","assets/city-icons/广元.png","assets/city-icons/陇南.png","assets/city-icons/天水.png","assets/city-icons/兰州.png","assets/city-icons/张掖.png","assets/city-icons/哈密（目的地）.png"];
+var assets=["assets/p1-earth.jpg","assets/p1-terrain.jpg","assets/p2-panorama.png","assets/航拍图破损.jpg","assets/p4-00.png","assets/p4-01.png","assets/p4-02.png","assets/p4-03.png","assets/city-icons/成都.jpg","assets/city-icons/广元.jpg","assets/city-icons/陇南.jpg","assets/city-icons/天水.jpg","assets/city-icons/兰州.jpg","assets/city-icons/张掖.jpg","assets/city-icons/哈密（目的地）.png","assets/comments/b站/反面评论 B站2.png","assets/comments/b站/反面评论 B站5.png","assets/comments/b站/反面评论 B站6.png","assets/comments/b站/反面评论 B站7.png","assets/comments/b站/正面评论 B站1.png","assets/comments/b站/正面评论 B站3.png","assets/comments/b站/正面评论 B站4.png","assets/comments/b站/正面评论 B站8.png","assets/comments/小红书/正面评论1.jpg","assets/comments/小红书/正面评论2.jpg","assets/comments/小红书/正面评论3.jpg","assets/comments/小红书/正面评论4.jpg","assets/comments/小红书/正面评论5.jpg","assets/comments/小红书/负面评论1.jpg","assets/comments/小红书/负面评论2.jpg","assets/comments/小红书/负面评论3.jpg","assets/comments/小红书/负面评论4.jpg","assets/comments/微博/微博反面1.jpg","assets/comments/微博/微博反面2.jpg","assets/comments/微博/微博反面3.jpg","assets/comments/微博/微博反面4.jpg","assets/comments/微博/微博反面5.jpg","assets/comments/微博/微博反面6.jpg","assets/comments/微博/微博建议1.jpg","assets/comments/微博/微博感慨1.jpg","assets/comments/微博/微博正面1.jpg","assets/comments/微博/微博正面10.jpg","assets/comments/微博/微博正面2.jpg","assets/comments/微博/微博正面3.jpg","assets/comments/微博/微博正面4.jpg","assets/comments/微博/微博正面5.jpg","assets/comments/微博/微博正面6.jpg","assets/comments/微博/微博正面7.jpg","assets/comments/微博/微博正面8.jpg","assets/comments/微博/微博正面9.jpg","assets/comments/抖音/正面评价-抖音1.png","assets/comments/抖音/正面评价-抖音11.png","assets/comments/抖音/正面评价-抖音3.png","assets/comments/抖音/正面评价-抖音5.png","assets/comments/抖音/正面评价-抖音6.png","assets/comments/抖音/正面评价-抖音7.png","assets/comments/抖音/正面评价-抖音8.png","assets/comments/抖音/正面评价-抖音9.png","assets/comments/抖音/负面评价-抖音10.png","assets/comments/抖音/负面评价-抖音2.png","assets/comments/抖音/负面评价-抖音4.png"];
 var total=assets.length,loaded=0;
 var loader=document.getElementById("global-loader");
 var fill=document.getElementById("loader-fill");

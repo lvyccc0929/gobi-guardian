@@ -33,7 +33,7 @@ canvas{display:block}
 #drop-hint{font-size:min(3vw,12px);color:rgba(255,255,255,0.4);margin-top:10px;text-align:center;animation:floatV 2.5s ease-in-out infinite;pointer-events:none}
 @keyframes floatV{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
-#stone-shelf{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:4}
+#stone-shelf{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:4;transition:opacity 0.6s}#stone-shelf.darken{opacity:0.2;pointer-events:none}
 .stone-wrapper{display:flex;flex-direction:column;align-items:center;gap:6px}
 .stone{width:125px;height:111px;cursor:grab;position:relative;touch-action:none;-webkit-touch-callout:none;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.5))}
 .stone:active{cursor:grabbing}
@@ -61,7 +61,7 @@ canvas{display:block}
 #retry-btn,#next-btn{margin-top:20px;position:relative;z-index:201;padding:10px 32px;border-radius:24px;font-family:'Noto Sans SC',sans-serif;font-size:min(3vw,13px);font-weight:500;cursor:pointer;opacity:0;transform:translateY(20px);transition:all 0.5s 0.8s;border:none}
 #retry-btn.show,#next-btn.show{opacity:1;transform:translateY(0)}
 #retry-btn{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)}
-#next-btn{background:#FFD700;color:#1a1410}
+#next-chapter-hint{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:"Noto Sans SC",sans-serif;font-size:min(3vw,13px);color:#FFD700;cursor:pointer;opacity:0;transition:opacity 0.5s 0.8s;z-index:201;writing-mode:vertical-rl;letter-spacing:4px;padding:12px 6px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);border-radius:8px;pointer-events:none}#next-chapter-hint.show{opacity:1;pointer-events:auto;animation:coPulse 2s infinite}
 
 .sparkle{position:fixed;pointer-events:none;z-index:31;font-size:min(4.5vw,20px);animation:sparkleUp 0.8s ease-out forwards}
 @keyframes sparkleUp{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
@@ -124,7 +124,7 @@ canvas{display:block}
       <div id="result-text"></div>
       <div id="result-detail"></div>
       <button id="retry-btn">再试一次</button>
-      <button id="next-btn">继续前行 </button>
+      <div id="next-chapter-hint">点击进入<br>下一章节</div>
     </div>
   </div>
   <div id="stone-shelf">
@@ -722,7 +722,7 @@ function onCorrect(pos){var ib=document.getElementById('info-banner');if(ib)ib.s
   gobiRef.classList.add('match');dropHint.style.display='none';
   spawnSparkles(pos.x,pos.y);
   resultOverlay.classList.add('show');
-  setTimeout(function(){resultOverlay.classList.add('darken')},400);
+  setTimeout(function(){resultOverlay.classList.add('darken');var ss=document.getElementById('stone-shelf');if(ss)ss.classList.add('darken')},400);
   setTimeout(function(){
     resultIcon.textContent='✅';resultIcon.classList.add('show');
     resultText.textContent='就是它！黑褐砾石';resultText.classList.add('show');
@@ -732,19 +732,17 @@ function onCorrect(pos){var ib=document.getElementById('info-banner');if(ib)ib.s
     resultDetail.classList.add('show');
   },1200);
   setTimeout(function(){
-    retryBtn.style.display='none';nextBtn.classList.add('show');
-    nextBtn.style.pointerEvents='auto';nextBtn.style.display='block';nextBtn.style.cursor='pointer';
-    nextBtn.onclick=function(e){e.stopPropagation();e.preventDefault();spawnSparkles(W()/2,H()/2);setTimeout(function(){if(window.showOutro)window.showOutro()},800)};
-    nextBtn.addEventListener('touchend',function(e){e.stopPropagation();e.preventDefault();spawnSparkles(W()/2,H()/2);setTimeout(function(){if(window.showOutro)window.showOutro()},800)});
+    var nch=document.getElementById('next-chapter-hint');
+    if(nch){nch.classList.add('show');nch.onclick=function(e){e.stopPropagation();e.preventDefault();spawnSparkles(W()/2,H()/2);setTimeout(function(){if(window.showOutro)window.showOutro()},800)};nch.addEventListener('touchend',function(e){e.stopPropagation();e.preventDefault();spawnSparkles(W()/2,H()/2);setTimeout(function(){if(window.showOutro)window.showOutro()},800)});}
   },1800);
   triedStones[color]=true;
 }
 function reset(){var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='1';
   stage='selecting';
-  resultOverlay.classList.remove('darken','show');
+  resultOverlay.classList.remove('darken','show');var ss2=document.getElementById('stone-shelf');if(ss2)ss2.classList.remove('darken');
   resultIcon.classList.remove('show');resultText.classList.remove('show');
   resultDetail.classList.remove('show');retryBtn.classList.remove('show');
-  nextBtn.classList.remove('show');
+  var nch2=document.getElementById('next-chapter-hint');if(nch2)nch2.classList.remove('show');
   gobiRef.classList.remove('match','mismatch');
   dropHint.style.display='';
 }

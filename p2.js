@@ -5,7 +5,7 @@
 (function(){
 var cities=["成都","广元","陇南","天水","兰州","张掖","哈密（目的地）"];
 cities.forEach(function(c){
-var img=new Image();img.src="assets/city-icons/"+c+".png";
+var img=new Image();img.src="assets/city-icons/"+c+".jpg";
 });
 })();
 var WP=[["成都",104.0665,30.5728],["广元",105.823,32.435],["陇南",104.96,33.401],["天水",105.724,34.58],["兰州",103.834,36.061],["张掖",100.455,38.932],["哈密（目的地）",93.515,42.819]];
@@ -60,7 +60,7 @@ RC.addEventListener("touchstart",function(e){e.preventDefault()},{passive:false}
 RC.style.touchAction="none";
 
 // ---- Panorama Image ----
-var PANO=new Image();PANO.src="assets/p2-panorama.png";var PL=false;
+var PANO=new Image();PANO.src="assets/p2-panorama.jpg";var PL=false;
 PANO.onload=function(){PL=true};
 PANO.onerror=function(){};
 
@@ -133,7 +133,7 @@ function CN(){
       var el=document.createElement("div");
       el.style.cssText="position:absolute;width:70px;height:70px;border-radius:50%;overflow:hidden;border:3px solid #FFD700;box-shadow:0 0 30px rgba(255,215,0,.5);transform:translate(-50%,-50%);pointer-events:none";
       var img=document.createElement("img");
-      img.src="assets/city-icons/"+w[0]+".png";
+      img.src="assets/city-icons/"+w[0]+".jpg";
       img.style.cssText="width:100%;height:100%;object-fit:cover";
       el.appendChild(img);
       ci.appendChild(el);
@@ -152,7 +152,7 @@ function CN(){
 }
 
 // ---- Drone Scene ----
-var DI=new Image();DI.src="assets/航拍图破损.png";var IL=false;
+var DI=new Image();DI.src="assets/航拍图破损.jpg";var IL=false;
 DI.onload=function(){IL=true};DI.onerror=function(){};
 function DD(){
   var w=W(),h=H();DX.clearRect(0,0,w,h);
