@@ -235,7 +235,7 @@ function loop(t){
     // Show all lines at once
     if(!linesShown[0]&&t-surfaceStartTime>500){
       linesShown=[true,true,true,true];
-      for(var i=0;i<lines.length;i++){
+      l1.classList.remove("show");l2.classList.remove("show");for(var i=2;i<lines.length;i++){
         lines[i].el.innerHTML=lines[i].text;
         lines[i].el.classList.add("show");
       }
