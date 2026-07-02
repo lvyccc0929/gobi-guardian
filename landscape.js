@@ -76,19 +76,19 @@ function startPolling(){
       hideHint();
       stopPolling();
     }
-  },500);
+  },200);
 }
 function stopPolling(){
   if(pollTimer){clearInterval(pollTimer);pollTimer=null}
 }
 
 window.addEventListener("resize",checkOrientation);
-window.addEventListener("orientationchange",function(){setTimeout(checkOrientation,200)});
+window.addEventListener("orientationchange",function(){setTimeout(checkOrientation,50)});
 document.addEventListener("visibilitychange",function(){if(!document.hidden)checkOrientation()});
 
 if(document.readyState==="loading"){
-  document.addEventListener("DOMContentLoaded",function(){setTimeout(checkOrientation,100)});
+  document.addEventListener("DOMContentLoaded",function(){setTimeout(checkOrientation,50)});
 }else{
-  setTimeout(checkOrientation,100);
+  setTimeout(checkOrientation,50);
 }
 })();
