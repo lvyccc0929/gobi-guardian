@@ -176,8 +176,9 @@ function DD2(){var w=W(),h=H();DLX.clearRect(0,0,w,h);for(var i=0;i<DP.length;i+
 function SD(){
   ST="map";DS2=true;
   document.getElementById("bz").style.opacity="0";
-  QE.style.opacity="0";NP.style.opacity="0";DH.style.opacity="0";
-  setTimeout(function(){SD2()},1500);
+  NP.style.opacity="0";DH.style.opacity="0";
+  setTimeout(function(){QE.style.opacity="0"},2000);
+  setTimeout(function(){SD2()},3500);
 }
 
 function SD2(){
