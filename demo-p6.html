@@ -136,11 +136,11 @@ var imageCache={},loaded=0,started=false;
 cardPool.forEach(function(c){
 var url=imgUrl(c.dir,c.file);
 var img=new Image();
-img.onload=function(){imageCache[url]={w:img.naturalWidth,h:img.naturalHeight};loaded++;if(loaded===cardPool.length)startShow()};
-img.onerror=function(){loaded++;if(loaded===cardPool.length)startShow()};
+img.onload=function(){imageCache[url]={w:img.naturalWidth,h:img.naturalHeight};loaded++;if(loaded>=5)startShow()};
+img.onerror=function(){loaded++;if(loaded>=5)startShow()};
 img.src=url;
 });
-setTimeout(function(){if(!started)startShow()},4000);
+setTimeout(function(){if(!started)startShow()},500);
 
 var gi2=0;
 function showNextGroup(){

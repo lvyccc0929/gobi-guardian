@@ -124,18 +124,30 @@ X.restore();
 }
 
 // ---- City Popup ----
+var CITY_ELMS=[];
 function CN(){
-  for(var i=0;i<WP.length;i++){
-    var np2=i/(WP.length-1);
-    if(P>=np2&&i>LNI){
-      LNI=i;
-      var cityName=WP[i][0];
-      var iconUrl="assets/city-icons/"+cityName+".png";
-      NP.innerHTML='<img src="'+iconUrl+'" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid #FFD700;box-shadow:0 0 30px rgba(255,215,0,.5)">';
-      NP.style.opacity="1";NP.style.transform="translate(-50%,0) scale(1)";
-      (function(idx){setTimeout(function(){if(LNI===idx){NP.style.opacity="0";NP.style.transform="translate(-50%,0) scale(.8)"}},2200)})(i);
-    }
+  var ci=document.getElementById("city-icons");
+  if(!CITY_ELMS.length&&ci){
+    WP.forEach(function(w,i){
+      var name=w[0];
+      var el=document.createElement("div");
+      el.style.cssText="position:absolute;width:70px;height:70px;border-radius:50%;overflow:hidden;border:3px solid #FFD700;box-shadow:0 0 30px rgba(255,215,0,.5);transform:translate(-50%,-50%);pointer-events:none";
+      var img=document.createElement("img");
+      img.src="assets/city-icons/"+name+".png";
+      img.style.cssText="width:100%;height:100%;object-fit:cover";
+      el.appendChild(img);
+      ci.appendChild(el);
+      CITY_ELMS.push({el:el, idx:i});
+    });
   }
+  var w=W(),h=H(),tw=w*2.2,ry=h*0.6,sx=P*tw-w/2;
+  CITY_ELMS.forEach(function(ce){
+    var nx=(ce.idx/(WP.length-1))*tw;
+    var ny=ry-Math.sin(ce.idx*0.04)*18;
+    ce.el.style.left=(nx-sx)+"px";
+    ce.el.style.top=(ny-75)+"px";
+  });
+  NP.style.display="none";
 }
 
 // ---- Drone Scene ----

@@ -40,7 +40,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"Pi
 <body>
 <button id="back-btn" title="返回上一章">&#10094;</button>
 <script>
-var p4Preload=["assets/p4-00.jpg","assets/p4-01.jpg","assets/p4-02.jpg","assets/p4-03.jpg"];
+var p4Preload=["assets/p4-00.png","assets/p4-01.png","assets/p4-02.png","assets/p4-03.png"];
 var p4Loaded=0;
 p4Preload.forEach(function(src){
   var img=new Image();
@@ -55,10 +55,10 @@ p4Preload.forEach(function(src){
 setTimeout(function(){document.getElementById("scene").style.visibility="visible"},3000);
 </script>
 <div id="scene">
-<img loading="eager" src="assets/p4-00.jpg" class="active" id="img0">
-<img loading="eager" src="assets/p4-01.jpg" id="img1">
-<img loading="eager" src="assets/p4-02.jpg" id="img2">
-<img loading="eager" src="assets/p4-03.jpg" id="img3">
+<img loading="eager" src="assets/p4-00.png" class="active" id="img0">
+<img loading="eager" src="assets/p4-01.png" id="img1">
+<img loading="eager" src="assets/p4-02.png" id="img2">
+<img loading="eager" src="assets/p4-03.png" id="img3">
 </div>
 <div id="tap-left"></div><div id="tap-right"></div>
 <div id="nav-hint"> 点击左右翻页 </div>
