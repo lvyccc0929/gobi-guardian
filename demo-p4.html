@@ -39,7 +39,21 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"Pi
 </head>
 <body>
 <button id="back-btn" title="返回上一章">&#10094;</button>
-
+<script>
+var p4Preload=["assets/p4-00.jpg","assets/p4-01.jpg","assets/p4-02.jpg","assets/p4-03.jpg"];
+var p4Loaded=0;
+p4Preload.forEach(function(src){
+  var img=new Image();
+  img.onload=img.onerror=function(){
+    p4Loaded++;
+    if(p4Loaded>=p4Preload.length){
+      document.getElementById("scene").style.visibility="visible";
+    }
+  };
+  img.src=src;
+});
+setTimeout(function(){document.getElementById("scene").style.visibility="visible"},3000);
+</script>
 <div id="scene">
 <img loading="eager" src="assets/p4-00.jpg" class="active" id="img0">
 <img loading="eager" src="assets/p4-01.jpg" id="img1">
