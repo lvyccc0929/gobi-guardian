@@ -9,9 +9,6 @@
 html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:"Noto Serif SC","Noto Sans SC",sans-serif;-webkit-text-size-adjust:100%!important}
 #app{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 
-#landscape-hint{position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:"Noto Serif SC",serif}
-@keyframes rhSpin{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
-
 #gps-dot{width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 10px rgba(0,255,136,0.6),0 0 25px rgba(0,255,136,0.3);opacity:1;margin-bottom:24px;z-index:2}
 #title{font-family:"Noto Serif SC",serif;font-size:min(7vw,8vh,56px);font-weight:700;color:#F5F0E8;letter-spacing:0.15em;text-shadow:0 0 16px rgba(200,170,100,0.3),0 2px 4px rgba(0,0,0,0.5);opacity:0;transition:opacity 0.6s;z-index:2;text-align:center;line-height:1.3;padding:0 16px}
 #loc{font-family:"Noto Serif SC",serif;font-size:min(3.5vw,4vh,18px);color:#8B7355;letter-spacing:0.25em;opacity:0;transition:opacity 0.8s;margin-top:min(20px,3vh);z-index:2;text-align:center}
@@ -41,7 +38,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 </style>
 </head>
 <body>
-<div id="landscape-hint"><div style="font-size:56px;margin-bottom:20px;animation:rhSpin 2s ease-in-out infinite">&#x1F4F1;</div><div style="font-size:20px;color:#C4A46C;text-align:center;line-height:2.4">请旋转手机横屏观看<br><span style="font-size:14px;color:#8B7355">Please rotate your phone</span></div></div>
 
 <div id="wx-guide">
   <div class="wx-arrow">&#x2197;</div>
@@ -50,7 +46,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
   <div class="wx-desc">点击右上角 <b>···</b><br>选择 <b>「在浏览器打开」</b></div>
   <div class="wx-browsers"><span>夸克</span><span>百度</span><span>Safari</span><span>Chrome</span></div>
   <div class="wx-copy" onclick="copyLink()">&#x1F4CB; 复制链接</div>
-  <div class="wx-copied" id="wx-copied">链接已复制，请粘贴到浏览器打开</div>
+  <div class="wx-copied" id="wx-copied">链接已复制</div>
+</div>
+
+<div id="hint" style="display:none;position:fixed;inset:0;z-index:99999;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:Noto Serif SC,serif">
+  <div style="font-size:56px;margin-bottom:20px">&#x1F4F1;</div>
+  <div style="font-size:20px;color:#C4A46C;text-align:center;line-height:2.4">请旋转手机横屏观看<br><span style="font-size:14px;color:#8B7355">Please rotate your phone</span></div>
 </div>
 
 <div id="app">
@@ -62,55 +63,29 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 </div>
 
 <script>
-// ====== 横屏检测（内联，零依赖） ======
+// === 横屏检测（纯JS，不依赖CSS media query）===
 (function(){
-  var hint=document.getElementById("landscape-hint");
-  var KEY="gobi_ok";
-  function isOK(){try{return localStorage.getItem(KEY)==="1"||sessionStorage.getItem(KEY)==="1"}catch(e){return false}}
-  function markOK(){try{localStorage.setItem(KEY,"1");sessionStorage.setItem(KEY,"1")}catch(e){}}
+  var hint=document.getElementById("hint");
   function isLandscape(){return window.innerWidth>window.innerHeight}
-  
-  // 已OK：移除提示
-  if(isOK()){hint.parentNode.removeChild(hint);hint=null}
-
   function check(){
-    if(!hint)return;
-    if(isLandscape()){
-      markOK();
-      hint.parentNode.removeChild(hint);
-      hint=null;
-      // 全屏
-      try{document.documentElement.requestFullscreen().catch(function(){})}catch(e){}
-    }else{
-      hint.style.display="flex";
-    }
+    if(isLandscape()){hint.style.display="none";try{document.documentElement.webkitRequestFullscreen();document.documentElement.requestFullscreen()}catch(e){}}
+    else{hint.style.display="flex"}
   }
   check();
   window.addEventListener("resize",check);
-  window.addEventListener("orientationchange",function(){setTimeout(check,100)});
+  window.addEventListener("orientationchange",function(){setTimeout(check,50)});
 })();
 
-// ====== 微信检测 ======
+// === 微信 ===
 var isWeChat=/MicroMessenger/i.test(navigator.userAgent);
-if(isWeChat){document.getElementById("wx-guide").classList.add("show")}
+if(isWeChat){document.getElementById("wx-guide").classList.add("show");document.getElementById("hint").style.display="none"}
 window.copyLink=function(){
   var u=location.href;
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(u).then(function(){
-      var e=document.getElementById("wx-copied");e.classList.add("show");
-      setTimeout(function(){e.classList.remove("show")},2500);
-    }).catch(function(){});
-  }else{
-    var t=document.createElement("textarea");t.value=u;t.style.cssText="position:fixed;left:-9999px";
-    document.body.appendChild(t);t.select();
-    try{document.execCommand("copy")}catch(e){}
-    document.body.removeChild(t);
-    var e=document.getElementById("wx-copied");e.classList.add("show");
-    setTimeout(function(){e.classList.remove("show")},2500);
-  }
+  if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){document.getElementById("wx-copied").classList.add("show");setTimeout(function(){document.getElementById("wx-copied").classList.remove("show")},2500)}).catch(function(){})}
+  else{var t=document.createElement("textarea");t.value=u;t.style.cssText="position:fixed;left:-9999px";document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);document.getElementById("wx-copied").classList.add("show");setTimeout(function(){document.getElementById("wx-copied").classList.remove("show")},2500)}
 };
 
-// ====== 开场动画（非微信） ======
+// === 动画（非微信）===
 if(!isWeChat){
 (function(){
 var locEl=document.getElementById("loc"),tagEl=document.getElementById("tag"),titleEl=document.getElementById("title"),subtitleEl=document.getElementById("subtitle");
