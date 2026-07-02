@@ -110,7 +110,7 @@ tlView.addEventListener("mouseleave",function(){mA=false});
 
 // Click half
 tlView.addEventListener("click",function(e){
-if(e.target.closest("#tl-final")){window.location.href="demo-p7.html";return}
+if(tlIdx===tlTotal-1){var r=document.getElementById("tl-final").getBoundingClientRect();if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom){window.location.href="demo-p7.html";return}}
 var x=e.clientX,w=window.innerWidth;
 if(x<w*0.5)goTimeline(tlIdx-1);else goTimeline(tlIdx+1)});
 
