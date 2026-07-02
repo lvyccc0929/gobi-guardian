@@ -1,31 +1,31 @@
 ﻿(function () {
-  var styleEl = document.createElement("style");
-  styleEl.id = "landscape-force";
+  var s = document.createElement("style");
+  s.id = "lh-s";
+  document.head.appendChild(s);
 
-  function isPortraitMobile() {
-    return window.innerHeight > window.innerWidth && window.innerWidth < 900;
-  }
+  function update() {
+    var portrait = window.innerHeight > window.innerWidth && window.innerWidth < 900;
+    if (!window.__LH) window.__LH = {};
+    window.__LH.active = portrait;
+    window.__LH.getWidth = function () {
+      return portrait ? (document.documentElement.clientWidth || window.innerWidth) : window.innerWidth;
+    };
+    window.__LH.getHeight = function () {
+      return portrait ? (document.documentElement.clientHeight || window.innerHeight) : window.innerHeight;
+    };
 
-  window.__LH = {
-    active: false,
-    getWidth: function () { return document.body.clientWidth || window.innerWidth; },
-    getHeight: function () { return document.body.clientHeight || window.innerHeight; }
-  };
-
-  function applyStyle() {
-    var active = isPortraitMobile();
-    window.__LH.active = active;
-    if (active) {
-      styleEl.textContent =
-        "html, body { width: 100vh; height: 100vw; }" +
-        "body { transform: rotate(-90deg); transform-origin: left top; position: absolute; top: 100%; left: 0; overflow: hidden; }";
+    if (portrait) {
+      s.textContent = [
+        "html{position:fixed;top:0;left:0;width:100vh;height:100vw;",
+        "transform:rotate(90deg);transform-origin:0 0;margin-left:100vw;overflow:hidden}",
+        "body{width:100%;height:100%;overflow:hidden;position:static;transform:none}"
+      ].join("");
     } else {
-      styleEl.textContent = "html, body { width: 100%; height: 100%; } body { transform: none; position: static; }";
+      s.textContent = "html{position:static;width:100%;height:100%;transform:none;margin-left:0;overflow:hidden}body{width:100%;height:100%;overflow:hidden;position:static;transform:none}";
     }
   }
 
-  document.head.appendChild(styleEl);
-  applyStyle();
-  window.addEventListener("orientationchange", applyStyle);
-  window.addEventListener("resize", applyStyle);
+  update();
+  window.addEventListener("resize", update);
+  window.addEventListener("orientationchange", update);
 })();
