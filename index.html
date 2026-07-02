@@ -8,13 +8,13 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:"Noto Serif SC","Noto Sans SC",sans-serif}
-#app{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-canvas{position:absolute;top:0;left:0}
-#gps-dot{width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 10px rgba(0,255,136,0.6),0 0 25px rgba(0,255,136,0.3);opacity:1;margin-bottom:20px;z-index:2}
-#title{font-family:"Noto Serif SC",serif;font-size:clamp(28px,9vw,52px);font-weight:700;color:#F5F0E8;letter-spacing:6px;text-shadow:0 0 16px rgba(200,170,100,0.3),0 2px 4px rgba(0,0,0,0.5);opacity:0;transition:opacity 0.5s;z-index:2;text-align:center;line-height:1.4}
-#loc{font-family:"Noto Serif SC",serif;font-size:clamp(12px,4vw,16px);color:#8B7355;letter-spacing:3px;opacity:0;transition:opacity 0.8s;margin-top:16px;z-index:2;text-align:center}
-#subtitle{font-family:"Noto Sans SC",sans-serif;font-size:clamp(11px,3.5vw,14px);color:#8B7355;letter-spacing:3px;opacity:0;transition:opacity 0.5s;margin-top:12px;z-index:2;text-align:center}
-#tag{font-family:"Noto Serif SC",serif;font-size:clamp(13px,4.2vw,17px);color:#C4A46C;letter-spacing:3px;opacity:0;transition:opacity 0.6s;margin-top:24px;z-index:2;text-align:center;line-height:1.8}
+#app{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+canvas{position:absolute;top:0;left:0;display:none}
+#gps-dot{width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 10px rgba(0,255,136,0.6),0 0 25px rgba(0,255,136,0.3);opacity:1;margin-bottom:24px;z-index:2}
+#title{font-family:"Noto Serif SC",serif;font-size:clamp(32px,7vw,56px);font-weight:700;color:#F5F0E8;letter-spacing:8px;text-shadow:0 0 16px rgba(200,170,100,0.3),0 2px 4px rgba(0,0,0,0.5);opacity:0;transition:opacity 0.6s;z-index:2;text-align:center;line-height:1.3}
+#loc{font-family:"Noto Serif SC",serif;font-size:clamp(13px,3.5vw,18px);color:#8B7355;letter-spacing:4px;opacity:0;transition:opacity 0.8s;margin-top:20px;z-index:2;text-align:center}
+#subtitle{font-family:"Noto Sans SC",sans-serif;font-size:clamp(12px,3vw,16px);color:#8B7355;letter-spacing:4px;opacity:0;transition:opacity 0.5s;margin-top:14px;z-index:2;text-align:center}
+#tag{font-family:"Noto Serif SC",serif;font-size:clamp(14px,3.8vw,19px);color:#C4A46C;letter-spacing:3px;opacity:0;transition:opacity 0.6s;margin-top:28px;z-index:2;text-align:center;line-height:1.8}
 
 #chapter-outro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99999;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 #chapter-outro .co-text{font-family:"Noto Serif SC",serif;font-size:17px;color:#C4A46C;text-align:center;max-width:300px;line-height:1.8;margin-bottom:32px}
@@ -24,7 +24,7 @@ canvas{position:absolute;top:0;left:0}
 </head>
 <body>
 <div id="app">
-  <canvas id="c" style="display:none"></canvas>
+  <canvas id="c"></canvas>
   <div id="gps-dot"></div>
   <div id="title">戈壁守护者</div>
   <div id="loc"></div>
@@ -44,20 +44,15 @@ var titleShown=false;
 var subtitleComplete=false,timer=0;
 
 function update(elapsed){
-  // Location tag at 0.8s
   if(elapsed>=0.8&&locEl.style.opacity==="0"){
     locEl.textContent="2025年10月 · 新疆哈密戈壁";
     locEl.style.opacity="1";
     setTimeout(function(){locEl.style.opacity="0"},2000);
   }
-
-  // Title at 1.2s
   if(elapsed>=1.2&&!titleShown){
     titleShown=true;
     titleEl.style.opacity="1";
   }
-
-  // Subtitle at 2.0s
   if(elapsed>=2.0&&!subtitleComplete){
     var full="GUARDIAN OF THE GOBI";
     timer+=16;
@@ -83,7 +78,6 @@ function loop(t){
   update(elapsed);
   requestAnimationFrame(loop);
 }
-
 requestAnimationFrame(loop);
 })();
 </script>
