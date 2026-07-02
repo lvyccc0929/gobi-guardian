@@ -68,7 +68,7 @@ canvas{position:absolute;top:0;left:0}
 var canvas=document.getElementById("c"),ctx=canvas.getContext("2d");
 var canvasEl=canvas;
 var W,H;
-function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+function resize(){W=canvas.width=window.__LH.getWidth();H=canvas.height=window.__LH.getHeight()}
 resize();window.addEventListener("resize",resize);
 
 var l1=document.getElementById("l1"),l2=document.getElementById("l2"),l3=document.getElementById("l3"),l4=document.getElementById("l4");
@@ -290,9 +290,11 @@ if(bo){bo.addEventListener("click",function(e){e.stopPropagation();window.showOu
 <div id="chapter-intro"><div class="ci-title">第一章：缘起</div><div class="ci-sub">你在卫星地图上，发现了一个秘密。</div></div>
 <div id="chapter-outro"><div class="co-text">五个大字，跨越58年，从太空到地面。</div><div class="co-next">本章结束<br><span style="font-size:16px;color:#FFD700;margin-top:8px;display:inline-block">点击进入下一章</span></div></div>
 
-<script>document.getElementById("back-btn").addEventListener("click",function(){window.location.href="demo-p0.html"})</script>
+<script>document.getElementById("back-btn").addEventListener("click",function(){window.location.href="index.html"})</script>
 </body>
 
 <script>(function(){var intro=document.getElementById("chapter-intro");var outro=document.getElementById("chapter-outro");if(intro){setTimeout(function(){intro.classList.add("hide")},2500);setTimeout(function(){if(intro)intro.style.display="none"},3300)}window.showOutro=function(){if(outro){outro.style.display="flex";setTimeout(function(){outro.style.opacity="1"},50);outro.addEventListener("click",function(){window.location.href='demo-p2.html'})}}})()</script>
 
 </html>
+
+

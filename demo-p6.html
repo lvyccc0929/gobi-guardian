@@ -70,7 +70,7 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0}
 (function(){
 var bgC=document.getElementById("bgCanvas");
 var bgX=bgC.getContext("2d");
-function resizeBg(){bgC.width=window.innerWidth;bgC.height=window.innerHeight}
+function resizeBg(){bgC.width=window.__LH.getWidth();bgC.height=window.__LH.getHeight()}
 resizeBg();window.addEventListener("resize",resizeBg);
 var stars=[];for(var i=0;i<120;i++)stars.push({x:Math.random()*bgC.width,y:Math.random()*bgC.height,r:Math.random()*1.5+0.5,spd:Math.random()*0.3+0.1});
 function drawBg(){
@@ -128,7 +128,7 @@ var cardPool=[];
 platforms.forEach(function(p){p.files.forEach(function(fn){cardPool.push({dir:p.dir,file:fn,badge:p.badge,label:p.label})})});
 for(var i=cardPool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=cardPool[i];cardPool[i]=cardPool[j];cardPool[j]=t}
 var groups=[];for(var gi=0;gi<cardPool.length;gi+=5)groups.push(cardPool.slice(gi,gi+5));
-var ww=window.innerWidth,wh=window.innerHeight,activeRects=[];
+var ww=window.__LH.getWidth(),wh=window.__LH.getHeight(),activeRects=[];
 function overlaps(a,b){return!(a.right<b.left||a.left>b.right||a.bottom<b.top||a.top>b.bottom)}
 function rectsOverlapAny(r){for(var i=0;i<activeRects.length;i++)if(overlaps(r,activeRects[i]))return true;return false}
 function imgUrl(dir,file){return "assets/comments/"+encodeURI(dir)+"/"+encodeURI(file)}
@@ -184,7 +184,7 @@ requestAnimationFrame(anim)}
 requestAnimationFrame(anim)});
 }
 function startShow(){if(started)return;started=true;showNextGroup();setInterval(showNextGroup,2000)}
-window.addEventListener("resize",function(){ww=window.innerWidth;wh=window.innerHeight});
+window.addEventListener("resize",function(){ww=window.__LH.getWidth();wh=window.__LH.getHeight()});
 resizeBg();goTimeline(0);var tf=document.getElementById("tl-final");if(tf)tf.addEventListener("click",function(){window.location.href='demo-p7.html'});
 })();
 </script>
@@ -197,3 +197,6 @@ resizeBg();goTimeline(0);var tf=document.getElementById("tl-final");if(tf)tf.add
 <script>(function(){var intro=document.getElementById("chapter-intro");var outro=document.getElementById("chapter-outro");if(intro){intro.style.pointerEvents="auto";intro.addEventListener("click",function(){intro.classList.add("hide");setTimeout(function(){intro.style.display="none"},800)});setTimeout(function(){intro.classList.add("hide")},2500);setTimeout(function(){if(intro)intro.style.display="none"},3300)})}}})()</script>
 
 </html>
+
+
+
