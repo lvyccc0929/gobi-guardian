@@ -1,21 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script src="landscape.js"></script>
 <title>序章 · 戈壁守护者</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:"Noto Serif SC","Noto Sans SC",sans-serif;-webkit-text-size-adjust:100%!important}
 #app{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 
-/* 横屏提示 */
-#landscape-hint{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:"Noto Serif SC",serif}
-@media(orientation:landscape){#landscape-hint{display:none!important}}
+#landscape-hint{position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:"Noto Serif SC",serif}
 @keyframes rhSpin{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
 
 #gps-dot{width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 10px rgba(0,255,136,0.6),0 0 25px rgba(0,255,136,0.3);opacity:1;margin-bottom:24px;z-index:2}
@@ -24,23 +18,22 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 #subtitle{font-family:"Noto Sans SC",sans-serif;font-size:min(3vw,3.5vh,16px);color:#8B7355;letter-spacing:0.25em;opacity:0;transition:opacity 0.5s;margin-top:min(14px,2vh);z-index:2;text-align:center}
 #tag{font-family:"Noto Serif SC",serif;font-size:min(3.8vw,4vh,19px);color:#C4A46C;letter-spacing:0.2em;opacity:0;transition:opacity 0.6s;margin-top:min(28px,4vh);z-index:2;text-align:center;line-height:1.8;padding:0 16px}
 
-#chapter-outro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99999;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#chapter-outro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99999;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
 #chapter-outro .co-text{font-family:"Noto Serif SC",serif;font-size:min(17px,3.5vw);color:#C4A46C;text-align:center;max-width:min(300px,80vw);line-height:1.8;margin-bottom:32px;padding:0 16px}
 #chapter-outro .co-next{font-family:"Noto Sans SC",sans-serif;font-size:14px;color:#8B7355;text-align:center;animation:coPulse 2s infinite}
 @keyframes coPulse{0%,100%{opacity:.5}50%{opacity:1}}
 
-/* 微信引导层 */
-#wx-guide{position:fixed;inset:0;z-index:999999;display:none;flex-direction:column;align-items:center;justify-content:flex-start;background:rgba(0,0,0,0.95);color:#e8e0d5;padding-top:12vh}
+#wx-guide{position:fixed;inset:0;z-index:999999;display:none;flex-direction:column;align-items:center;justify-content:flex-start;background:rgba(0,0,0,0.95);color:#e8e0d5;padding-top:12vh;font-family:"Noto Serif SC",serif}
 #wx-guide.show{display:flex}
 #wx-guide .wx-arrow{font-size:60px;margin-bottom:8px;animation:wxBounce 1.5s ease-in-out infinite;align-self:flex-end;margin-right:20px}
 #wx-guide .wx-icon{width:50px;height:50px;border-radius:50%;border:2px solid rgba(200,170,100,0.5);display:flex;align-items:center;justify-content:center;margin:20px auto 16px}
 #wx-guide .wx-icon svg{width:28px;height:28px;fill:#c8aa64}
-#wx-guide .wx-title{font-family:"Noto Serif SC",serif;font-size:20px;color:#c8aa64;letter-spacing:2px;margin-bottom:12px;text-align:center}
+#wx-guide .wx-title{font-size:20px;color:#c8aa64;letter-spacing:2px;margin-bottom:12px}
 #wx-guide .wx-desc{font-size:14px;color:rgba(232,224,213,0.6);text-align:center;line-height:2;padding:0 32px}
 #wx-guide .wx-desc b{color:#FFD700;font-weight:700}
 #wx-guide .wx-browsers{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;justify-content:center;padding:0 20px}
 #wx-guide .wx-browsers span{font-size:12px;color:rgba(232,224,213,0.4);padding:6px 16px;border:1px solid rgba(200,170,100,0.2);border-radius:16px}
-#wx-guide .wx-copy{margin-top:24px;padding:10px 32px;background:rgba(200,170,100,0.15);border:1px solid rgba(200,170,100,0.4);border-radius:20px;color:#c8aa64;font-size:13px;cursor:pointer;transition:all 0.2s}
+#wx-guide .wx-copy{margin-top:24px;padding:10px 32px;background:rgba(200,170,100,0.15);border:1px solid rgba(200,170,100,0.4);border-radius:20px;color:#c8aa64;font-size:13px;cursor:pointer}
 #wx-guide .wx-copy:active{background:rgba(200,170,100,0.3)}
 #wx-guide .wx-copied{margin-top:10px;font-size:11px;color:#00FF88;opacity:0;transition:opacity 0.3s}
 #wx-guide .wx-copied.show{opacity:1}
@@ -69,24 +62,55 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 </div>
 
 <script>
+// ====== 横屏检测（内联，零依赖） ======
+(function(){
+  var hint=document.getElementById("landscape-hint");
+  var KEY="gobi_ok";
+  function isOK(){try{return localStorage.getItem(KEY)==="1"||sessionStorage.getItem(KEY)==="1"}catch(e){return false}}
+  function markOK(){try{localStorage.setItem(KEY,"1");sessionStorage.setItem(KEY,"1")}catch(e){}}
+  function isLandscape(){return window.innerWidth>window.innerHeight}
+  
+  // 已OK：移除提示
+  if(isOK()){hint.parentNode.removeChild(hint);hint=null}
+
+  function check(){
+    if(!hint)return;
+    if(isLandscape()){
+      markOK();
+      hint.parentNode.removeChild(hint);
+      hint=null;
+      // 全屏
+      try{document.documentElement.requestFullscreen().catch(function(){})}catch(e){}
+    }else{
+      hint.style.display="flex";
+    }
+  }
+  check();
+  window.addEventListener("resize",check);
+  window.addEventListener("orientationchange",function(){setTimeout(check,100)});
+})();
+
+// ====== 微信检测 ======
 var isWeChat=/MicroMessenger/i.test(navigator.userAgent);
-if(isWeChat){window.__noForceLandscape=true;document.getElementById("wx-guide").classList.add("show")}
+if(isWeChat){document.getElementById("wx-guide").classList.add("show")}
 window.copyLink=function(){
-  var url=location.href;
+  var u=location.href;
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(url).then(function(){
-      var el=document.getElementById("wx-copied");el.classList.add("show");
-      setTimeout(function(){el.classList.remove("show")},2500);
+    navigator.clipboard.writeText(u).then(function(){
+      var e=document.getElementById("wx-copied");e.classList.add("show");
+      setTimeout(function(){e.classList.remove("show")},2500);
     }).catch(function(){});
   }else{
-    var ta=document.createElement("textarea");ta.value=url;ta.style.position="fixed";ta.style.left="-9999px";
-    document.body.appendChild(ta);ta.select();
+    var t=document.createElement("textarea");t.value=u;t.style.cssText="position:fixed;left:-9999px";
+    document.body.appendChild(t);t.select();
     try{document.execCommand("copy")}catch(e){}
-    document.body.removeChild(ta);
-    var el=document.getElementById("wx-copied");el.classList.add("show");
-    setTimeout(function(){el.classList.remove("show")},2500);
+    document.body.removeChild(t);
+    var e=document.getElementById("wx-copied");e.classList.add("show");
+    setTimeout(function(){e.classList.remove("show")},2500);
   }
 };
+
+// ====== 开场动画（非微信） ======
 if(!isWeChat){
 (function(){
 var locEl=document.getElementById("loc"),tagEl=document.getElementById("tag"),titleEl=document.getElementById("title"),subtitleEl=document.getElementById("subtitle");
