@@ -1,5 +1,13 @@
-// P2 - Gobi Guardian: Route Panorama + History Cards
+﻿// P2 - Gobi Guardian: Route Panorama + History Cards
 // ---- Data ----
+
+// 预加载所有城市图标
+(function(){
+var cities=["成都","广元","陇南","天水","兰州","张掖","哈密（目的地）"];
+cities.forEach(function(c){
+var img=new Image();img.src="assets/city-icons/"+c+".png";
+});
+})();
 var WP=[["成都",104.0665,30.5728],["广元",105.823,32.435],["陇南",104.96,33.401],["天水",105.724,34.58],["兰州",103.834,36.061],["张掖",100.455,38.932],["哈密（目的地）",93.515,42.819]];
 var NI={};
 WP.forEach(function(w){NI[w[0]]=1});
@@ -123,7 +131,7 @@ function CN(){
       LNI=i;
       var cityName=WP[i][0];
       var iconUrl="assets/city-icons/"+cityName+".png";
-      NP.innerHTML='<img src="'+iconUrl+'" style="width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid #FFD700;box-shadow:0 0 30px rgba(255,215,0,.5)">';
+      NP.innerHTML='<img src="'+iconUrl+'" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid #FFD700;box-shadow:0 0 30px rgba(255,215,0,.5)">';
       NP.style.opacity="1";NP.style.transform="translate(-50%,0) scale(1)";
       (function(idx){setTimeout(function(){if(LNI===idx){NP.style.opacity="0";NP.style.transform="translate(-50%,0) scale(.8)"}},2200)})(i);
     }
@@ -200,11 +208,11 @@ function BC(){
       var h='<div id="hct'+i+'" style="text-align:center;max-width:320px;opacity:0;transform:translateY(20px);transition:all .8s"><div style="font-family:Noto Serif SC,serif;font-size:22px;font-weight:700;color:#FFD700;margin-bottom:6px">'+d.ti+'</div><div style="font-size:15px;color:#C4A46C;margin-bottom:10px">'+d.su+'</div></div><div id="lg'+i+'" style="max-width:360px;opacity:0;transform:translateY(20px);transition:all .8s;margin:18px auto 0">';
       // Row 1: first 3 images
       h+='<div style="display:flex;gap:10px;justify-content:center;margin-bottom:10px">';
-      for(var ri=0;ri<Math.min(3,d.ims.length);ri++){var im=d.ims[ri];h+='<div data-src="'+im.s+'" style="width:110px;height:110px;border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid rgba(196,164,108,.4);box-shadow:0 0 20px rgba(196,164,108,0.1);flex-shrink:0"><img src="'+im.s+'" style="width:100%;height:100%;object-fit:cover"><div style="font-size:10px;color:#8B7355;text-align:center;margin-top:2px">'+im.l+'</div></div>'}
+      for(var ri=0;ri<Math.min(3,d.ims.length);ri++){var im=d.ims[ri];h+='<div data-src="'+im.s+'" style="width:60px;height:60px;border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid rgba(196,164,108,.4);box-shadow:0 0 20px rgba(196,164,108,0.1);flex-shrink:0"><img src="'+im.s+'" style="width:100%;height:100%;object-fit:cover"><div style="font-size:10px;color:#8B7355;text-align:center;margin-top:2px">'+im.l+'</div></div>'}
       h+='</div>';
       // Row 2: remaining images, centered
       if(d.ims.length>3){h+='<div style="display:flex;gap:10px;justify-content:center">';
-      for(var ri=3;ri<d.ims.length;ri++){var im=d.ims[ri];h+='<div data-src="'+im.s+'" style="width:110px;height:110px;border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid rgba(196,164,108,.4);box-shadow:0 0 20px rgba(196,164,108,0.1);flex-shrink:0"><img src="'+im.s+'" style="width:100%;height:100%;object-fit:cover"><div style="font-size:10px;color:#8B7355;text-align:center;margin-top:2px">'+im.l+'</div></div>'}
+      for(var ri=3;ri<d.ims.length;ri++){var im=d.ims[ri];h+='<div data-src="'+im.s+'" style="width:60px;height:60px;border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid rgba(196,164,108,.4);box-shadow:0 0 20px rgba(196,164,108,0.1);flex-shrink:0"><img src="'+im.s+'" style="width:100%;height:100%;object-fit:cover"><div style="font-size:10px;color:#8B7355;text-align:center;margin-top:2px">'+im.l+'</div></div>'}
       h+='</div>'}
       h+='</div>';el.innerHTML=h;
     }else{
