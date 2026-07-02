@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>P7 · 你也可以成为守护者</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;700&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;background:#0b0906;font-family:"Noto Sans SC",sans-serif;-webkit-font-smoothing:antialiased}
+
+#poster{position:relative;width:100%;max-width:420px;margin:0 auto;min-height:100vh;color:#e8e0d5;overflow:hidden;
+  background:linear-gradient(175deg,
+    #0d0b12 0%,
+    #16101a 8%,
+    #1a1218 18%,
+    #1e1516 28%,
+    #221812 38%,
+    #251b10 48%,
+    #201710 60%,
+    #1a140d 75%,
+    #14100b 90%,
+    #0b0906 100%
+  );
+}
+
+/* Horizon glow */
+#poster::before{content:'';position:absolute;left:10%;right:10%;top:30%;height:200px;z-index:0;
+  background:radial-gradient(ellipse at 50% 100%,rgba(200,155,80,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* Distant mountains - faint silhouettes */
+#poster::after{content:'';position:absolute;left:0;right:0;bottom:0;height:280px;z-index:0;pointer-events:none;
+  background:
+    /* Far ridge */
+    linear-gradient(180deg,transparent 0%,rgba(20,14,10,0.5) 15%,rgba(20,14,10,0.7) 30%,transparent 45%) 0 0/100% 60% no-repeat,
+    /* Near dune */
+    linear-gradient(180deg,transparent 0%,rgba(18,12,8,0.6) 20%,rgba(18,12,8,0.85) 50%,transparent 75%) 0 55%/100% 45% no-repeat;
+  mask-image:linear-gradient(180deg,transparent 0%,#000 40%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 40%);
+}
+
+/* Grain */
+#grain{position:absolute;inset:0;z-index:0;opacity:0.035;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+#hero{position:relative;z-index:1;padding:56px 20px 0;text-align:center}
+#hero .big-text{font-family:"Noto Serif SC",serif;font-size:44px;font-weight:900;letter-spacing:8px;line-height:1.15;
+  background:linear-gradient(180deg,#dcc680 0%,#b89450 35%,#c8a860 55%,#967538 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,0.6));
+}
+#hero .sub-text{margin-top:16px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+#hero .sub-text span{font-family:"Noto Serif SC",serif;font-size:13px;color:rgba(200,170,100,0.5);letter-spacing:3px;font-weight:400}
+
+#rule{width:40px;height:1px;background:rgba(200,170,100,0.35);margin:36px auto 0;position:relative;z-index:1}
+
+#quote{padding:28px 32px 0;z-index:1;position:relative}
+#quote .q-main{font-family:"Noto Serif SC",serif;font-size:18px;font-weight:700;line-height:1.7;color:#f0e8d8;letter-spacing:0.5px}
+#quote .q-main span{color:#c8aa64}
+#quote .q-sub{margin-top:14px;font-size:13px;line-height:1.8;color:rgba(240,232,216,0.5);font-weight:300}
+
+#stats{display:flex;justify-content:center;gap:32px;padding:28px 24px 0;z-index:1;position:relative}
+#stats .st{text-align:center}
+#stats .st .n{font-family:"Noto Serif SC",serif;font-size:26px;font-weight:900;color:#c8aa64;line-height:1}
+#stats .st .l{font-size:10px;color:rgba(240,232,216,0.35);margin-top:4px;letter-spacing:1px}
+
+#call{padding:32px 32px 0;z-index:1;position:relative}
+#call p{font-size:13px;line-height:2;color:rgba(240,232,216,0.55);font-weight:300}
+#call p em{font-style:normal;color:#c8aa64;font-weight:700}
+
+#bigcta{padding:24px 32px 0;z-index:1;position:relative}
+#bigcta div{font-family:"Noto Serif SC",serif;font-size:24px;font-weight:900;color:#c8aa64;letter-spacing:2px;line-height:1.3}
+
+#sub{padding:8px 32px 0;font-size:10px;color:rgba(240,232,216,0.2);letter-spacing:2px;z-index:1;position:relative}
+
+#btns{padding:24px 28px 36px;display:flex;gap:10px;z-index:1;position:relative}
+#btns button{flex:1;padding:11px 0;border-radius:6px;font-size:13px;font-weight:600;font-family:"Noto Sans SC",sans-serif;cursor:pointer;transition:all 0.2s}
+#btn-save{background:#c8aa64;color:#0b0906;border:none}
+#btn-share{background:transparent;color:#c8aa64;border:1px solid rgba(200,170,100,0.4)}
+#btn-save:active,#btn-share:active{transform:scale(0.97)}
+
+#toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#c8aa64;padding:8px 24px;border-radius:20px;font-size:12px;z-index:99;opacity:0;transition:opacity 0.3s;pointer-events:none}
+#toast.show{opacity:1}
+
+#foot{padding:0 32px 32px;font-size:9px;color:rgba(240,232,216,0.12);letter-spacing:1px;text-align:center;z-index:1;position:relative}
+
+@keyframes coPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+#back-btn{position:fixed;top:16px;left:16px;z-index:9998;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;font-family:sans-serif;line-height:1}
+#back-btn:hover{background:rgba(0,0,0,.7);color:#FFD700;border-color:rgba(255,215,0,.4)}
+
+#poster{opacity:0;transition:opacity 2s ease-in}
+#poster.reveal{opacity:1}
+#hero .big-text{opacity:0;transform:translateY(30px);transition:all 2s ease-out}
+#hero .big-text.show{opacity:1;transform:translateY(0)}
+#rest-content{opacity:0;transition:opacity 1.5s ease-in 0.5s}
+#rest-content.show{opacity:1}
+</style>
+</head>
+<body>
+<button id="back-btn" title="返回上一章">&#10094;</button>
+
+<div id="poster">
+  <div id="grain"></div>
+
+  <div id="rest-content">
+  <div id="hero">
+    <div class="big-text">为人民服务</div>
+    <div class="sub-text">
+      <span>只争朝夕</span>
+      <span>排除万难</span>
+      <span>向斗争中学习</span>
+      <span>毛主席万岁</span>
+    </div>
+  </div>
+
+  <div id="rule"></div>
+
+  <div id="quote">
+    <div class="q-main">它们存活了 <span>58 年</span>。<br>差一点在 <span>5 分钟</span>内消失。</div>
+    <div class="q-sub">修复它的，不是官方，是一个路过的年轻人。他叫路遥，从成都开了两千公里，用了 24 天。</div>
+  </div>
+
+  <div id="stats">
+    <div class="st"><div class="n">24</div><div class="l">天</div></div>
+    <div class="st"><div class="n">27</div><div class="l">趟</div></div>
+    <div class="st"><div class="n">20</div><div class="l">吨</div></div>
+  </div>
+
+  <div id="call">
+    <p>如果你去戈壁，请不要碾压任何地面痕迹。<br>每一道刻痕，<em>都可能是某个时代的航标。</em></p>
+  </div>
+
+  <div id="bigcta">
+    <div>你也可以成为<br>守护者。</div>
+  </div>
+
+  <div id="sub">1967 · 八航校 · 2025 · 你</div>
+
+  <div id="btns">
+    <button id="btn-save" onclick="savePoster()">保存海报</button>
+    <button id="btn-share" onclick="sharePoster()">分享</button>
+  </div>
+
+  <div id="foot">长按可截图 · 你就是下一个守护者</div>
+</div>
+</div>
+
+<div id="toast">已触发分享</div>
+
+<script>
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2000);
+}
+function savePoster(){
+  if(navigator.share){navigator.share({title:'你也可以成为守护者',text:'戈壁地标——58年 vs 5分钟。修复它的，是一个路过的年轻人。',url:location.href}).catch(function(){});}
+  else{showToast('请截图保存');}
+}
+function sharePoster(){
+  if(navigator.share){navigator.share({title:'你也可以成为守护者',text:'戈壁地标「为人民服务」——它们存活了58年，差一点在5分钟内消失。',url:location.href}).catch(function(){});}
+  else{showToast('请截图后分享给朋友');}
+}
+</script>
+
+<script>document.getElementById("back-btn").addEventListener("click",function(){window.location.href="demo-p6.html"})</script>
+
+<script>
+(function(){
+  var poster=document.getElementById("poster");
+  var bigText=document.querySelector("#hero .big-text");
+  var rest=document.getElementById("rest-content");
+  
+  // Phase 1: reveal poster background (dark gradient)
+  setTimeout(function(){poster.classList.add("reveal")},400);
+  
+  // Phase 2: "为人民服务" fades in
+  setTimeout(function(){bigText.classList.add("show")},1800);
+  
+  // Phase 3: rest of content appears
+  setTimeout(function(){rest.classList.add("show")},3500);
+})();
+</script>
+
+</body>
+
+
+</html>

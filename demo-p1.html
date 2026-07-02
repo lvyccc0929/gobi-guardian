@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>P1 · 发现</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"Noto Serif SC","Noto Sans SC",sans-serif}
+#app{position:fixed;inset:0}
+canvas{position:absolute;top:0;left:0}
+
+#narration{position:absolute;top:80px;left:0;right:0;text-align:center;padding:0 32px;z-index:10;pointer-events:none}
+#narration .line{font-family:"Noto Serif SC",serif;font-size:18px;font-weight:400;color:#F5F0E8;line-height:2;opacity:0;transition:opacity 0.8s;text-shadow:0 1px 2px rgba(0,0,0,0.9),0 0 8px rgba(0,0,0,0.5)}
+#narration .line.show{opacity:1;display:block}
+#narration .line span{color:#c8aa64;font-weight:700}
+
+
+
+#bridge{position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;background:#000;opacity:0;transition:opacity 0.5s;pointer-events:none}
+#bridge .b-text{font-family:"Noto Serif SC",serif;font-size:18px;color:#c8aa64;letter-spacing:6px;text-align:center}
+#bridge .b-sub{font-size:13px;color:rgba(255,255,255,0.4);margin-top:10px;letter-spacing:2px}
+
+
+#disclaimer{position:absolute;top:14px;right:10px;z-index:6;pointer-events:none;opacity:0;transition:opacity 0.6s}
+#disclaimer span{font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:0.5px;background:rgba(0,0,0,0.4);padding:3px 10px;border-radius:3px}
+
+
+#p1-blackout{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+#p1-blackout .text{font-family:"Noto Serif SC",serif;font-size:26px;color:#FFD700;text-align:center;opacity:0;transition:opacity 1.5s;padding:0 32px}
+#p1-blackout .hint{font-size:15px;color:#C4A46C;text-align:center;margin-top:28px;opacity:0;transition:opacity 1s;transition-delay:2s}
+
+
+#p1-prompt{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:998;font-size:22px;font-weight:700;color:#FFD700;opacity:0;transition:opacity 1s;pointer-events:none;text-align:center;text-shadow:0 0 20px rgba(255,215,0,.7),0 0 40px rgba(255,215,0,.4)}#p1-prompt.blink{animation:p1blink 2s ease-in-out infinite}@keyframes p1blink{0%,100%{opacity:1}50%{opacity:.5}}
+
+
+#chapter-intro{pointer-events:none}#chapter-intro,#chapter-outro{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:1;transition:opacity 0.8s}
+#chapter-intro.hide,#chapter-outro.hide{opacity:0;pointer-events:none}
+#chapter-outro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99999;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}#chapter-outro:hover{background:rgba(0,0,0,.95)}
+#chapter-intro .ci-title{font-family:"Noto Serif SC",serif;font-size:30px;font-weight:700;color:#FFD700;text-align:center;margin-bottom:12px;text-shadow:0 0 20px rgba(255,215,0,.3)}
+#chapter-intro .ci-sub{font-family:"Noto Serif SC",serif;font-size:17px;color:#C4A46C;text-align:center;max-width:300px;line-height:1.8}
+#chapter-outro .co-text{font-family:"Noto Serif SC",serif;font-size:17px;color:#C4A46C;text-align:center;max-width:300px;line-height:1.8;margin-bottom:32px}
+#chapter-outro .co-next{font-family:"Noto Sans SC",sans-serif;font-size:14px;color:#8B7355;text-align:center;animation:coPulse 2s infinite}
+@keyframes coPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+#back-btn{position:fixed;top:16px;left:16px;z-index:9998;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;font-family:sans-serif;line-height:1}
+#back-btn:hover{background:rgba(0,0,0,.7);color:#FFD700;border-color:rgba(255,215,0,.4)}
+
+</style>
+</head>
+<body>
+<button id="back-btn" title="返回上一章">&#10094;</button>
+<div id="app">
+  <canvas id="c"></canvas>
+  <div id="bridge"><div><div class="b-text">新疆 · 哈密戈壁</div><div class="b-sub">42°27'18"N 93°38'42"E</div></div></div>
+
+  <div id="narration">
+    <div class="line" id="l1"></div>
+    <div class="line" id="l2"></div>
+    <div class="line" id="l3"></div>
+    <div class="line" id="l4"></div>
+  </div>
+
+</div>
+<script>
+(function(){
+var canvas=document.getElementById("c"),ctx=canvas.getContext("2d");
+var canvasEl=canvas;
+var W,H;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener("resize",resize);
+
+var l1=document.getElementById("l1"),l2=document.getElementById("l2"),l3=document.getElementById("l3"),l4=document.getElementById("l4");
+var bridge=document.getElementById("bridge");
+
+// Phases: 0=space, 1=bridge, 2=surface
+var phase=0, zoom=0, spaceZoom=0, startTime=0, bridgeStart=0, panX=0, panY=0;
+
+var terrainReady=false,tw=1024,th=1024;
+var terrain=new Image();
+terrain.src="assets/p1-terrain.png";
+var earthImg=new Image();var earthReady=false;
+earthImg.src="assets/p1-earth.png";
+earthImg.onload=function(){earthReady=true};
+terrain.onload=function(){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight};
+
+// Stars
+var stars=[];
+for(var i=0;i<200;i++)stars.push({x:Math.random(),y:Math.random()*0.8,size:0.3+Math.random()*2,alpha:0.3+Math.random()*0.7,twinkle:Math.random()*Math.PI*2});
+
+// Narration
+var lines=[
+  {el:l1,text:'',at:500},
+  {el:l2,text:'',at:2200},
+  {el:l3,text:'突然，你看见西北的茫茫戈壁之中，',at:3800},
+  {el:l4,text:'赫然出现了<span>五个大字</span>',at:5400}
+];
+var linesShown=[false,false,false,false];
+var surfaceStartTime=0;
+
+function drawSpace(time){
+  ctx.fillStyle="#000";ctx.fillRect(0,0,W,H);
+  var sz=spaceZoom; // 0=far, 1=close
+  // Stars - fade out as we zoom in
+  var starAlpha=Math.max(0,1-sz*1.5);
+  if(starAlpha>0){
+    stars.forEach(function(s){
+      var sx=s.x*W,sy=s.y*H;
+      var a=s.alpha*(0.7+0.3*Math.sin(time*0.001+s.twinkle))*starAlpha;
+      ctx.fillStyle="rgba(255,255,255,"+a+")";
+      ctx.beginPath();ctx.arc(sx,sy,s.size*(1-sz*0.5),0,Math.PI*2);ctx.fill();
+    });
+  }
+  // Earth sphere - grows as zoom increases
+  var baseR=Math.min(W,H)*0.35;
+  var earthR=baseR*(1+sz*4);
+  var ex=W/2,ey=H+baseR*0.65-earthR*0.45;
+  // Shift view toward Gobi marker as we zoom
+  var gx=ex+baseR*0.35*sz,gxy=ey-baseR*0.25*sz;
+  ex+=(gx-ex)*sz;ey+=(gxy-ey)*sz*0.7;
+  // Atmosphere glow
+  var ag=ctx.createRadialGradient(ex,ey-earthR*0.15,earthR*0.85,ex,ey-earthR*0.15,earthR*1.15);
+  ag.addColorStop(0,"rgba(140,200,255,"+(0.35*(1-sz*0.8))+")");
+  ag.addColorStop(0.6,"rgba(100,170,230,"+(0.12*(1-sz*0.8))+")");
+  ag.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=ag;ctx.beginPath();ctx.arc(ex,ey-earthR*0.15,earthR*1.15,0,Math.PI*2);ctx.fill();
+  // Earth body - use AI image
+  ctx.save();
+  ctx.beginPath();ctx.arc(ex,ey,earthR,0,Math.PI*2);ctx.clip();
+  if(earthReady){
+    var d=earthR*2;
+    ctx.drawImage(earthImg,ex-earthR,ey-earthR,d,d);
+  }else{
+    ctx.fillStyle="#1a4a80";ctx.fill();
+  }
+  // Subtle atmosphere highlight on top
+  var hl=ctx.createRadialGradient(ex-earthR*0.35,ey-earthR*0.35,0,ex,ey,earthR);
+  hl.addColorStop(0,"rgba(180,210,255,0.15)");hl.addColorStop(0.5,"rgba(100,160,220,0.05)");hl.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=hl;ctx.fillRect(ex-earthR,ey-earthR,d,d);
+  ctx.restore();
+  // Pin marker at Gobi - fades as we approach
+  if(sz<0.7){
+    var px=ex+earthR*0.35,py=ey-earthR*0.25;
+    var pulse=0.6+0.4*Math.sin(time*0.004);
+    var pa=Math.max(0,1-sz/0.7);
+    ctx.fillStyle="rgba(200,170,100,"+(pulse*pa)+")";
+    ctx.beginPath();ctx.arc(px,py,1.5*(1+sz),0,Math.PI*2);ctx.fill();
+    var pr=ctx.createRadialGradient(px,py,0,px,py,12*(1+sz));
+    pr.addColorStop(0,"rgba(200,170,100,"+(pulse*0.6*pa)+")");pr.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=pr;ctx.beginPath();ctx.arc(px,py,7*(1+sz),0,Math.PI*2);ctx.fill();
+  }
+  // Desert tones bleeding in as we get close
+  if(sz>0.4){
+    var da=(sz-0.4)/0.6;
+    ctx.fillStyle="rgba(30,20,12,"+da+")";ctx.fillRect(0,0,W,H);
+  }
+}
+
+function drawSurface(time){
+  // Deep sky
+  ctx.fillStyle="#0a0805";ctx.fillRect(0,0,W,H);
+
+  if(!terrainReady)return;
+
+  ctx.save();
+  var scale=1+zoom*20;
+  var cx=tw*0.5+panX,cy=th*0.5+panY;
+  var vw=tw/scale,vh=th/scale;
+  var sx=cx-vw/2,sy=cy-vh/2;var sw=vw,sh=vh;
+  if(sx<0){sw+=sx;sx=0}if(sy<0){sh+=sy;sy=0}
+  if(sx+sw>tw)sw=tw-sx;if(sy+sh>th)sh=th-sy;
+  var dx=0,dy=0,dw=W,dh=H;
+  if(sw<vw){dw=W*(sw/vw);dx=(W-dw)/2}
+  if(sh<vh){dh=H*(sh/vh);dy=(H-dh)/2}
+  if(sw>0&&sh>0)ctx.drawImage(terrain,sx,sy,sw,sh,dx,dy,dw,dh);
+  ctx.restore();
+
+  // Vignette
+  var vg=ctx.createRadialGradient(W/2,H/2,W*0.4,W/2,H/2,W*0.78);
+  var va=0.7*(1-zoom);
+  vg.addColorStop(0,"rgba(0,0,0,0)");vg.addColorStop(1,"rgba(0,0,0,"+va.toFixed(2)+")");
+  ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
+
+  // Scan line
+  var sy=H*0.5+Math.sin(time*0.0004)*H*0.3;
+  ctx.fillStyle="rgba(200,170,100,"+(0.04*(1-zoom))+")";ctx.fillRect(0,sy,W,1);
+
+  // Narration controlled by loop timer
+}
+
+function loop(t){
+  if(!startTime)startTime=t;
+  var elapsed=(t-startTime)/1000;
+
+  if(phase===0){
+    // Phase 0: Space - smooth zoom toward Earth
+    if(elapsed<0.8){
+      spaceZoom=0; // Hold wide view
+      if(elapsed>0.3&&l1.style.opacity==="0"||l1.style.opacity===""){
+        l1.innerHTML='';
+        l1.classList.add("show");
+      }
+    }else if(elapsed<4.5){
+      spaceZoom=(elapsed-0.8)/3.7; // 01 over 3.7s
+      if(elapsed>1.8&&l2.style.opacity==="0"||l2.style.opacity===""){
+        l2.innerHTML='';
+        l2.classList.add("show");
+      }
+    }
+    if(elapsed>4.5){
+      phase=1;bridgeStart=t;bridge.style.opacity="1";
+    }
+    drawSpace(t);
+  }
+  else if(phase===1){
+    // Phase 1: Bridge - fade to black with location text
+    spaceZoom=1;drawSpace(t); // keep zoomed space behind
+    if(t-bridgeStart>1500){
+      phase=2;bridge.style.opacity="0";startTime=t;linesShown=[false,false,false,false];surfaceStartTime=0;document.getElementById('disclaimer').style.opacity='0';
+      l1.classList.remove("show");l2.classList.remove("show");document.getElementById('disclaimer').style.opacity='0';
+      
+    }
+  }
+  else if(phase===2){
+    // Phase 2: Surface zoom
+    var sElapsed=(t-startTime)/1000;
+    if(!surfaceStartTime){surfaceStartTime=t;document.getElementById('disclaimer').style.opacity='1';}
+
+    drawSurface(t);
+
+    // Show all lines at once
+    if(!linesShown[0]&&t-surfaceStartTime>500){
+      linesShown=[true,true,true,true];
+      for(var i=0;i<lines.length;i++){
+        lines[i].el.innerHTML=lines[i].text;
+        lines[i].el.classList.add("show");
+      }
+      setTimeout(function(){var pr=document.getElementById("p1-prompt");if(pr){pr.style.opacity="1";setTimeout(function(){pr.classList.add("blink")},1200)}},5000);
+    }
+
+
+  }
+
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+// Scroll zoom + pan in surface phase
+var canvasEl=document.getElementById("c");
+
+
+// Mouse drag to pan
+
+
+
+
+// Touch drag to pan
+
+
+
+
+console.log("P1 v12 - space to surface");
+})();
+</script>
+<div id="disclaimer"><span>该图片为根据情景生成的示意图，不代表当时真实图像</span></div>
+
+
+<div id="p1-prompt">点击屏幕继续</div>
+<div id="p1-blackout"><div class="text">这些字从哪来？为何修建于荒无人烟的戈壁之上？抱着这样的疑惑，你从成都出发，踏上了前往哈密的旅程……</div><div class="hint">点击进入下一章</div></div>
+
+<script>
+(function(){
+var bo=document.getElementById("p1-blackout");
+var clicked=false;
+document.body.addEventListener("click",function(){
+  if(clicked)return;
+  var pr=document.getElementById("p1-prompt");
+  if(pr&&pr.style.opacity==="1"){
+    clicked=true;
+    pr.style.opacity="0";
+    bo.style.display="flex";
+    setTimeout(function(){bo.querySelector(".text").style.opacity="1"},400);
+    setTimeout(function(){bo.querySelector(".hint").style.opacity="1"},1800);
+  }
+});
+if(bo){bo.addEventListener("click",function(e){e.stopPropagation();window.showOutro()})}
+})();
+</script>
+<div id="chapter-intro"><div class="ci-title">第一章：缘起</div><div class="ci-sub">你在卫星地图上，发现了一个秘密。</div></div>
+<div id="chapter-outro"><div class="co-text">五个大字，跨越58年，从太空到地面。</div><div class="co-next">本章结束<br><span style="font-size:16px;color:#FFD700;margin-top:8px;display:inline-block">点击进入下一章</span></div></div>
+
+<script>document.getElementById("back-btn").addEventListener("click",function(){window.location.href="demo-p0.html"})</script>
+</body>
+
+<script>(function(){var intro=document.getElementById("chapter-intro");var outro=document.getElementById("chapter-outro");if(intro){setTimeout(function(){intro.classList.add("hide")},2500);setTimeout(function(){if(intro)intro.style.display="none"},3300)}window.showOutro=function(){if(outro){outro.style.display="flex";setTimeout(function(){outro.style.opacity="1"},50);outro.addEventListener("click",function(){window.location.href='demo-p2.html'})}}})()</script>
+
+</html>
