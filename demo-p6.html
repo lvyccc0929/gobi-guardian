@@ -131,17 +131,16 @@ var groups=[];for(var gi=0;gi<cardPool.length;gi+=5)groups.push(cardPool.slice(g
 var ww=window.innerWidth,wh=window.innerHeight,activeRects=[];
 function overlaps(a,b){return!(a.right<b.left||a.left>b.right||a.bottom<b.top||a.top>b.bottom)}
 function rectsOverlapAny(r){for(var i=0;i<activeRects.length;i++)if(overlaps(r,activeRects[i]))return true;return false}
-function imgUrl(dir,file){return "assets/comments/"+encodeURI(dir)+"/"+encodeURI(file)}
+function imgUrl(dir,file){return "assets/comments/"+dir+"/"+file}
 
-var imageCache={},loaded=0,started=false;
+var imageCache={},started=false;
 cardPool.forEach(function(c){
 var url=imgUrl(c.dir,c.file);
 var img=new Image();
-img.onload=function(){imageCache[url]={w:img.naturalWidth,h:img.naturalHeight};loaded++;if(loaded>=10)startShow()};
-img.onerror=function(){loaded++;if(loaded>=10)startShow()};
+img.onload=function(){imageCache[url]={w:img.naturalWidth,h:img.naturalHeight}}
 img.src=url;
 });
-setTimeout(function(){if(!started)startShow()},3000);
+setTimeout(function(){startShow()},500);
 
 var gi2=0;
 function showNextGroup(){
@@ -152,7 +151,8 @@ var canSpawn=9-activeRects.length;if(canSpawn<=0)return;
 var spawned=0;
 group.slice(0,canSpawn).forEach(function(c){
 var url=imgUrl(c.dir,c.file);
-var dims=imageCache[url];if(!dims)return;
+var dims=imageCache[url];
+if(!dims)return;
 var r=dims.w/dims.h;
 var tw=Math.floor(ww*(0.32+Math.random()*0.10)),th=Math.floor(tw/r);
 if(tw<90)tw=90;if(th<20)th=20;if(th>wh*0.3)th=Math.floor(wh*0.3);
