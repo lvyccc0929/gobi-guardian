@@ -126,28 +126,29 @@ X.restore();
 // ---- City Popup ----
 var CITY_ELMS=[];
 function CN(){
+  NP.style.display="none";
   var ci=document.getElementById("city-icons");
   if(!CITY_ELMS.length&&ci){
     WP.forEach(function(w,i){
-      var name=w[0];
       var el=document.createElement("div");
       el.style.cssText="position:absolute;width:70px;height:70px;border-radius:50%;overflow:hidden;border:3px solid #FFD700;box-shadow:0 0 30px rgba(255,215,0,.5);transform:translate(-50%,-50%);pointer-events:none";
       var img=document.createElement("img");
-      img.src="assets/city-icons/"+name+".png";
+      img.src="assets/city-icons/"+w[0]+".png";
       img.style.cssText="width:100%;height:100%;object-fit:cover";
       el.appendChild(img);
       ci.appendChild(el);
-      CITY_ELMS.push({el:el, idx:i});
+      CITY_ELMS.push({el:el,idx:i});
     });
   }
-  var w=W(),h=H(),tw=w*2.2,ry=h*0.6,sx=P*tw-w/2;
-  CITY_ELMS.forEach(function(ce){
-    var nx=(ce.idx/(WP.length-1))*tw;
-    var ny=ry-Math.sin(ce.idx*0.04)*18;
-    ce.el.style.left=(nx-sx)+"px";
-    ce.el.style.top=(ny-75)+"px";
-  });
-  NP.style.display="none";
+  if(ci){
+    var w=W(),h=H(),tw=w*2.2,ry=h*0.6,sx=P*tw-w/2;
+    CITY_ELMS.forEach(function(ce){
+      var nx=(ce.idx/(WP.length-1))*tw;
+      var ny=ry-Math.sin(ce.idx*0.04)*18;
+      ce.el.style.left=(nx-sx)+"px";
+      ce.el.style.top=(ny-75)+"px";
+    });
+  }
 }
 
 // ---- Drone Scene ----
