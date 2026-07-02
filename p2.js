@@ -146,7 +146,7 @@ function CN(){
       var nx=(ce.idx/(WP.length-1))*tw;
       var ny=ry-Math.sin(ce.idx*0.04)*18;
       ce.el.style.left=(nx-sx)+"px";
-      ce.el.style.top=(ny-75)+"px";
+      ce.el.style.top=(ny-100)+"px";
     });
   }
 }

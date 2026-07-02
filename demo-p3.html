@@ -724,7 +724,7 @@ function onCorrect(pos){var ib=document.getElementById('info-banner');if(ib)ib.s
   resultOverlay.classList.add('show');
   setTimeout(function(){resultOverlay.classList.add('darken');var ss=document.getElementById('stone-shelf');if(ss)ss.classList.add('darken')},400);
   setTimeout(function(){
-    resultIcon.textContent='✅';resultIcon.classList.add('show');
+    // checkmark removedresultIcon.classList.add('show');
     resultText.textContent='就是它！黑褐砾石';resultText.classList.add('show');
   },700);
   setTimeout(function(){

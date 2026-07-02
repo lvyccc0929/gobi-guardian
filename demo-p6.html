@@ -140,7 +140,7 @@ img.onload=function(){imageCache[url]={w:img.naturalWidth,h:img.naturalHeight};l
 img.onerror=function(){loaded++;if(loaded>=2)startShow()};
 img.src=url;
 });
-setTimeout(function(){if(!started)startShow()},100);
+startShow();
 
 var gi2=0;
 function showNextGroup(){
@@ -193,6 +193,6 @@ resizeBg();goTimeline(0);var tf=document.getElementById("tl-final");if(tf)tf.add
 <script>document.getElementById("back-btn").addEventListener("click",function(){window.location.href="demo-p5.html"})</script>
 </body>
 
-<script>(function(){var intro=document.getElementById("chapter-intro");var outro=document.getElementById("chapter-outro");if(intro){intro.style.pointerEvents="auto";intro.addEventListener("click",function(){intro.classList.add("hide");setTimeout(function(){intro.style.display="none"},800);startShow()});setTimeout(function(){intro.classList.add("hide")},2000);setTimeout(function(){if(intro)intro.style.display="none"},2800);setTimeout(function(){startShow()},2100)})}}})()</script>
+<script>(function(){var intro=document.getElementById("chapter-intro");var outro=document.getElementById("chapter-outro");if(intro){intro.style.pointerEvents="auto";intro.addEventListener("click",function(){intro.classList.add("hide");setTimeout(function(){intro.style.display="none"},800);startShow()});startShow();setTimeout(function(){intro.classList.add("hide")},2000);setTimeout(function(){if(intro)intro.style.display="none"},2800)})}}})()</script>
 
 </html>
