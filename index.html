@@ -40,7 +40,7 @@ canvas{position:absolute;top:0;left:0}
 (function(){
 var canvas=document.getElementById("c"),ctx=canvas.getContext("2d");
 var W,H;
-function resize(){W=canvas.width=window.__LH.getWidth();H=canvas.height=window.__LH.getHeight()}
+function resize(){var w=window.__LH?window.__LH.getWidth():window.innerWidth;var h=window.__LH?window.__LH.getHeight():window.innerHeight;W=canvas.width=w;H=canvas.height=h}
 resize();window.addEventListener("resize",resize);
 
 var gpsDot=document.getElementById("gps-dot");
@@ -173,4 +173,5 @@ console.log("P0 ready");
 <script>(function(){var intro=document.getElementById("chapter-intro");var outro=document.getElementById("chapter-outro");if(intro&&intro.querySelector('.ci-title')){setTimeout(function(){intro.classList.add("hide")},2500);setTimeout(function(){if(intro)intro.style.display="none"},3300)}window.showOutro=function(){if(outro){outro.style.display="flex";setTimeout(function(){outro.style.opacity="1"},50);outro.addEventListener("click",function(){window.location.href='demo-p1.html'})}}})()</script>
 
 </html>
+
 
