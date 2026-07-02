@@ -77,7 +77,7 @@ var loader=document.getElementById("global-loader");
 var fill=document.getElementById("loader-fill");
 var pct=document.getElementById("loader-pct");
 function update(){var p=Math.round(loaded/total*100);fill.style.width=p+"%";pct.textContent=p+"%";if(loaded>=total)finish()}
-function finish(){setTimeout(function(){loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none"},500)},400)}
+function finish(){setTimeout(function(){loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)},400)}
 assets.forEach(function(url){var img=new Image();img.onload=function(){loaded++;update()};img.onerror=function(){loaded++;update()};img.src=url});
 setTimeout(function(){if(loaded<total){loaded=total;update()}},6000);
 window._startGlobalLoader=function(){loader.style.display="flex"};
@@ -100,14 +100,14 @@ function copyLink(){var u=location.href;if(navigator.clipboard&&navigator.clipbo
 if(!isWeChat){
 (function(){
 var locEl=document.getElementById("loc"),tagEl=document.getElementById("tag"),titleEl=document.getElementById("title"),subtitleEl=document.getElementById("subtitle");
-var active=true,startTime=0,titleShown=false,subtitleComplete=false,timer=0;
+var active=false,startTime=0,titleShown=false,subtitleComplete=false,timer=0;
 function update(elapsed){
   if(elapsed>=0.8&&locEl.style.opacity==="0"){locEl.textContent="2025年10月 · 新疆哈密戈壁";locEl.style.opacity="1";setTimeout(function(){locEl.style.opacity="0"},2000)}
   if(elapsed>=1.2&&!titleShown){titleShown=true;titleEl.style.opacity="1"}
   if(elapsed>=2.0&&!subtitleComplete){var full="GUARDIAN OF THE GOBI";timer+=16;var n=Math.min(Math.floor(timer/45),full.length);subtitleEl.textContent=full.slice(0,n)+(n<full.length?"|":"");subtitleEl.style.opacity="1";if(n>=full.length){subtitleComplete=true;subtitleEl.textContent=full;setTimeout(function(){tagEl.innerHTML='两千公里，二十四个日夜，一场修复之旅<br><span style="font-size:min(3vw,13px);color:#8B7355">基于真实事件改编</span>';tagEl.style.opacity="1";setTimeout(function(){if(window.showOutro)window.showOutro()},2500)},400)}}
 }
 function loop(t){if(!active)return;if(!startTime)startTime=t;var elapsed=(t-startTime)/1000;if(elapsed>12)return;update(elapsed);requestAnimationFrame(loop)}
-requestAnimationFrame(loop);
+window._startP0Animation=function(){active=true;startTime=0;requestAnimationFrame(loop)};
 })();
 }
 </script>
