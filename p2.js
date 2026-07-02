@@ -30,7 +30,7 @@ var DTT=document.getElementById("dtt"),DTB=document.getElementById("dtb");
 var DTC=document.getElementById("dtc"),DDN=document.getElementById("ddn");
 var SH=document.getElementById("sh");
 var HC=document.getElementById("hc"),HT2=document.getElementById("ht");
-var IBS=document.getElementById("ibs");
+// IBS removed
 var EHBTN=document.getElementById("enterHist");
 EHBTN.onclick=function(e){e.stopPropagation();if(SE)EH();else alert("请等待文字出现完毕后再点击")};
 var IV=document.getElementById("iv2"),IVI=document.getElementById("ivi");
@@ -173,25 +173,19 @@ var DP=[];function ID2(){DP=[];for(var i=0;i<60;i++)DP.push({x:Math.random()*W()
 function DD2(){var w=W(),h=H();DLX.clearRect(0,0,w,h);for(var i=0;i<DP.length;i++){var dp=DP[i];dp.x+=dp.vx;dp.y+=dp.vy;if(dp.x<-10)dp.x=w+10;if(dp.y<-10)dp.y=h+10;if(dp.y>h+10)dp.y=-10;DLX.fillStyle="rgba(210,180,140,"+dp.o+")";DLX.beginPath();DLX.arc(dp.x,dp.y,dp.r,0,Math.PI*2);DLX.fill()}}
 
 // ---- Scene Transitions ----
-function SD(){IBS.onclick=function(){SD2()};
-  // Show blackout screen
+function SD(){
   ST="map";DS2=true;
-  IBS.style.display="flex";
   document.getElementById("bz").style.opacity="0";
   QE.style.opacity="0";NP.style.opacity="0";DH.style.opacity="0";
-  setTimeout(function(){IBS.querySelector(".t1").style.opacity="1"},400);
-  setTimeout(function(){IBS.querySelector(".t2").style.opacity="1"},1000);
-  setTimeout(function(){IBS.querySelector(".arr").style.opacity="1"},2000);
+  setTimeout(function(){SD2()},1500);
 }
 
 function SD2(){
   // Transition to drone scene
-  IBS.style.display="none";
   ST="drone";DT=0;
   DS.style.display="block";DL.style.display="block";
   ID2();
-  // Set text with suffixes
-  DTT.innerHTML='标语的周围出现了多处圆形的人为破坏痕迹，<br>像一道道伤疤刻在"人民"中间。';
+  DTT.innerHTML='亲眼所见的伤痕远比卫星图上更加触目惊心<br><br>标语的周围出现了多处圆形的人为破坏痕迹，<br>像一道道伤疤刻在“人民”中间。';
   DTB.innerHTML='这些字是谁写的？<br>为什么刻在无人区的戈壁上？<br><br><span style="font-size:13px;color:#FFD700">翻开历史卡片，看看58年前的故事</span>';
   DTC.innerHTML='';
   SH.innerHTML='';
