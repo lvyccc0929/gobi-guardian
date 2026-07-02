@@ -81,8 +81,8 @@ var terrain=new Image();
 terrain.src="assets/p1-terrain.png";
 var earthImg=new Image();var earthReady=false;
 earthImg.src="assets/p1-earth.png";
-earthImg.onload=function(){earthReady=true};
-terrain.onload=function(){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight};
+earthImg.onload=function(){earthReady=true};earthImg.onerror=function(){console.log('Earth load failed')};if(earthImg.complete&&earthImg.naturalWidth>0)earthReady=true;
+terrain.onload=function(){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight};if(terrain.complete&&terrain.naturalWidth>0){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight};
 
 // Stars
 var stars=[];
