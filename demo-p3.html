@@ -710,7 +710,13 @@ function onWrong(color,pos){var ib=document.getElementById('info-banner');if(ib)
   resultDetail.textContent='再仔细看看戈壁地表的颜色，找到那块真正属于这里的石头。';
   resultDetail.classList.add('show');
   retryBtn.textContent='再选一次';retryBtn.classList.add('show');
-  retryBtn.style.pointerEvents='auto';retryBtn.onclick=reset;nextBtn.style.display='none';
+  retryBtn.style.pointerEvents='auto';retryBtn.style.cssText="display:block!important;pointer-events:auto!important;cursor:pointer;z-index:100";
+  retryBtn.onclick=null;
+  retryBtn.addEventListener("click",function handler(e){
+    e.stopPropagation();e.preventDefault();
+    retryBtn.removeEventListener("click",handler);
+    reset();
+  });;nextBtn.style.display='none';
   if(!triedStones[color]) triedStones[color]=true;
   
   setTimeout(function(){gobiRef.classList.remove('mismatch')},600);
