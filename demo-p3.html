@@ -117,7 +117,7 @@ canvas{display:block}
       <canvas id="gobi-canvas"></canvas>
       <div id="gobi-label">戈壁地表颜色参考</div>
     </div>
-    <div id="info-banner" style="position:absolute;top:50%;left:2px;transform:translateY(-50%);padding:6px 3px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);border-radius:4px;max-width:45px;text-align:center;pointer-events:none;z-index:4;writing-mode:vertical-rl"><div style="font-family:Noto Sans SC,sans-serif;font-size:6px;font-weight:400;color:rgba(255,215,0,0.5);line-height:1.6">戈壁地表覆盖<b>黑褐色砾石</b></div></div><div id="drop-hint"> 将石料拖拽到此处比对 </div>
+    <div id="info-banner" style="position:absolute;top:50%;left:12px;transform:translateY(-50%);padding:10px 6px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:6px;max-width:85px;text-align:center;pointer-events:none;z-index:4;writing-mode:vertical-rl"><div style="font-family:Noto Sans SC,sans-serif;font-size:min(2.5vw,10px);font-weight:400;color:rgba(255,215,0,0.65);line-height:1.8">戈壁地表覆盖<b>黑褐色砾石</b></div></div><div id="drop-hint"> 将石料拖拽到此处比对 </div>
     <!-- Reason banner: shown before selection -->
     <div id="result-overlay">
       <div id="result-icon"></div>
@@ -717,21 +717,28 @@ function onWrong(color,pos){var ib=document.getElementById('info-banner');if(ib)
   setTimeout(function(){gobiRef.classList.remove('mismatch')},600);
 }
 
-function onCorrect(pos){var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='0.3';
+function onCorrect(pos){var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='0.15';
   stage='result';
   gobiRef.classList.add('match');dropHint.style.display='none';
   spawnSparkles(pos.x,pos.y);
   resultOverlay.classList.add('show');
-  setTimeout(function(){resultOverlay.classList.add('darken')},100);
-  resultIcon.textContent='';resultIcon.classList.add('show');
-  resultText.textContent='就是它！黑褐砾石';resultText.classList.add('show');
-  resultDetail.innerHTML='"我们跑遍哈密所有矿业公司和砂厂，终于找到了颜色完全匹配的黑色砾石。这就是戈壁地表本来的颜色。"';
-  resultDetail.classList.add('show');
-  retryBtn.style.display='none';nextBtn.classList.add('show');
-  nextBtn.style.pointerEvents='auto';nextBtn.style.display='block';nextBtn.style.cursor='pointer';nextBtn.onclick=function(e){e.stopPropagation();e.preventDefault();spawnSparkles(W()/2,H()/2);setTimeout(function(){if(window.showOutro)window.showOutro()},800)};nextBtn.addEventListener('touchend',function(e){e.stopPropagation();e.preventDefault();spawnSparkles(W()/2,H()/2);setTimeout(function(){if(window.showOutro)window.showOutro()},800)});
+  setTimeout(function(){resultOverlay.classList.add('darken')},400);
+  setTimeout(function(){
+    resultIcon.textContent='';resultIcon.classList.add('show');
+    resultText.textContent='????????';resultText.classList.add('show');
+  },700);
+  setTimeout(function(){
+    resultDetail.innerHTML='"??????????????????????????????????????????????"';
+    resultDetail.classList.add('show');
+  },1200);
+  setTimeout(function(){
+    retryBtn.style.display='none';nextBtn.classList.add('show');
+    nextBtn.style.pointerEvents='auto';nextBtn.style.display='block';nextBtn.style.cursor='pointer';
+    nextBtn.onclick=function(e){e.stopPropagation();e.preventDefault();spawnSparkles(W()/2,H()/2);setTimeout(function(){if(window.showOutro)window.showOutro()},800)};
+    nextBtn.addEventListener('touchend',function(e){e.stopPropagation();e.preventDefault();spawnSparkles(W()/2,H()/2);setTimeout(function(){if(window.showOutro)window.showOutro()},800)});
+  },1800);
   triedStones[color]=true;
 }
-
 function reset(){var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='1';
   stage='selecting';
   resultOverlay.classList.remove('darken','show');
