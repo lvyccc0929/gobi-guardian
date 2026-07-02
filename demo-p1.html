@@ -82,9 +82,9 @@ var phase=0, zoom=0, spaceZoom=0, startTime=0, bridgeStart=0, panX=0, panY=0;
 
 var terrainReady=false,tw=1024,th=1024;
 var terrain=new Image();
-terrain.src="assets/p1-terrain.png";
+terrain.src="assets/p1-terrain.jpg";
 var earthImg=new Image();var earthReady=false;
-earthImg.src="assets/p1-earth.png";
+earthImg.src="assets/p1-earth.jpg";
 earthImg.onload=function(){earthReady=true;checkP1Ready()};terrain.onload=function(){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight;checkP1Ready()};earthImg.onerror=function(){console.log('Earth load failed')};if(earthImg.complete&&earthImg.naturalWidth>0)earthReady=true;
 terrain.onload=function(){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight};if(terrain.complete&&terrain.naturalWidth>0){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight;checkP1Ready()};if(earthImg.complete&&earthImg.naturalWidth>0){earthReady=true;checkP1Ready()};
 

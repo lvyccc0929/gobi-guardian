@@ -101,9 +101,20 @@ function DM(){
     var nx=(i/(WP.length-1))*tw,ny=ry-Math.sin(i*0.04)*18;
     X.beginPath();X.arc(nx,ny,7,0,Math.PI*2);X.fillStyle="#FFD700";X.fill();
     X.strokeStyle="#fff";X.lineWidth=2;X.stroke();
-    X.font="bold 22px Noto Serif SC";X.textAlign="center";
+    X.font="bold 20px Noto Serif SC";X.textAlign="center";
     X.fillStyle=cityColors[w[0]]||"#fff";X.shadowColor="rgba(0,0,0,0.85)";X.shadowBlur=10;
     X.fillText(w[0],nx,ny-28);X.shadowBlur=0;
+    // Draw city icon above name
+    var ci=CITY_ICONS[w[0]];
+    if(ci&&ci.complete&&ci.naturalWidth>0){
+      var iconSz=50;
+      X.save();
+      X.beginPath();X.arc(nx,ny-55,iconSz/2,0,Math.PI*2);X.clip();
+      X.drawImage(ci,nx-iconSz/2,ny-55-iconSz/2,iconSz,iconSz);
+      X.restore();
+      X.beginPath();X.arc(nx,ny-55,iconSz/2,0,Math.PI*2);
+      X.strokeStyle="#FFD700";X.lineWidth=2.5;X.stroke();
+    }
   });
   // Car
   var carX=P*tw,carY=ry-Math.sin(P*ER.length*0.04)*18;
@@ -124,18 +135,16 @@ X.restore();
 }
 
 // ---- City Popup ----
+// Preload all city icons
+var CITY_ICONS={};
+WP.forEach(function(w){
+  var name=w[0];
+  var img=new Image();
+  img.src="assets/city-icons/"+name+".png";
+  CITY_ICONS[name]=img;
+});
 function CN(){
-  for(var i=0;i<WP.length;i++){
-    var np2=i/(WP.length-1);
-    if(P>=np2&&i>LNI){
-      LNI=i;
-      var cityName=WP[i][0];
-      var iconUrl="assets/city-icons/"+cityName+".png";
-      NP.innerHTML='<img src="'+iconUrl+'" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid #FFD700;box-shadow:0 0 30px rgba(255,215,0,.5)">';
-      NP.style.opacity="1";NP.style.transform="translate(-50%,0) scale(1)";
-      (function(idx){setTimeout(function(){if(LNI===idx){NP.style.opacity="0";NP.style.transform="translate(-50%,0) scale(.8)"}},2200)})(i);
-    }
-  }
+  // All icons are drawn directly in DM - no popup needed
 }
 
 // ---- Drone Scene ----
@@ -318,6 +327,7 @@ function LOOP(){
     CAR.style.left=pct+"%";
     DM();CN();
     if(P>.005&&QE.style.opacity==="0")QE.style.opacity="1";
+    NP.style.display="none";
     if(P<.01)DH.style.opacity="1";
     else if(P>.12)DH.style.opacity="0";
     if(P>=.995&&!DS2)SD();
