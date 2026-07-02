@@ -152,8 +152,8 @@ group.slice(0,canSpawn).forEach(function(c){
 var url=imgUrl(c.dir,c.file);
 var dims=imageCache[url];if(!dims)return;
 var r=dims.w/dims.h;
-var tw=Math.floor(ww*(0.22+Math.random()*0.06)),th=Math.floor(tw/r);
-if(tw<70)tw=70;if(th<20)th=20;if(th>wh*0.2)th=Math.floor(wh*0.2);
+var tw=Math.floor(ww*(0.32+Math.random()*0.10)),th=Math.floor(tw/r);
+if(tw<90)tw=90;if(th<20)th=20;if(th>wh*0.3)th=Math.floor(wh*0.3);
 var tlTop=document.getElementById("tl").getBoundingClientRect().top;
 var maxY=tlTop-th-8;if(maxY<50)maxY=wh-100;
 var bx=-1,by=-1;
