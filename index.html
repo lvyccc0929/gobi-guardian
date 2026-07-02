@@ -8,128 +8,56 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:"Noto Serif SC","Noto Sans SC",sans-serif}
-#app{position:fixed;inset:0}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 canvas{position:absolute;top:0;left:0}
-#loc{position:absolute;left:0;right:0;top:38%;text-align:center;font-family:"Noto Serif SC",serif;font-size:16px;font-weight:400;color:#8B7355;letter-spacing:3px;opacity:0;transition:opacity 0.8s}
-#tag{position:absolute;left:0;right:0;top:60%;text-align:center;font-family:"Noto Serif SC",serif;font-size:18px;font-weight:400;color:#C4A46C;letter-spacing:4px;opacity:0;transition:opacity 0.6s}
-#gps-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:#00FF88;left:50%;top:45%;transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(0,255,136,0.6),0 0 20px rgba(0,255,136,0.3);opacity:0;transition:opacity 0.5s}
-#title{position:absolute;left:0;right:0;top:42%;text-align:center;font-family:"Noto Serif SC",serif;font-size:48px;font-weight:700;color:#F5F0E8;letter-spacing:8px;opacity:0;text-shadow:0 0 16px rgba(200,170,100,0.3),0 2px 4px rgba(0,0,0,0.5);transition:opacity 0.3s}
-#subtitle{position:absolute;left:0;right:0;top:53%;text-align:center;font-family:"Noto Sans SC",sans-serif;font-size:14px;font-weight:400;color:#8B7355;letter-spacing:4px;opacity:0;transition:opacity 0.3s}
+#gps-dot{width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 10px rgba(0,255,136,0.6),0 0 25px rgba(0,255,136,0.3);opacity:1;margin-bottom:20px;z-index:2}
+#title{font-family:"Noto Serif SC",serif;font-size:clamp(28px,9vw,52px);font-weight:700;color:#F5F0E8;letter-spacing:6px;text-shadow:0 0 16px rgba(200,170,100,0.3),0 2px 4px rgba(0,0,0,0.5);opacity:0;transition:opacity 0.5s;z-index:2;text-align:center;line-height:1.4}
+#loc{font-family:"Noto Serif SC",serif;font-size:clamp(12px,4vw,16px);color:#8B7355;letter-spacing:3px;opacity:0;transition:opacity 0.8s;margin-top:16px;z-index:2;text-align:center}
+#subtitle{font-family:"Noto Sans SC",sans-serif;font-size:clamp(11px,3.5vw,14px);color:#8B7355;letter-spacing:3px;opacity:0;transition:opacity 0.5s;margin-top:12px;z-index:2;text-align:center}
+#tag{font-family:"Noto Serif SC",serif;font-size:clamp(13px,4.2vw,17px);color:#C4A46C;letter-spacing:3px;opacity:0;transition:opacity 0.6s;margin-top:24px;z-index:2;text-align:center;line-height:1.8}
 
-#chapter-intro{pointer-events:none}#chapter-intro,#chapter-outro{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:1;transition:opacity 0.8s}
-#chapter-intro.hide,#chapter-outro.hide{opacity:0;pointer-events:none}
-#chapter-outro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99999;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}#chapter-outro:hover{background:rgba(0,0,0,.95)}
-#chapter-intro .ci-title{font-family:"Noto Serif SC",serif;font-size:30px;font-weight:700;color:#FFD700;text-align:center;margin-bottom:12px;text-shadow:0 0 20px rgba(255,215,0,.3)}
-#chapter-intro .ci-sub{font-family:"Noto Serif SC",serif;font-size:17px;color:#C4A46C;text-align:center;max-width:300px;line-height:1.8}
+#chapter-outro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99999;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 #chapter-outro .co-text{font-family:"Noto Serif SC",serif;font-size:17px;color:#C4A46C;text-align:center;max-width:300px;line-height:1.8;margin-bottom:32px}
 #chapter-outro .co-next{font-family:"Noto Sans SC",sans-serif;font-size:14px;color:#8B7355;text-align:center;animation:coPulse 2s infinite}
 @keyframes coPulse{0%,100%{opacity:.5}50%{opacity:1}}
-
 </style>
 </head>
 <body>
 <div id="app">
-  <canvas id="c"></canvas>
+  <canvas id="c" style="display:none"></canvas>
   <div id="gps-dot"></div>
   <div id="title">戈壁守护者</div>
   <div id="loc"></div>
-  <div id="tag"></div>
   <div id="subtitle"></div>
+  <div id="tag"></div>
 </div>
 <script>
 (function(){
-var canvas=document.getElementById("c"),ctx=canvas.getContext("2d");
-var W,H;
-function resize(){var w=window.__LH?window.__LH.getWidth():window.innerWidth;var h=window.__LH?window.__LH.getHeight():window.innerHeight;W=canvas.width=w;H=canvas.height=h}
-resize();window.addEventListener("resize",resize);
-
 var gpsDot=document.getElementById("gps-dot");
 var locEl=document.getElementById("loc");
 var tagEl=document.getElementById("tag");
 var titleEl=document.getElementById("title");
 var subtitleEl=document.getElementById("subtitle");
 
-// Title particles
-var titleParticles=[];
-var titleChars="戈壁守护者";
-var cols=0,rows=0;
-function initParticles(){
-  titleParticles=[];
-  ctx.font='bold 48px "Noto Serif SC",serif';
-  var metrics=ctx.measureText(titleChars);
-  var tw=metrics.width,th=48;
-  var ox=(W-tw)/2,oy=H*0.42;
-  ctx.fillStyle="#c8aa64";
-  ctx.fillText(titleChars,ox,oy+th);
-  var imageData=ctx.getImageData(0,0,W,H);
-  ctx.clearRect(0,0,W,H);
-  for(var y=0;y<H;y+=3){
-    for(var x=0;x<W;x+=3){
-      var i=(y*W+x)*4;
-      if(imageData.data[i+3]>128){
-        titleParticles.push({
-          x:Math.random()*W,y:Math.random()*H,
-          tx:x,ty:y,
-          r:180,g:150,b:110,
-          size:1.5+Math.random()*2,
-          delay:Math.random()*0.3
-        });
-      }
-    }
-  }
-}
-initParticles();
-
-// Grid
-var gridEl=document.createElement("div");
-var gridSvg='<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">';
-for(var i=1;i<20;i++){gridSvg+='<line x1="'+((i/20)*100)+'%" y1="0" x2="'+((i/20)*100)+'%" y2="100%" stroke="#00FF88" stroke-opacity="0.15" stroke-width="0.5"/>'}
-for(var j=1;j<30;j++){gridSvg+='<line x1="0" y1="'+((j/30)*100)+'%" x2="100%" y2="'+((j/30)*100)+'%" stroke="#00FF88" stroke-opacity="0.15" stroke-width="0.5"/>'}
-gridSvg+='</svg>';
-gridEl.style.cssText='position:absolute;inset:0;opacity:0;transition:opacity 0.8s;pointer-events:none';
-gridEl.innerHTML=gridSvg;
-document.getElementById("app").appendChild(gridEl);
-
 var active=true,startTime=0;
-var titleFormed=false;
+var titleShown=false;
 var subtitleComplete=false,timer=0;
 
 function update(elapsed){
-  // GPS dot
-  if(gpsDot.style.opacity===""||gpsDot.style.opacity==="0"){gpsDot.style.opacity="1"}
-
-  // Grid flash at 0.5s
-  if(elapsed>=0.5&&gridEl.style.opacity==="0"){
-    gridEl.style.opacity="0.15";
-    setTimeout(function(){if(gridEl)gridEl.style.opacity="0"},800);
-  }
-
-  // Location tag appears at 0.8s, fades at 2s
+  // Location tag at 0.8s
   if(elapsed>=0.8&&locEl.style.opacity==="0"){
-    locEl.textContent="2025\u5E7410\u6708 \u00B7 \u65B0\u7586\u54C8\u5BC6\u6208\u58C1";
+    locEl.textContent="2025年10月 · 新疆哈密戈壁";
     locEl.style.opacity="1";
-    setTimeout(function(){locEl.style.opacity="0"},1500);
+    setTimeout(function(){locEl.style.opacity="0"},2000);
   }
 
-  // Title particles form at 1.0s
-  if(elapsed>=1.0&&!titleFormed){
-    var p=Math.min((elapsed-1.0)/0.8,1);
-    var eased=1-Math.pow(1-p,3);
-    ctx.clearRect(0,0,W,H);
-    for(var i=0;i<titleParticles.length;i++){
-      var pt=titleParticles[i];
-      var lp=Math.max(0,Math.min(1,(eased-pt.delay)/(1-pt.delay)));
-      if(lp<=0)continue;
-      var x=pt.x+(pt.tx-pt.x)*lp;
-      var y=pt.y+(pt.ty-pt.y)*lp;
-      var alpha=0.5+0.5*lp;
-      ctx.fillStyle="rgba("+pt.r+","+pt.g+","+pt.b+","+alpha+")";
-      ctx.fillRect(x-pt.size*lp/2,y-pt.size*lp/2,pt.size*lp,pt.size*lp);
-    }
-    if(p>=1){titleFormed=true;titleEl.style.opacity="1"}
+  // Title at 1.2s
+  if(elapsed>=1.2&&!titleShown){
+    titleShown=true;
+    titleEl.style.opacity="1";
   }
 
-  // Subtitle: GUARDIAN OF THE GOBI (2.0s)
+  // Subtitle at 2.0s
   if(elapsed>=2.0&&!subtitleComplete){
     var full="GUARDIAN OF THE GOBI";
     timer+=16;
@@ -139,12 +67,11 @@ function update(elapsed){
     if(n>=full.length){
       subtitleComplete=true;
       subtitleEl.textContent=full;
-      // Show tagline after subtitle done
       setTimeout(function(){
-        tagEl.innerHTML="\u4E24\u5343\u516C\u91CC\uFF0C\u4E8C\u5341\u56DB\u4E2A\u65E5\u591C\uFF0C\u4E00\u573A\u4FEE\u590D\u4E4B\u65C5<br><span style=\"font-size:13px;color:#8B7355\">\u57FA\u4E8E\u771F\u5B9E\u4E8B\u4EF6\u6539\u7F16</span>";
+        tagEl.innerHTML="两千公里，二十四个日夜，一场修复之旅<br><span style='font-size:13px;color:#8B7355'>基于真实事件改编</span>";
         tagEl.style.opacity="1";
-        setTimeout(function(){if(window.showOutro)window.showOutro()},2000);
-      },300);
+        setTimeout(function(){if(window.showOutro)window.showOutro()},2500);
+      },400);
     }
   }
 }
@@ -152,26 +79,15 @@ function loop(t){
   if(!active)return;
   if(!startTime)startTime=t;
   var elapsed=(t-startTime)/1000;
-  if(elapsed>10)return;
+  if(elapsed>12)return;
   update(elapsed);
   requestAnimationFrame(loop);
 }
 
-// Start
-initParticles();
 requestAnimationFrame(loop);
-
-
-
-console.log("P0 ready");
 })();
 </script>
-</div>
 <div id="chapter-outro"><div class="co-text">2025年，新疆哈密戈壁。一段被风沙掩埋的故事，即将展开。</div><div class="co-next">本章结束<br><span style="font-size:16px;color:#FFD700;margin-top:8px;display:inline-block">点击进入下一章</span></div></div>
+<script>(function(){var outro=document.getElementById("chapter-outro");window.showOutro=function(){if(outro){outro.style.display="flex";setTimeout(function(){outro.style.opacity="1"},50);outro.addEventListener("click",function(){window.location.href="demo-p1.html"})}}})()</script>
 </body>
-
-<script>(function(){var intro=document.getElementById("chapter-intro");var outro=document.getElementById("chapter-outro");if(intro&&intro.querySelector('.ci-title')){setTimeout(function(){intro.classList.add("hide")},2500);setTimeout(function(){if(intro)intro.style.display="none"},3300)}window.showOutro=function(){if(outro){outro.style.display="flex";setTimeout(function(){outro.style.opacity="1"},50);outro.addEventListener("click",function(){window.location.href='demo-p1.html'})}}})()</script>
-
 </html>
-
-
