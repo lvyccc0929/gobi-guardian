@@ -8,8 +8,21 @@ function isLandscape(){
   return window.innerWidth>window.innerHeight;
 }
 
-var HINT_KEY = "gobi_landscape_hint";
-var hintDismissed = sessionStorage.getItem(HINT_KEY) === "1";
+// 三重存储：localStorage + sessionStorage + cookie，确保跨页面记住状态
+var KEY = "gobi_hint_off";
+function hintWasDismissed(){
+  try{ if(localStorage.getItem(KEY)==="1")return true }catch(e){}
+  try{ if(sessionStorage.getItem(KEY)==="1")return true }catch(e){}
+  try{ if(document.cookie.indexOf(KEY+"=1")>=0)return true }catch(e){}
+  return false;
+}
+function markHintDismissed(){
+  try{ localStorage.setItem(KEY,"1") }catch(e){}
+  try{ sessionStorage.setItem(KEY,"1") }catch(e){}
+  try{ document.cookie=KEY+"=1;path=/;max-age=86400" }catch(e){}
+}
+
+var hintDismissed = hintWasDismissed();
 var hintEl = null, styleInjected = false;
 
 function injectStyles(){
@@ -25,7 +38,7 @@ function buildHint(){
   injectStyles();
   hintEl=document.createElement("div");
   hintEl.id="landscape-hint";
-  hintEl.style.cssText="position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.95);pointer-events:auto;font-family:Noto Serif SC,serif";
+  hintEl.style.cssText="position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;pointer-events:auto;font-family:Noto Serif SC,serif";
   hintEl.innerHTML='<div style="font-size:56px;margin-bottom:20px;animation:rhSpin3 2s ease-in-out infinite">\u{1F4F1}</div><div style="font-size:20px;color:#C4A46C;text-align:center;line-height:2.4">\u8bf7\u65cb\u8f6c\u624b\u673a\u6a2a\u5c4f\u89c2\u770b<br><span style="font-size:14px;color:#8B7355">Please rotate your phone</span></div>';
   document.body.appendChild(hintEl);
   return hintEl;
@@ -33,20 +46,18 @@ function buildHint(){
 
 function showHint(){
   if(hintDismissed||window.__noForceLandscape)return;
-  var el=buildHint();
-  el.style.display="flex";
+  buildHint().style.display="flex";
 }
 
 function hideHint(){
-  var el=buildHint();
-  el.style.display="none";
+  if(hintEl)hintEl.style.display="none";
 }
 
 function checkOrientation(){
-  var landscape=isLandscape()&&window.innerWidth>100;
-  if(landscape){
+  if(window.innerWidth<100)return; // 页面还没准备好
+  if(isLandscape()){
     hintDismissed=true;
-    sessionStorage.setItem(HINT_KEY,"1");
+    markHintDismissed();
     hideHint();
   }else{
     if(!hintDismissed&&!window.__noForceLandscape)showHint();
@@ -55,8 +66,8 @@ function checkOrientation(){
 
 function delayedCheck(){
   checkOrientation();
-  setTimeout(checkOrientation,300);
-  setTimeout(checkOrientation,800);
+  setTimeout(checkOrientation,500);
+  setTimeout(checkOrientation,1200);
 }
 
 window.addEventListener("resize",function(){checkOrientation()});
