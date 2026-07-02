@@ -131,12 +131,13 @@ video.muted=false;
 goToPage(0);
 })();
 </script>
-<div id="chapter-intro"><div class="ci-title">第五章：借力</div><div class="ci-sub">让卫星替你看一眼。</div></div>
+<div class="ci-sub">让卫星替你看一眼。</div></div>
 
 
 <script>document.getElementById("back-btn").addEventListener("click",function(){window.location.href="demo-p4.html"})</script>
+<script>window.showOutro=function(){window.location.href="demo-p6.html"}</script>
 </body>
 
-<script>(function(){var intro=document.getElementById("chapter-intro");var outro=document.getElementById("chapter-outro");if(intro){intro.style.pointerEvents="auto";intro.addEventListener("click",function(){intro.classList.add("hide");setTimeout(function(){intro.style.display="none"},800)});setTimeout(function(){intro.classList.add("hide")},1500);setTimeout(function(){if(intro)intro.style.display="none"},2000)}window.showOutro=function(){window.location.href="demo-p6.html"}})()</script>
+
 
 </html>

@@ -77,11 +77,12 @@ body{width:100vw;height:100vh;overflow:hidden;background:#c8b896;font-family:"No
 <button id="navL">&lt;</button><button id="navR">&gt;</button><button id="enterHist">翻开历史卡片</button>
 <div id="iv2"><img id="ivi"></div>
 <script src="p2.js?v=2"></script>
-<div id="chapter-intro"><div class="ci-title">第二章：启程</div><div class="ci-sub">2000公里，从成都到哈密。</div></div>
+<div class="ci-sub">2000公里，从成都到哈密。</div></div>
 
 
 <script>document.getElementById("back-btn").addEventListener("click",function(){window.location.href="demo-p1.html"})</script>
+<script>window.showOutro=function(){window.location.href="demo-p3.html"}</script>
 </body>
-<script>(function(){var intro=document.getElementById("chapter-intro");var outro=document.getElementById("chapter-outro");if(intro){setTimeout(function(){intro.classList.add("hide")},1500);setTimeout(function(){if(intro)intro.style.display="none"},2000)}window.showOutro=function(){window.location.href='demo-p3.html'}})()</script>
+
 
 </html>
