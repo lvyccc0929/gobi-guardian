@@ -107,12 +107,12 @@ function DM(){
     // Draw city icon above name
     var ci=CITY_ICONS[w[0]];
     if(ci&&ci.complete&&ci.naturalWidth>0){
-      var iconSz=50;
+      var iconSz=60;
       X.save();
-      X.beginPath();X.arc(nx,ny-55,iconSz/2,0,Math.PI*2);X.clip();
-      X.drawImage(ci,nx-iconSz/2,ny-55-iconSz/2,iconSz,iconSz);
+      X.beginPath();X.arc(nx,ny-75,iconSz/2,0,Math.PI*2);X.clip();
+      X.drawImage(ci,nx-iconSz/2,ny-75-iconSz/2,iconSz,iconSz);
       X.restore();
-      X.beginPath();X.arc(nx,ny-55,iconSz/2,0,Math.PI*2);
+      X.beginPath();X.arc(nx,ny-75,iconSz/2,0,Math.PI*2);
       X.strokeStyle="#FFD700";X.lineWidth=2.5;X.stroke();
     }
   });
