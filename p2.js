@@ -124,36 +124,18 @@ X.restore();
 }
 
 // ---- City Popup ----
-var CITY_ELMS=[];
-var CITY_INIT=false;
 function CN(){
-  if(!CITY_INIT){
-    CITY_INIT=true;
-    var ci=document.getElementById("city-icons");
-    if(!ci)return;
-    WP.forEach(function(w,i){
-      var name=w[0];
-      var el=document.createElement("div");
-      el.style.cssText="position:absolute;width:70px;height:70px;border-radius:50%;overflow:hidden;border:3px solid #FFD700;box-shadow:0 0 30px rgba(255,215,0,.5);transform:translate(-50%,-50%);pointer-events:none";
-      var img=document.createElement("img");
-      img.src="assets/city-icons/"+name+".png";
-      img.style.cssText="width:100%;height:100%;object-fit:cover";
-      el.appendChild(img);
-      ci.appendChild(el);
-      CITY_ELMS.push({el:el, idx:i, name:name});
-    });
+  for(var i=0;i<WP.length;i++){
+    var np2=i/(WP.length-1);
+    if(P>=np2&&i>LNI){
+      LNI=i;
+      var cityName=WP[i][0];
+      var iconUrl="assets/city-icons/"+cityName+".png";
+      NP.innerHTML='<img src="'+iconUrl+'" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid #FFD700;box-shadow:0 0 30px rgba(255,215,0,.5)">';
+      NP.style.opacity="1";NP.style.transform="translate(-50%,0) scale(1)";
+      (function(idx){setTimeout(function(){if(LNI===idx){NP.style.opacity="0";NP.style.transform="translate(-50%,0) scale(.8)"}},2200)})(i);
+    }
   }
-  // Position all icons based on current slider
-  var w=W(), h=H();
-  var tw=w*2.2;
-  var ry=h*0.6;
-  var sx=P*tw-w/2;
-  CITY_ELMS.forEach(function(ce){
-    var nx=(ce.idx/(WP.length-1))*tw;
-    var ny=ry-Math.sin(ce.idx*0.04)*18;
-    ce.el.style.left=(nx-sx)+"px";
-    ce.el.style.top=(ny-75)+"px";
-  });
 }
 
 // ---- Drone Scene ----
@@ -335,7 +317,7 @@ function LOOP(){
     RF.style.width=pct+"%";
     CAR.style.left=pct+"%";
     DM();CN();
-    if(P>.005&&QE.style.opacity==="0")QE.style.opacity="1";NP.style.display="none";
+    if(P>.005&&QE.style.opacity==="0")QE.style.opacity="1";
     if(P<.01)DH.style.opacity="1";
     else if(P>.12)DH.style.opacity="0";
     if(P>=.995&&!DS2)SD();

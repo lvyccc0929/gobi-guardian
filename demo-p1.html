@@ -89,7 +89,7 @@ earthImg.onload=function(){earthReady=true;checkP1Ready()};terrain.onload=functi
 terrain.onload=function(){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight};if(terrain.complete&&terrain.naturalWidth>0){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight;checkP1Ready()};if(earthImg.complete&&earthImg.naturalWidth>0){earthReady=true;checkP1Ready()};
 
 // Stars
-function checkP1Ready(){if(earthReady&&terrainReady){}};setTimeout(function(){},8000);var stars=[];
+function checkP1Ready(){if(earthReady&&terrainReady){}};;var stars=[];
 for(var i=0;i<200;i++)stars.push({x:Math.random(),y:Math.random()*0.8,size:0.3+Math.random()*2,alpha:0.3+Math.random()*0.7,twinkle:Math.random()*Math.PI*2});
 
 // Narration
@@ -99,7 +99,7 @@ var lines=[
   {el:l3,text:'地面航标<span>"为人民服务"</span>',at:3800},
   {el:l4,text:'被越野车<span>反复碾压</span>，留下道道伤痕',at:5400}
 ];
-var linesShown=[false,false];
+var linesShown=[false,false,false,false];
 var surfaceStartTime=0;
 
 function drawSpace(time){
@@ -200,10 +200,16 @@ function loop(t){
     // Phase 0: Space - smooth zoom toward Earth
     if(elapsed<0.8){
       spaceZoom=0; // Hold wide view
-      
+      if(elapsed>0.3&&(l1.style.opacity==="0"||l1.style.opacity==="")){
+        l1.innerHTML=lines[0].text;
+        l1.classList.add("show");
+      }
     }else if(elapsed<4.5){
       spaceZoom=(elapsed-0.8)/3.7; // 01 over 3.7s
-      
+      if(elapsed>1.8&&(l2.style.opacity==="0"||l2.style.opacity==="")){
+        l2.innerHTML=lines[1].text;
+        l2.classList.add("show");
+      }
     }
     if(elapsed>4.5){
       phase=1;bridgeStart=t;bridge.style.opacity="1";
@@ -215,7 +221,7 @@ function loop(t){
     spaceZoom=1;drawSpace(t); // keep zoomed space behind
     if(t-bridgeStart>1500){
       phase=2;bridge.style.opacity="0";startTime=t;linesShown=[false,false,false,false];surfaceStartTime=0;document.getElementById('disclaimer').style.opacity='0';
-      document.getElementById('disclaimer').style.opacity='0';
+      l1.classList.remove("show");l2.classList.remove("show");document.getElementById('disclaimer').style.opacity='0';
       
     }
   }
@@ -228,8 +234,8 @@ function loop(t){
 
     // Show all lines at once
     if(!linesShown[0]&&t-surfaceStartTime>500){
-      linesShown=[true,true];
-      for(var i=2;i<lines.length;i++){
+      linesShown=[true,true,true,true];
+      for(var i=0;i<lines.length;i++){
         lines[i].el.innerHTML=lines[i].text;
         lines[i].el.classList.add("show");
       }

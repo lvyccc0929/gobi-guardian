@@ -51,14 +51,14 @@ canvas{display:block}
 /* Result */
 #result-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0);transition:background 0.6s}
 #result-overlay.show{display:flex;pointer-events:auto}
-#result-overlay.darken{background:rgba(0,0,0,0.78)}#result-overlay.darken~#stone-shelf,#result-overlay.darken~#stone-shelf *{opacity:0.3;transition:opacity 0.5s}
+#result-overlay.darken{background:rgba(0,0,0,0.72)}
 #result-icon{font-size:min(12vw,56px);opacity:0;transform:scale(0);transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1)}
 #result-icon.show{opacity:1;transform:scale(1)}
 #result-text{font-family:'Noto Serif SC',serif;font-size:min(4.5vw,18px);color:#fff;text-align:center;padding:0 30px;margin-top:14px;opacity:0;transform:translateY(20px);transition:all 0.5s 0.2s;line-height:1.7}
 #result-text.show{opacity:1;transform:translateY(0)}
 #result-detail{font-family:'Noto Sans SC',sans-serif;font-size:min(3vw,13px);color:rgba(255,255,255,0.7);text-align:center;padding:0 28px;margin-top:10px;opacity:0;transform:translateY(20px);transition:all 0.5s 0.6s;line-height:1.8}
 #result-detail.show{opacity:1;transform:translateY(0)}
-#retry-btn,#next-btn{margin-top:60px;position:relative;z-index:201;padding:10px 32px;border-radius:24px;font-family:'Noto Sans SC',sans-serif;font-size:min(3vw,13px);font-weight:500;cursor:pointer;opacity:0;transform:translateY(20px);transition:all 0.5s 0.8s;border:none}
+#retry-btn,#next-btn{margin-top:20px;position:relative;z-index:201;padding:10px 32px;border-radius:24px;font-family:'Noto Sans SC',sans-serif;font-size:min(3vw,13px);font-weight:500;cursor:pointer;opacity:0;transform:translateY(20px);transition:all 0.5s 0.8s;border:none}
 #retry-btn.show,#next-btn.show{opacity:1;transform:translateY(0)}
 #retry-btn{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)}
 #next-btn{background:#FFD700;color:#1a1410}
@@ -117,14 +117,14 @@ canvas{display:block}
       <canvas id="gobi-canvas"></canvas>
       <div id="gobi-label">戈壁地表颜色参考</div>
     </div>
-    <div id="info-banner" style="position:absolute;top:50%;left:12px;transform:translateY(-50%);padding:10px 6px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:6px;max-width:85px;text-align:center;pointer-events:none;z-index:4;writing-mode:vertical-rl"><div style="font-family:Noto Sans SC,sans-serif;font-size:min(2.5vw,10px);font-weight:400;color:rgba(255,215,0,0.85);line-height:1.8">戈壁地表覆盖<b>黑褐色砾石</b></div></div><div id="drop-hint"> 将石料拖拽到此处比对 </div>
+    <div id="info-banner" style="position:absolute;top:50%;left:12px;transform:translateY(-50%);padding:10px 6px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:6px;max-width:85px;text-align:center;pointer-events:none;z-index:4;writing-mode:vertical-rl"><div style="font-family:Noto Sans SC,sans-serif;font-size:min(2.5vw,10px);font-weight:400;color:rgba(255,215,0,0.65);line-height:1.8">戈壁地表覆盖<b>黑褐色砾石</b></div></div><div id="drop-hint"> 将石料拖拽到此处比对 </div>
     <!-- Reason banner: shown before selection -->
     <div id="result-overlay">
       <div id="result-icon"></div>
       <div id="result-text"></div>
       <div id="result-detail"></div>
-      <button id="retry-btn">再选一次</button>
-      <button id="next-btn">继续前行</button>
+      <button id="retry-btn">再试一次</button>
+      <button id="next-btn">继续前行 </button>
     </div>
   </div>
   <div id="stone-shelf">
@@ -695,13 +695,13 @@ function checkMatch(color,pos){
   if(color===correctStone) onCorrect(pos);else onWrong(color,pos);
 }
 
-function onWrong(color,pos){var ss=document.getElementById("stone-shelf");if(ss)ss.style.opacity="0.2";var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='0.3';
+function onWrong(color,pos){var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='0.3';
   stage='result';
   gobiRef.classList.add('mismatch');dropHint.style.display='none';
   resultOverlay.classList.add('show');
   setTimeout(function(){resultOverlay.classList.add('darken')},100);
-  resultIcon.textContent='?';resultIcon.classList.add('show');
-  resultText.textContent='就是它！黑褐砾石';resultText.classList.add('show');
+  resultIcon.textContent='';resultIcon.classList.add('show');
+  resultText.textContent='颜色不对';resultText.classList.add('show');
   resultDetail.textContent='再仔细看看戈壁地表的颜色，找到那块真正属于这里的石头。';
   resultDetail.classList.add('show');
   retryBtn.textContent='再选一次';retryBtn.classList.add('show');
@@ -717,14 +717,14 @@ function onWrong(color,pos){var ss=document.getElementById("stone-shelf");if(ss)
   setTimeout(function(){gobiRef.classList.remove('mismatch')},600);
 }
 
-function onCorrect(pos){var ss=document.getElementById("stone-shelf");if(ss)ss.style.opacity="0.2";var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='0.15';
+function onCorrect(pos){var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='0.15';
   stage='result';
   gobiRef.classList.add('match');dropHint.style.display='none';
   spawnSparkles(pos.x,pos.y);
   resultOverlay.classList.add('show');
   setTimeout(function(){resultOverlay.classList.add('darken')},400);
   setTimeout(function(){
-    resultIcon.textContent='?';resultIcon.classList.add('show');
+    resultIcon.textContent='';resultIcon.classList.add('show');
     resultText.textContent='????????';resultText.classList.add('show');
   },700);
   setTimeout(function(){
@@ -739,7 +739,7 @@ function onCorrect(pos){var ss=document.getElementById("stone-shelf");if(ss)ss.s
   },1800);
   triedStones[color]=true;
 }
-function reset(){var ss=document.getElementById("stone-shelf");if(ss)ss.style.opacity="1";var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='1';
+function reset(){var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='1';
   stage='selecting';
   resultOverlay.classList.remove('darken','show');
   resultIcon.classList.remove('show');resultText.classList.remove('show');
