@@ -112,14 +112,14 @@ var active=false,startTime=0,titleShown=false,subtitleComplete=false,timer=0;
 function update(elapsed){
   if(elapsed>=0.8&&locEl.style.opacity==="0"){locEl.textContent="2025年10月 · 新疆哈密戈壁";locEl.style.opacity="1";setTimeout(function(){locEl.style.opacity="0"},2000)}
   if(elapsed>=1.2&&!titleShown){titleShown=true;titleEl.style.opacity="1"}
-  if(elapsed>=2.0&&!subtitleComplete){var full="GUARDIAN OF THE GOBI";timer+=16;var n=Math.min(Math.floor(timer/45),full.length);subtitleEl.textContent=full.slice(0,n)+(n<full.length?"|":"");subtitleEl.style.opacity="1";if(n>=full.length){subtitleComplete=true;subtitleEl.textContent=full;setTimeout(function(){tagEl.innerHTML='两千公里，二十四个日夜，一场修复之旅<br><span style="font-size:min(3vw,13px);color:#8B7355">基于真实事件改编</span>';tagEl.style.opacity="1";setTimeout(function(){if(window.showOutro)window.showOutro()},2500)},400)}}
+  if(elapsed>=2.0&&!subtitleComplete){var full="GUARDIAN OF THE GOBI";timer+=16;var n=Math.min(Math.floor(timer/45),full.length);subtitleEl.textContent=full.slice(0,n)+(n<full.length?"|":"");subtitleEl.style.opacity="1";if(n>=full.length){subtitleComplete=true;subtitleEl.textContent=full;setTimeout(function(){tagEl.innerHTML='两千公里，二十四个日夜，一场修复之旅<br><span style="font-size:min(3vw,13px);color:#8B7355">基于真实事件改编</span>';tagEl.style.opacity="1";setTimeout(function(){var bg=document.createElement('div');bg.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;opacity:0;transition:opacity 0.8s';document.body.appendChild(bg);requestAnimationFrame(function(){bg.style.opacity='1'});setTimeout(function(){location.href='demo-p1.html'},900)},2500)},400)}}
 }
 function loop(t){if(!active)return;if(!startTime)startTime=t;var elapsed=(t-startTime)/1000;if(elapsed>12)return;update(elapsed);requestAnimationFrame(loop)}
 window._startP0Animation=function(){active=true;startTime=0;requestAnimationFrame(loop)};
 })();
 }
 </script>
-<div id="chapter-outro"><div class="co-text">2025年，新疆哈密戈壁。一段被风沙掩埋的故事，即将展开。</div><div class="co-next">本章结束<br><span style="font-size:min(4vw,16px);color:#FFD700;margin-top:8px;display:inline-block">点击进入下一章</span></div></div>
-<script>(function(){var o=document.getElementById("chapter-outro");window.showOutro=function(){if(o){o.style.display="flex";setTimeout(function(){o.style.opacity="1"},50);o.addEventListener("click",function(){location.href="demo-p1.html"})}}})()</script>
+
+
 </body>
 </html> 
