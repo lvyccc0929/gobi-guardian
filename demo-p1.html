@@ -89,7 +89,7 @@ earthImg.onload=function(){earthReady=true;checkP1Ready()};terrain.onload=functi
 terrain.onload=function(){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight};if(terrain.complete&&terrain.naturalWidth>0){terrainReady=true;tw=terrain.naturalWidth;th=terrain.naturalHeight;checkP1Ready()};if(earthImg.complete&&earthImg.naturalWidth>0){earthReady=true;checkP1Ready()};
 
 // Stars
-function checkP1Ready(){}};setTimeout(function(){var pl=document.getElementById("p1-preload");if(pl)pl.classList.add("hide")},8000);var stars=[];
+function checkP1Ready(){if(earthReady&&terrainReady){}};setTimeout(function(){},8000);var stars=[];
 for(var i=0;i<200;i++)stars.push({x:Math.random(),y:Math.random()*0.8,size:0.3+Math.random()*2,alpha:0.3+Math.random()*0.7,twinkle:Math.random()*Math.PI*2});
 
 // Narration
