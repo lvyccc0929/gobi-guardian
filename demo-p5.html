@@ -136,7 +136,7 @@ if(autoTimer){clearTimeout(autoTimer);autoTimer=null}
 navHint.style.display="none";autoHint.classList.remove("visible");
 intro.style.display="none";arrowL.style.display="none";arrowR.style.display="none";
 vStage.style.display="flex";requestAnimationFrame(function(){requestAnimationFrame(function(){vStage.classList.add("show")})});
-video.muted=muted;video.play().then(function(){vControls.style.display='flex';requestAnimationFrame(function(){vControls.classList.add('show')})}).catch(function(){});
+video.muted=muted;video.play().then(function(){document.getElementById('next-btn').style.display='flex';vControls.style.display='flex';requestAnimationFrame(function(){vControls.classList.add('show')})}).catch(function(){});
 }
 
 vcMute.addEventListener("click",function(){muted=!muted;video.muted=muted;vcMute.textContent=muted?"🔇":"🔊"});
