@@ -40,14 +40,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:#020810;font-family:
 @keyframes coPulse{0%,100%{opacity:.5}50%{opacity:1}}
 
 
-#bridge{position:fixed;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;
+#bridge video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}#bridge{position:fixed;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;
   background:radial-gradient(ellipse at center,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 70%,rgba(0,0,0,0.95) 100%);
   padding:0 32px}
-#bridge .b-line{font-family:"Noto Serif SC",serif;font-size:min(5vw,22px);font-weight:700;color:#FFD700;
+#bridge .b-line{position:relative;z-index:1;font-family:"Noto Serif SC",serif;font-size:min(5vw,22px);font-weight:700;color:#FFD700;
   text-align:center;margin-bottom:24px;opacity:0;transform:translateY(20px);
   transition:opacity 0.6s,transform 0.6s;text-shadow:0 0 20px rgba(255,215,0,.4)}
 #bridge .b-line.show{opacity:1;transform:translateY(0)}
-#bridge .b-sub{font-size:min(3vw,13px);color:rgba(255,255,255,0.4);margin-top:40px;
+#bridge .b-sub{position:relative;z-index:1;font-size:min(3vw,13px);color:rgba(255,255,255,0.4);margin-top:40px;
   opacity:0;transition:opacity 0.8s;letter-spacing:2px}
 #bridge .b-sub.show{opacity:1}#back-btn{position:fixed;top:16px;left:16px;z-index:9998;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);font-size:min(4.5vw,18px);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;font-family:sans-serif;line-height:1}
 
@@ -68,7 +68,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#020810;font-family:
 <div id="auto-play-hint">即将播放卫星影像…</div>
 <div id="video-stage"><video src="assets/satellite-footage.mp4" playsinline></video></div>
 
-<div id="bridge">
+<div id="bridge"><video src="assets/bridge-videos/v2_investigate.mp4" muted loop playsinline></video>
   <div class="b-line" id="bl1">新华社、人民日报、央视 集中报道</div>
   <div class="b-line" id="bl2">千万级阅读量，引发全国热议</div>
   <div class="b-line" id="bl3">公安机关正式介入调查</div>
@@ -145,7 +145,8 @@ vStage.addEventListener("click",function(e){if(e.target===video)vControls.classL
 video.addEventListener("ended",function(){
 vControls.style.display="none";ended=true;
 var bridge=document.getElementById("bridge");
-bridge.style.display="flex";
+var bv=bridge.querySelector("video");
+bridge.style.display="flex";bv.play();
 setTimeout(function(){document.getElementById("bl1").classList.add("show")},400);
 setTimeout(function(){document.getElementById("bl2").classList.add("show")},1400);
 setTimeout(function(){document.getElementById("bl3").classList.add("show")},2400);
