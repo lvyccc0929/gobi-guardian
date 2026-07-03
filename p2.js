@@ -192,7 +192,7 @@ function SD2(){
   SH.innerHTML='';
   setTimeout(function(){CT.style.height="60px";CB.style.height="60px"},500);
   setTimeout(function(){DTT.style.opacity="1"},1200);
-  setTimeout(function(){DTB.style.opacity="1"},2200);
+  setTimeout(function(){DTB.style.opacity="1";DTT.style.opacity="0"},2200);
   setTimeout(function(){DDN.style.background="rgba(0,0,0,.55)";DTC.style.opacity="1";setTimeout(function(){SH.style.opacity="1";SE=true;BC();EHBTN.style.display="block"},2200)},3800);
 }
 
