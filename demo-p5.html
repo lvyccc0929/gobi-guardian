@@ -142,7 +142,7 @@ video.muted=muted;video.play().then(function(){document.getElementById('next-btn
 vcMute.addEventListener("click",function(){muted=!muted;video.muted=muted;vcMute.textContent=muted?"🔇":"🔊"});
 vcPause.addEventListener("click",function(){if(video.paused){video.play();vcPause.textContent="⏸"}else{video.pause();vcPause.textContent=""}});
 vStage.addEventListener("click",function(e){if(e.target===video)vControls.classList.toggle("show")});
-function showBridge(){
+window.showBridge=function(){
 if(ended)return;ended=true;
 vControls.style.display="none";
 vStage.style.display="none";
@@ -167,7 +167,7 @@ document.getElementById("bplay").onclick=function(){
   setTimeout(function(){if(window.showOutro)window.showOutro()},10000);
 };
 }
-video.addEventListener("ended",showBridge);
+video.addEventListener("ended",window.showBridge);
 video.muted=false;
 goToPage(0);
 })();
