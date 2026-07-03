@@ -145,6 +145,7 @@ vStage.addEventListener("click",function(e){if(e.target===video)vControls.classL
 function showBridge(){
 if(ended)return;ended=true;
 vControls.style.display="none";
+vStage.style.display="none";
 var bridge=document.getElementById("bridge");
 bridge.style.display="flex";
 document.getElementById("next-btn").style.display="none";
