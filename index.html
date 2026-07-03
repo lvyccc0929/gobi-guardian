@@ -121,7 +121,7 @@ window._startP0Animation=function(){active=true;startTime=0;requestAnimationFram
 </script>
 
 
-<audio id="bgm" src="assets/bgm.mp3" loop preload="auto"></audio>
+<audio id="bgm" src="assets/bgm.m4a" loop preload="auto"></audio>
 <div id="bgm-toggle" style="position:fixed;bottom:24px;right:16px;z-index:9999;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center" onclick="toggleBgm()" title="音乐">🔇</div>
 <script>var bgm=document.getElementById("bgm"),bgmOn=false;function toggleBgm(){bgmOn=!bgmOn;var t=document.getElementById("bgm-toggle");if(bgmOn){bgm.play().catch(function(){});t.textContent="♪"}else{bgm.pause();t.textContent="🔇"}}document.addEventListener("click",function e(){if(!bgmOn){bgmOn=true;bgm.play().catch(function(){});document.getElementById("bgm-toggle").textContent="♪"}},{once:true});</script>
 </body>
