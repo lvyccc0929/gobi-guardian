@@ -1,4 +1,4 @@
-﻿// P2 - Gobi Guardian: Route Panorama + History Cards
+// P2 - Gobi Guardian: Route Panorama + History Cards
 // ---- Data ----
 
 // 预加载所有城市图标
@@ -177,7 +177,7 @@ function SD(){
   ST="map";DS2=true;
   document.getElementById("bz").style.opacity="0";
   NP.style.opacity="0";DH.style.opacity="0";
-  setTimeout(function(){QE.style.opacity="0"},3000);
+  setTimeout(function(){QE.style.opacity="0"},6000);
   setTimeout(function(){SD2()},4500);
 }
 
