@@ -143,28 +143,29 @@ vcMute.addEventListener("click",function(){muted=!muted;video.muted=muted;vcMute
 vcPause.addEventListener("click",function(){if(video.paused){video.play();vcPause.textContent="⏸"}else{video.pause();vcPause.textContent=""}});
 vStage.addEventListener("click",function(e){if(e.target===video)vControls.classList.toggle("show")});
 video.addEventListener("ended",function(){
-vControls.style.display="none";ended=true;
+vControls.style.display="none";
+ended=true;
 var bridge=document.getElementById("bridge");
 bridge.style.display="flex";
-var bl1=document.getElementById("bl1"),bl2=document.getElementById("bl2"),bl3=document.getElementById("bl3");
-bl1.classList.add("show");bl1.style.opacity="1";bl1.style.transform="translateY(0)";
-bl2.classList.add("show");bl2.style.opacity="1";bl2.style.transform="translateY(0)";
-bl3.classList.add("show");bl3.style.opacity="1";bl3.style.transform="translateY(0)";
-
-setTimeout(function(){document.getElementById("bplay").classList.add("show")},800);
-document.getElementById("bplay").addEventListener("click",function(){
+document.getElementById("bl1").classList.add("show");
+document.getElementById("bl2").classList.add("show");
+document.getElementById("bl3").classList.add("show");
+setTimeout(function(){
+  document.getElementById("bplay").classList.add("show");
+},800);
+document.getElementById("bplay").onclick=function(){
   bridge.style.display="none";
   var bvStage=document.getElementById("bridge-video-stage");
   bvStage.style.display="flex";
   var bv=bvStage.querySelector("video");
   bv.play();
-  bv.addEventListener("ended",function(){if(window.showOutro)window.showOutro()});
-  bv.addEventListener("error",function(){if(window.showOutro)window.showOutro()});
-  document.getElementById("bskip2").addEventListener("click",function(){if(window.showOutro)window.showOutro()});
+  bv.onended=function(){if(window.showOutro)window.showOutro()};
+  bv.onerror=function(){if(window.showOutro)window.showOutro()};
+  document.getElementById("bskip2").onclick=function(){if(window.showOutro)window.showOutro()};
   setTimeout(function(){if(window.showOutro)window.showOutro()},10000);
+};
 });
-});
-// video.muted=false;
+video.muted=false;
 goToPage(0);
 })();
 </script>
