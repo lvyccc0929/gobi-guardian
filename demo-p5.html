@@ -6,14 +6,14 @@
 <title>P5 · 卫星确认</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"PingFang SC","Microsoft YaHei",sans-serif;touch-action:pan-y}
-#intro{position:fixed;inset:0;z-index:2;overflow:hidden;cursor:grab}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"PingFang SC","Microsoft YaHei",sans-serif;}
+#intro{position:fixed;inset:0;z-index:2;overflow:hidden;cursor:grab;pointer-events:auto}
 #intro:active{cursor:grabbing}
 #intro-track{display:flex;width:300%;height:100%;transition:transform 0.4s ease;will-change:transform}
 .intro-page{flex:0 0 33.333%;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#020810 0%,#0a1628 50%,#020810 100%);padding:0 50px;position:relative}
 .intro-page .txt{font-size:min(4vw,17px);font-weight:600;color:#fff;text-align:center;line-height:2.1;white-space:pre-line}
-#arrow-left,#arrow-right{position:fixed;top:50%;z-index:4;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:min(8vw,32px);cursor:pointer;transition:all 0.3s;transform:translateY(-50%);background:rgba(255,255,255,0.04);border-radius:50%;-webkit-tap-highlight-color:transparent}
-#arrow-left{left:6px}#arrow-right{right:6px}
+#arrow-left,#arrow-right{position:fixed;top:50%;z-index:100;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:min(8vw,32px);cursor:pointer;transition:all 0.3s;transform:translateY(-50%);background:rgba(255,255,255,0.04);border-radius:50%;-webkit-tap-highlight-color:transparent}
+#arrow-left{left:6px;pointer-events:auto}#arrow-right{right:6px;pointer-events:auto}
 #arrow-left:active,#arrow-right:active{color:#fff;background:rgba(255,255,255,0.12)}
 #arrow-left.hide,#arrow-right.hide{opacity:0;pointer-events:none}
 #pips{position:fixed;bottom:40px;left:0;right:0;display:flex;justify-content:center;gap:8px;z-index:4;pointer-events:none}
@@ -133,7 +133,7 @@ arrowL.addEventListener("touchend",function(e){e.preventDefault();e.stopPropagat
 arrowR.addEventListener("click",function(e){e.stopPropagation();goToPage(current+1)});
 arrowR.addEventListener("touchend",function(e){e.preventDefault();e.stopPropagation();goToPage(current+1)});
 
-var startX=0,swiping=false;
+var startX=0,swiping=false;var introPages=document.querySelectorAll(".intro-page");introPages.forEach(function(p,i){p.addEventListener("click",function(e){if(current===i&&current<TOTAL-1){goToPage(current+1)}});p.addEventListener("touchend",function(e){if(current===i&&current<TOTAL-1){goToPage(current+1)}})});
 var intro=document.getElementById("intro");
 intro.addEventListener("touchstart",function(e){startX=e.touches[0].clientX;swiping=true});
 intro.addEventListener("touchmove",function(e){if(!swiping)return;e.preventDefault()},{passive:false});
