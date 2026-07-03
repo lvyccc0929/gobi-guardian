@@ -123,6 +123,25 @@ window._startP0Animation=function(){active=true;startTime=0;requestAnimationFram
 
 <audio id="bgm" src="assets/bgm.m4a" loop preload="auto"></audio>
 <div id="bgm-toggle" style="position:fixed;bottom:24px;right:16px;z-index:9999;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center" onclick="toggleBgm()" title="音乐">🔇</div>
-<script>var bgm=document.getElementById("bgm"),bgmOn=false;function toggleBgm(){bgmOn=!bgmOn;var t=document.getElementById("bgm-toggle");if(bgmOn){bgm.play().catch(function(){});t.textContent="♪"}else{bgm.pause();t.textContent="🔇"}}document.addEventListener("click",function e(){if(!bgmOn){bgmOn=true;bgm.play().catch(function(){});document.getElementById("bgm-toggle").textContent="♪"}},{once:true});</script>
+<script>
+(function(){
+var bgm=document.getElementById("bgm"),toggle=document.getElementById("bgm-toggle"),bgmOn=false;
+var S_KEY="bgm_time",P_KEY="bgm_playing";
+var savedTime=parseFloat(localStorage.getItem(S_KEY)||"0");
+var wasPlaying=localStorage.getItem(P_KEY)==="1";
+if(savedTime>0&&bgm){bgm.currentTime=savedTime}
+if(wasPlaying){bgmOn=true;bgm.play().catch(function(){});if(toggle)toggle.textContent="♪"}
+window.addEventListener("beforeunload",function(){if(bgm){localStorage.setItem(S_KEY,bgm.currentTime)}localStorage.setItem(P_KEY,bgmOn?"1":"0")});
+setInterval(function(){if(bgm&&bgmOn){localStorage.setItem(S_KEY,bgm.currentTime)}},1000);
+window.toggleBgm=function(){bgmOn=!bgmOn;if(bgmOn){bgm.play().catch(function(){});if(toggle)toggle.textContent="♪"}else{bgm.pause();if(toggle)toggle.textContent="🔇"}localStorage.setItem(P_KEY,bgmOn?"1":"0")};
+window.pauseBgmForVideo=function(){if(bgm&&bgmOn){bgm.pause();localStorage.setItem(S_KEY,bgm.currentTime);localStorage.setItem("bgm_paused_by_video","1")}};
+window.resumeBgmAfterVideo=function(){if(localStorage.getItem("bgm_paused_by_video")==="1"){localStorage.removeItem("bgm_paused_by_video");bgmOn=true;bgm.play().catch(function(){});if(toggle)toggle.textContent="♪";localStorage.setItem(P_KEY,"1")}};
+document.addEventListener("click",function e(){if(!bgmOn){bgmOn=true;bgm.play().catch(function(){});if(toggle)toggle.textContent="♪";localStorage.setItem(P_KEY,"1")}},{once:true});
+// Auto pause BGM when any video plays
+document.addEventListener('play',function(e){if(e.target.tagName==='VIDEO'){window.pauseBgmForVideo()}},true);
+// Auto resume BGM when any video ends
+document.addEventListener('ended',function(e){if(e.target.tagName==='VIDEO'){window.resumeBgmAfterVideo()}},true);
+})();
+</script>
 </body>
 </html> 
