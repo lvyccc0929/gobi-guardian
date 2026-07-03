@@ -187,7 +187,7 @@ function SD2(){
   DS.style.display="block";DL.style.display="block";
   ID2();
   DTT.innerHTML='却没想到，亲眼所见的伤痕远比卫星图上更加触目惊心<br><br>标语的周围出现了多处圆形的人为破坏痕迹，<br>像一道道伤疤刻在“人民”中间。';
-  DTB.innerHTML='这些字是谁写的？<br>为什么刻在无人区的戈壁上？<br><br><span style="font-size:13px;color:#FFD700">翻开历史卡片，看看58年前的故事</span>';
+  DTB.innerHTML='这些字是谁写的？<br>为什么刻在无人区的戈壁上？<br><br><span style="font-size:13px;color:#FFD700">翻开历史卡片<br>看看58年前的故事</span>';
   DTC.innerHTML='';
   SH.innerHTML='';
   setTimeout(function(){CT.style.height="60px";CB.style.height="60px"},500);
