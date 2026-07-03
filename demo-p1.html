@@ -13,7 +13,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"No
 canvas{position:absolute;top:0;left:0}
 
 #narration{position:absolute;top:80px;left:0;right:0;text-align:center;padding:0 32px;z-index:10;pointer-events:none}
-#narration #l3{margin-top:-30px}#narration .line{font-family:"Noto Serif SC",serif;font-size:min(4.5vw,18px);font-weight:400;color:#F5F0E8;line-height:2;opacity:0;transition:opacity 0.8s;text-shadow:0 1px 2px rgba(0,0,0,0.9),0 0 8px rgba(0,0,0,0.5)}
+#narration #l3{margin-top:-60px}#narration .line{font-family:"Noto Serif SC",serif;font-size:min(4.5vw,18px);font-weight:400;color:#F5F0E8;line-height:2;opacity:0;transition:opacity 0.8s;text-shadow:0 1px 2px rgba(0,0,0,0.9),0 0 8px rgba(0,0,0,0.5)}
 #narration .line.show{opacity:1;display:block}
 #narration .line span{color:#c8aa64;font-weight:700}
 
@@ -289,7 +289,7 @@ document.body.addEventListener("click",function(){
     setTimeout(function(){bo.querySelector(".hint").style.opacity="1"},1800);
   }
 });
-if(bo){bo.addEventListener("click",function(e){e.stopPropagation();setTimeout(function(){var bg=document.createElement('div');bg.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;opacity:0;transition:opacity 0.8s';document.body.appendChild(bg);requestAnimationFrame(function(){bg.style.opacity='1'});setTimeout(function(){window.location.href='demo-p2.html'},900)},2300)})}
+if(bo){bo.addEventListener("click",function(e){e.stopPropagation();setTimeout(function(){var bg=document.createElement('div');bg.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;opacity:0;transition:opacity 0.8s';document.body.appendChild(bg);requestAnimationFrame(function(){bg.style.opacity='1'});setTimeout(function(){window.location.href='demo-p2.html'},900)},1800)})}
 })();
 </script>
 <div class="ci-sub">你在卫星地图上，发现了一个秘密。</div></div>

@@ -177,8 +177,8 @@ function SD(){
   ST="map";DS2=true;
   document.getElementById("bz").style.opacity="0";
   NP.style.opacity="0";DH.style.opacity="0";
-  setTimeout(function(){QE.style.opacity="0"},2000);
-  setTimeout(function(){SD2()},3500);
+  setTimeout(function(){QE.style.opacity="0"},3000);
+  setTimeout(function(){SD2()},4500);
 }
 
 function SD2(){
@@ -325,7 +325,7 @@ function LOOP(){
     RF.style.width=pct+"%";
     CAR.style.left=pct+"%";
     DM();CN();
-    if(P>.005&&QE.style.opacity==="0")QE.style.opacity="1";
+    if(P>.002&&QE.style.opacity==="0")QE.style.opacity="1";
     if(P<.01)DH.style.opacity="1";
     else if(P>.12)DH.style.opacity="0";
     if(P>=.995&&!DS2)SD();
