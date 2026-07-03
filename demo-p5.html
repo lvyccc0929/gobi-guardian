@@ -155,7 +155,7 @@ document.getElementById("bplay").onclick=function(){
   bv.currentTime=0;bv.muted=false;
   bv.onended=function(){if(window.showOutro)window.showOutro()};
   bv.onerror=function(){if(window.showOutro)window.showOutro()};
-  document.getElementById("bskip2").onclick=function(){window.location.href="demo-p7.html"};
+  document.getElementById("bskip2").onclick=function(){if(window.showOutro)window.showOutro()};
 };
 }
 video.addEventListener("ended",window.showBridge);
