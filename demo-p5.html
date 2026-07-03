@@ -73,7 +73,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"Pi
   <div class="b-line" id="bl2">千万级阅读量，引发全国热议</div>
   <div class="b-line" id="bl3">公安机关正式介入调查</div>
   <div class="b-play" id="bplay">▶ 点击播放新闻报道</div>
-</div><div id="next-btn" onclick="showBridge()" style="position:fixed;right:8px;top:50%;transform:translateY(-50%);z-index:9999;display:none;cursor:pointer;color:#FFD700;font-size:min(3.5vw,14px);writing-mode:vertical-rl;letter-spacing:2px;background:rgba(0,0,0,0.75);padding:8px 6px;border-radius:6px;border:1px solid rgba(255,215,0,0.3);animation:nextPulse 1.5s infinite">跳过 ›</div><div id="bridge-video-stage" style="position:fixed;inset:0;z-index:11;display:none;background:#000"><video src="assets/bridge-videos/v2_investigate.mp4" muted playsinline style="width:100%;height:100%;object-fit:contain"></video><div class="b-skip" id="bskip2" style="position:absolute;right:16px;bottom:50%;transform:translateY(50%);z-index:2;color:rgba(255,255,255,0.35);font-size:min(2.8vw,12px);letter-spacing:1px;cursor:pointer;writing-mode:vertical-rl">点击跳过 ›</div></div><div id="video-controls"><div class="vc" id="vcMute">🔊</div><div class="vc" id="vcPause">⏸</div></div>
+</div><div id="next-btn" onclick="showBridge()" style="position:fixed;right:8px;top:50%;transform:translateY(-50%);z-index:9999;display:none;cursor:pointer;color:#FFD700;font-size:min(3.5vw,14px);writing-mode:vertical-rl;letter-spacing:2px;background:rgba(0,0,0,0.75);padding:8px 6px;border-radius:6px;border:1px solid rgba(255,215,0,0.3);animation:nextPulse 1.5s infinite">跳过 ›</div><div id="bridge-video-stage" style="position:fixed;inset:0;z-index:11;display:none;background:#000"><video src="assets/bridge-videos/v2_investigate.mp4" playsinline style="width:100%;height:100%;object-fit:contain"></video><div class="b-skip" id="bskip2" style="position:absolute;right:16px;bottom:50%;transform:translateY(50%);z-index:2;color:rgba(255,255,255,0.35);font-size:min(2.8vw,12px);letter-spacing:1px;cursor:pointer;writing-mode:vertical-rl">点击跳过 ›</div></div><div id="video-controls"><div class="vc" id="vcMute">🔊</div><div class="vc" id="vcPause">⏸</div></div>
 <script>
 (function(){
 var track=document.getElementById("intro-track"),pips=document.querySelectorAll("#pips .pip");
@@ -178,7 +178,7 @@ goToPage(0);
 <script>document.getElementById("back-btn").addEventListener("click",function(){window.parent.postMessage({type:"nav",page:"demo-p4.html"},"*")})</script>
 <script>window.showOutro=function(){window.parent.postMessage({type:"nav",page:"demo-p6.html"},"*")}</script>
 
-<script>document.addEventListener('play',function(e){if(e.target.tagName==='VIDEO'){parent.postMessage({type:'video-play'},'*')}},true);document.addEventListener('ended',function(e){if(e.target.tagName==='VIDEO'){parent.postMessage({type:'video-ended'},'*')}},true);</script><script>
+<script>
 (function(){
   // Intercept back button navigation
   var backBtn=document.getElementById('back-btn');
@@ -197,6 +197,26 @@ goToPage(0);
     if(typeof page==='string'){parent.postMessage({type:'nav',page:page},'*')}
     else if(origShowOutro){origShowOutro()}
   };
+})();
+</script><script>
+(function(){
+  function isVisible(el){
+    while(el){
+      var s=getComputedStyle(el);
+      if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity)<0.1)return false;
+      el=el.parentElement;
+    }
+    return true;
+  }
+  document.addEventListener('play',function(e){
+    var v=e.target;
+    if(v.tagName!=='VIDEO')return;
+    if(!isVisible(v))return;
+    parent.postMessage({type:'video-play'},'*');
+  },true);
+  document.addEventListener('ended',function(e){
+    if(e.target.tagName==='VIDEO'){parent.postMessage({type:'video-ended'},'*')}
+  },true);
 })();
 </script></body>
 

@@ -294,7 +294,7 @@ if(bo){bo.addEventListener("click",function(e){e.stopPropagation();setTimeout(fu
 </script>
 <div class="ci-sub">你在卫星地图上，发现了一个秘密。</div></div>
 
-<script>document.addEventListener('play',function(e){if(e.target.tagName==='VIDEO'){parent.postMessage({type:'video-play'},'*')}},true);document.addEventListener('ended',function(e){if(e.target.tagName==='VIDEO'){parent.postMessage({type:'video-ended'},'*')}},true);</script><script>
+<script>
 (function(){
   // Intercept back button navigation
   var backBtn=document.getElementById('back-btn');
@@ -313,6 +313,26 @@ if(bo){bo.addEventListener("click",function(e){e.stopPropagation();setTimeout(fu
     if(typeof page==='string'){parent.postMessage({type:'nav',page:page},'*')}
     else if(origShowOutro){origShowOutro()}
   };
+})();
+</script><script>
+(function(){
+  function isVisible(el){
+    while(el){
+      var s=getComputedStyle(el);
+      if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity)<0.1)return false;
+      el=el.parentElement;
+    }
+    return true;
+  }
+  document.addEventListener('play',function(e){
+    var v=e.target;
+    if(v.tagName!=='VIDEO')return;
+    if(!isVisible(v))return;
+    parent.postMessage({type:'video-play'},'*');
+  },true);
+  document.addEventListener('ended',function(e){
+    if(e.target.tagName==='VIDEO'){parent.postMessage({type:'video-ended'},'*')}
+  },true);
 })();
 </script></body>
 </html>

@@ -92,7 +92,7 @@ body{width:100vw;height:100vh;overflow:hidden;background:#c8b896;font-family:"No
 <script>document.getElementById("back-btn").addEventListener("click",function(){window.parent.postMessage({type:"nav",page:"demo-p1.html"},"*")})</script>
 <script>window.showOutro=function(){window.parent.postMessage({type:"nav",page:"demo-p3.html"},"*")}</script>
 
-<script>document.addEventListener('play',function(e){if(e.target.tagName==='VIDEO'){parent.postMessage({type:'video-play'},'*')}},true);document.addEventListener('ended',function(e){if(e.target.tagName==='VIDEO'){parent.postMessage({type:'video-ended'},'*')}},true);</script><script>
+<script>
 (function(){
   // Intercept back button navigation
   var backBtn=document.getElementById('back-btn');
@@ -111,6 +111,26 @@ body{width:100vw;height:100vh;overflow:hidden;background:#c8b896;font-family:"No
     if(typeof page==='string'){parent.postMessage({type:'nav',page:page},'*')}
     else if(origShowOutro){origShowOutro()}
   };
+})();
+</script><script>
+(function(){
+  function isVisible(el){
+    while(el){
+      var s=getComputedStyle(el);
+      if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity)<0.1)return false;
+      el=el.parentElement;
+    }
+    return true;
+  }
+  document.addEventListener('play',function(e){
+    var v=e.target;
+    if(v.tagName!=='VIDEO')return;
+    if(!isVisible(v))return;
+    parent.postMessage({type:'video-play'},'*');
+  },true);
+  document.addEventListener('ended',function(e){
+    if(e.target.tagName==='VIDEO'){parent.postMessage({type:'video-ended'},'*')}
+  },true);
 })();
 </script></body>
 
