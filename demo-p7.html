@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -100,10 +100,7 @@ html,body{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;background:#0
 #rest-content{opacity:0;transition:opacity 1.5s ease-in 0.5s}
 #rest-content.show{opacity:1}
 
-#qr-section{padding:12px 32px 0;z-index:1;position:relative;text-align:center}
-#qr-section .qr-label{font-size:min(2.8vw,11px);color:rgba(240,232,216,0.45);letter-spacing:2px;margin-bottom:10px}
-#qr-section img{width:min(22vw,90px);height:min(22vw,90px);border-radius:6px;border:2px solid rgba(200,170,100,0.25);background:#fff;padding:6px;display:block;margin:0 auto}
-#qr-section .qr-hint{margin-top:6px;font-size:min(2.2vw,9px);color:rgba(240,232,216,0.2);letter-spacing:1px}</style>
+</style>
 </head>
 <body><div id="rotate-hint" style="display:none;position:fixed;inset:0;z-index:99999;flex-direction:column;align-items:center;justify-content:center;background:#0b0906;font-family:Noto Serif SC,serif"><div style="font-size:min(14vw,56px);margin-bottom:20px">&#x1F4F1;</div><div style="font-size:min(5vw,20px);color:#C4A46C;text-align:center;line-height:2.4">请竖屏进入分享页<br><span style="font-size:min(3.5vw,14px);color:#8B7355">Please rotate your phone to portrait</span></div></div>
 <script>
@@ -168,7 +165,7 @@ window.addEventListener("orientationchange",function(){setTimeout(check,50)});
 
   <div id="sub">1967 · 八航校 · 2025 · 你</div>
 
-  <div id="qr-section"><div class="qr-label">微信扫码 · 查看完整作品</div><img src="qrcode.png" alt="扫码查看"/><div class="qr-hint">长按识别二维码</div></div><div id="btns">
+  <div id="btns">
     <button id="btn-save" onclick="savePoster()">保存海报</button>
     <button id="btn-share" onclick="sharePoster()">分享</button>
   </div>
@@ -186,8 +183,7 @@ function showToast(msg){
   setTimeout(function(){t.classList.remove('show')},2000);
 }
 function savePoster(){
-  if(navigator.share){navigator.share({title:'你也可以成为守护者',text:'戈壁地标——58年 vs 5分钟。修复它的，是一个路过的年轻人。',url:location.href}).catch(function(){});}
-  else{showToast('请截图保存');}
+  var a=document.createElement('a');a.href='poster.png';a.download='戈壁守护者-海报.png';document.body.appendChild(a);a.click();document.body.removeChild(a);showToast('海报下载中...');
 }
 function sharePoster(){
   if(navigator.share){navigator.share({title:'你也可以成为守护者',text:'戈壁地标「为人民服务」——它们存活了58年，差一点在5分钟内消失。',url:location.href}).catch(function(){});}
