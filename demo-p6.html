@@ -69,7 +69,7 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0}
 <div class="tl-card"><div class="tl-card-inner"><div class="c-date">2025年11月 · 深度回响</div><div class="c-title">人民网发表深度报道「被唤醒的精神地标」，探讨戈壁标语的精神价值与社会共鸣。</div><div class="c-source">—— 人民网新疆</div></div></div>
 <div class="tl-card"><div class="tl-card-inner"><div class="c-date">2024年12月—2025年3月 · 生态立法</div><div class="c-title">《哈密市戈壁生态环境保护条例》全文发布。这是全国首部戈壁生态保护条例，2025年3月1日起正式施行。</div><div class="c-source">—— 哈密市人民政府、新疆人大</div></div></div>
 
-<div class="tl-card" id="tl-final"><div class="tl-card-inner" style="text-align:center;border-color:rgba(255,215,0,.4);background:rgba(20,15,5,.95)"><div class="c-date" style="color:#FFD700;font-size:min(3.5vw,15px)">故事未完</div><div class="c-title" style="font-size:min(4vw,16px);color:#FFD700">点击进入分享页</div><div class="c-source" style="color:rgba(255,215,0,.5)">把这5个人的故事，讲给更多人听</div></div></div>
+<div class="tl-card" id="tl-final"><div class="tl-card-inner" style="text-align:center;border-color:rgba(255,215,0,.4);background:rgba(20,15,5,.95)"><div class="c-date" style="color:#FFD700;font-size:min(3.5vw,15px)">故事未完</div><div class="c-title" style="font-size:min(4vw,16px);color:#FFD700">点击进入分享页</div><div class="c-source" style="color:rgba(255,215,0,.5)">把这五个人的故事，讲给更多人听</div></div></div>
 </div></div>
   <div id="tl-hint"> 左右滑动翻阅 </div>
 </div>
@@ -201,10 +201,13 @@ window.addEventListener("resize",function(){ww=window.innerWidth;wh=window.inner
 resizeBg();goTimeline(0);var tf=document.getElementById("tl-final");if(tf)tf.addEventListener("click",function(){window.location.href='demo-p7.html'});
 })();
 </script>
-<div class="ci-sub">5个人的修复，一群人的共鸣。</div></div>
+<div class="ci-sub">五个人的修复，一群人的共鸣。</div></div>
 <div class="co-next">本章结束<br><span style="font-size:min(4vw,16px);color:#FFD700;margin-top:8px;display:inline-block">进入分享页</span></div></div>
 
 <script>document.getElementById("back-btn").addEventListener("click",function(){window.location.href="demo-p5.html"})</script>
+<audio id="bgm" src="assets/bgm.mp3" loop preload="auto"></audio>
+<div id="bgm-toggle" style="position:fixed;bottom:24px;right:16px;z-index:9999;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center" onclick="toggleBgm()" title="音乐">🔇</div>
+<script>var bgm=document.getElementById("bgm"),bgmOn=false;function toggleBgm(){bgmOn=!bgmOn;var t=document.getElementById("bgm-toggle");if(bgmOn){bgm.play().catch(function(){});t.textContent="♪"}else{bgm.pause();t.textContent="🔇"}}document.addEventListener("click",function e(){if(!bgmOn){bgmOn=true;bgm.play().catch(function(){});document.getElementById("bgm-toggle").textContent="♪"}},{once:true});</script>
 </body>
 
 

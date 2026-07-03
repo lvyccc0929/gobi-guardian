@@ -109,8 +109,9 @@ html,body{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;background:#0
 <script>
 (function(){
 var rh=document.getElementById("rotate-hint");
+function isMobile(){return "ontouchstart" in window||navigator.maxTouchPoints>0}
 function isP(){return window.innerWidth<window.innerHeight}
-function ck(){if(isP()){rh.style.display="none"}else{rh.style.display="flex"}}
+function ck(){if(!isMobile()||isP()){rh.style.display="none"}else{rh.style.display="flex"}}
 ck();
 window.addEventListener("resize",ck);
 window.addEventListener("orientationchange",function(){setTimeout(ck,50)});
@@ -149,7 +150,7 @@ window.addEventListener("orientationchange",function(){setTimeout(check,50)});
 
   <div id="quote">
     <div class="q-main">它们存活了 <span>58 年</span>。<br>差一点在 <span>5 分钟</span>内消失。</div>
-    <div class="q-sub">修复它的，不是官方，是一个路过的年轻人。他叫路遥，从成都开了两千公里，用了 24 天。</div>
+    <div class="q-sub">修复它的，不是官方，是一个路过的年轻人。他叫陆遥，从成都驱车两千公里，历时二十四天。</div>
   </div>
 
   <div id="stats">
@@ -175,7 +176,7 @@ window.addEventListener("orientationchange",function(){setTimeout(check,50)});
 
   <div id="qr-wrap"><div id="qrcode"></div><div class="qr-label">扫码再次进入</div></div>
 
-  <div id="foot">长按可截图 · 你就是下一个守护者</div>
+  <div id="foot">保存海报 · 让更多人看见戈壁的故事</div>
 </div>
 </div>
 
@@ -237,6 +238,9 @@ function sharePoster(){
 
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<audio id="bgm" src="assets/bgm.mp3" loop preload="auto"></audio>
+<div id="bgm-toggle" style="position:fixed;bottom:24px;right:16px;z-index:9999;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center" onclick="toggleBgm()" title="音乐">🔇</div>
+<script>var bgm=document.getElementById("bgm"),bgmOn=false;function toggleBgm(){bgmOn=!bgmOn;var t=document.getElementById("bgm-toggle");if(bgmOn){bgm.play().catch(function(){});t.textContent="♪"}else{bgm.pause();t.textContent="🔇"}}document.addEventListener("click",function e(){if(!bgmOn){bgmOn=true;bgm.play().catch(function(){});document.getElementById("bgm-toggle").textContent="♪"}},{once:true});</script>
 </body>
 
 
