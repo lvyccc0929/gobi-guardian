@@ -178,7 +178,7 @@ function SD(){
   document.getElementById("bz").style.opacity="0";
   NP.style.opacity="0";DH.style.opacity="0";
   setTimeout(function(){QE.style.opacity="0"},6000);
-  setTimeout(function(){SD2()},4500);
+  setTimeout(function(){SD2()},7000);
 }
 
 function SD2(){
