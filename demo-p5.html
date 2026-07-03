@@ -53,7 +53,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#020810;font-family:
 
 #back-btn:hover{background:rgba(0,0,0,.7);color:#FFD700;border-color:rgba(255,215,0,.4)}
 
-@keyframes nextPulse{0%,100%{opacity:0.5}50%{opacity:1}}`r`n</style>
+</style>
 </head>
 <body>
 <button id="back-btn" title="返回上一章">&#10094;</button>
@@ -68,7 +68,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#020810;font-family:
 <div id="auto-play-hint">即将播放卫星影像…</div>
 <div id="video-stage"><video src="assets/satellite-footage.mp4" muted autoplay playsinline></video></div>
 
-<div id="next-btn" style="position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:15;display:none;flex-direction:column;align-items:center;cursor:pointer;color:#FFD700;font-size:min(3.5vw,14px);writing-mode:vertical-rl;letter-spacing:3px;animation:nextPulse 1.5s infinite">进入下一页 ›</div>`r`n<div id="bridge">
+<div id="bridge">
   <div class="b-line" id="bl1">新华社、人民日报、央视 集中报道</div>
   <div class="b-line" id="bl2">千万级阅读量，引发全国热议</div>
   <div class="b-line" id="bl3">公安机关正式介入调查</div>
@@ -145,9 +145,25 @@ vStage.addEventListener("click",function(e){if(e.target===video)vControls.classL
 video.addEventListener("ended",function(){
 vControls.style.display="none";
 ended=true;
-var btn=document.getElementById("next-btn");
-btn.style.display="flex";
-btn.onclick=function(){if(window.showOutro)window.showOutro()};
+var bridge=document.getElementById("bridge");
+bridge.style.display="flex";
+document.getElementById("bl1").classList.add("show");
+document.getElementById("bl2").classList.add("show");
+document.getElementById("bl3").classList.add("show");
+setTimeout(function(){
+  document.getElementById("bplay").classList.add("show");
+},800);
+document.getElementById("bplay").onclick=function(){
+  bridge.style.display="none";
+  var bvStage=document.getElementById("bridge-video-stage");
+  bvStage.style.display="flex";
+  var bv=bvStage.querySelector("video");
+  bv.play();
+  bv.onended=function(){if(window.showOutro)window.showOutro()};
+  bv.onerror=function(){if(window.showOutro)window.showOutro()};
+  document.getElementById("bskip2").onclick=function(){if(window.showOutro)window.showOutro()};
+  setTimeout(function(){if(window.showOutro)window.showOutro()},10000);
+};
 });
 video.muted=false;
 goToPage(0);
