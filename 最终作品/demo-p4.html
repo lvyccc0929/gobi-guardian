@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -62,7 +62,7 @@ var dots=document.querySelectorAll("#page-dots .dot");
 var opening=document.getElementById("opening");
 var subtitle=document.getElementById("subtitle"),subText=subtitle.querySelector(".s-text");
 var navHint=document.getElementById("nav-hint");navHint.style.opacity="0";
-var subtitles=["「我们站在标语边上才看清——越野车碾过的深沟，最深处能埋进半条手臂。修复的第一步，是把松动的砾石清理干净，再从戈壁滩上筛选颜色一致的黑褐色石料，一车一车运过来。」","「烈日下，我们用铁锹一铲一铲地把石料填进沟壑，再用脚踩实。一个下午过去了，五个人只修完了四分之一个圈。抬头一看，还有十几处破坏痕迹等着我们。」","「消息传开后，朋友们带着工具来了。五个人排成一排，像当年写下标语的空军学员一样——弯腰、铲石、铺撒、踩实。没有人喊累。」","「第27车石料撒完的那一刻，我们爬上旁边的土坡往下看——标语周围那些黑色的伤疤，终于消失了。24天，27趟，近20吨石料。五个大字，完好如初。」"];
+var subtitles=["「你们站在标语边上才看清——越野车碾过的深沟，最深处能埋进半条手臂。修复的第一步，是把松动的砾石清理干净，再从戈壁滩上筛选颜色一致的黑褐色石料，一车一车运过来。」","「烈日下，你们用铁锹一铲一铲地把石料填进沟壑，再用脚踩实。一个下午过去了，五个人只修完了四分之一个圈。抬头一看，还有十几处破坏痕迹等着你们。」","「消息传开后，朋友们带着工具来了。五个人排成一排，像当年写下标语的空军学员一样——弯腰、铲石、铺撒、踩实。没有人喊累。」","「第27车石料撒完的那一刻，你们爬上旁边的土坡往下看——标语周围那些黑色的伤疤，终于消失了。24天，27趟，近20吨石料。五个大字，完好如初。」"];
 function goToPage(idx){if(idx<0)return;if(idx>=totalPages){if(window.showOutro)window.showOutro();return;}
 imgs[page].classList.remove("active");page=idx;imgs[page].classList.add("active");
 dots.forEach(function(d,i){d.classList.toggle("on",i===page)});
