@@ -53,7 +53,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#020810;font-family:
 
 #back-btn:hover{background:rgba(0,0,0,.7);color:#FFD700;border-color:rgba(255,215,0,.4)}
 
-</style>
+@keyframes nextPulse{0%,100%{opacity:0.4}50%{opacity:1}}`r`n</style>
 </head>
 <body>
 <button id="back-btn" title="返回上一章">&#10094;</button>
@@ -73,7 +73,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#020810;font-family:
   <div class="b-line" id="bl2">千万级阅读量，引发全国热议</div>
   <div class="b-line" id="bl3">公安机关正式介入调查</div>
   <div class="b-play" id="bplay">▶ 点击播放新闻报道</div>
-</div><div id="bridge-video-stage" style="position:fixed;inset:0;z-index:11;display:none;background:#000"><video src="assets/bridge-videos/v2_investigate.mp4" muted playsinline style="width:100%;height:100%;object-fit:contain"></video><div class="b-skip" id="bskip2" style="position:absolute;right:16px;bottom:50%;transform:translateY(50%);z-index:2;color:rgba(255,255,255,0.35);font-size:min(2.8vw,12px);letter-spacing:1px;cursor:pointer;writing-mode:vertical-rl">点击跳过 ›</div></div><div id="video-controls"><div class="vc" id="vcMute">🔊</div><div class="vc" id="vcPause">⏸</div></div>
+<div id="next-btn" style="position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:15;display:none;flex-direction:column;align-items:center;cursor:pointer;color:#FFD700;font-size:min(3vw,12px);writing-mode:vertical-rl;letter-spacing:2px;animation:nextPulse 2s infinite">进入下一页 ›</div></div><div id="bridge-video-stage" style="position:fixed;inset:0;z-index:11;display:none;background:#000"><video src="assets/bridge-videos/v2_investigate.mp4" muted playsinline style="width:100%;height:100%;object-fit:contain"></video><div class="b-skip" id="bskip2" style="position:absolute;right:16px;bottom:50%;transform:translateY(50%);z-index:2;color:rgba(255,255,255,0.35);font-size:min(2.8vw,12px);letter-spacing:1px;cursor:pointer;writing-mode:vertical-rl">点击跳过 ›</div></div><div id="video-controls"><div class="vc" id="vcMute">🔊</div><div class="vc" id="vcPause">⏸</div></div>
 <script>
 (function(){
 var track=document.getElementById("intro-track"),pips=document.querySelectorAll("#pips .pip");
@@ -147,6 +147,7 @@ vControls.style.display="none";
 ended=true;
 var bridge=document.getElementById("bridge");
 bridge.style.display="flex";
+document.getElementById("next-btn").style.display="flex";
 document.getElementById("bl1").classList.add("show");
 document.getElementById("bl2").classList.add("show");
 document.getElementById("bl3").classList.add("show");
@@ -155,6 +156,7 @@ setTimeout(function(){
 },800);
 document.getElementById("bplay").onclick=function(){
   bridge.style.display="none";
+  document.getElementById("next-btn").style.display="none";
   var bvStage=document.getElementById("bridge-video-stage");
   bvStage.style.display="flex";
   var bv=bvStage.querySelector("video");
