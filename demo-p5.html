@@ -183,20 +183,72 @@ goToPage(0);
 (function(){
 var bgm=document.getElementById("bgm"),toggle=document.getElementById("bgm-toggle"),bgmOn=false;
 var S_KEY="bgm_time",P_KEY="bgm_playing";
-var savedTime=parseFloat(localStorage.getItem(S_KEY)||"0");
-var wasPlaying=localStorage.getItem(P_KEY)==="1";
-if(savedTime>0&&bgm){bgm.currentTime=savedTime}
-if(wasPlaying){bgmOn=true;bgm.play().catch(function(){});if(toggle)toggle.textContent="♪"}
-window.addEventListener("beforeunload",function(){if(bgm){localStorage.setItem(S_KEY,bgm.currentTime)}localStorage.setItem(P_KEY,bgmOn?"1":"0")});
-setInterval(function(){if(bgm&&bgmOn){localStorage.setItem(S_KEY,bgm.currentTime)}},1000);
-window.toggleBgm=function(){bgmOn=!bgmOn;if(bgmOn){bgm.play().catch(function(){});if(toggle)toggle.textContent="♪"}else{bgm.pause();if(toggle)toggle.textContent="🔇"}localStorage.setItem(P_KEY,bgmOn?"1":"0")};
-window.pauseBgmForVideo=function(){if(bgm&&bgmOn){bgm.pause();localStorage.setItem(S_KEY,bgm.currentTime);localStorage.setItem("bgm_paused_by_video","1")}};
-window.resumeBgmAfterVideo=function(){if(localStorage.getItem("bgm_paused_by_video")==="1"){localStorage.removeItem("bgm_paused_by_video");bgmOn=true;bgm.play().catch(function(){});if(toggle)toggle.textContent="♪";localStorage.setItem(P_KEY,"1")}};
-document.addEventListener("click",function e(){if(!bgmOn){bgmOn=true;bgm.play().catch(function(){});if(toggle)toggle.textContent="♪";localStorage.setItem(P_KEY,"1")}},{once:true});
-// Auto pause BGM when any video plays
-document.addEventListener('play',function(e){if(e.target.tagName==='VIDEO'){window.pauseBgmForVideo()}},true);
-// Auto resume BGM when any video ends
-document.addEventListener('ended',function(e){if(e.target.tagName==='VIDEO'){window.resumeBgmAfterVideo()}},true);
+
+// Restore state after metadata loaded
+function restoreBgm(){
+  var savedTime=parseFloat(localStorage.getItem(S_KEY)||"0");
+  var wasPlaying=localStorage.getItem(P_KEY)==="1";
+  if(savedTime>0.5&&bgm&&bgm.readyState>=1){bgm.currentTime=savedTime}
+  if(wasPlaying){
+    bgmOn=true;
+    bgm.play().then(function(){
+      if(toggle)toggle.textContent="♪";
+    }).catch(function(){
+      bgmOn=false;
+      localStorage.setItem(P_KEY,"0");
+      if(toggle)toggle.textContent="🔇";
+    });
+  }
+}
+if(bgm){
+  if(bgm.readyState>=1){restoreBgm()}
+  else{bgm.addEventListener("loadedmetadata",restoreBgm,{once:true})}
+}
+
+// Save state before leaving
+window.addEventListener("beforeunload",function(){
+  if(bgm){
+    if(bgmOn&&!bgm.paused){localStorage.setItem(S_KEY,bgm.currentTime)}
+    else{localStorage.setItem(S_KEY,bgm.currentTime)}
+  }
+  localStorage.setItem(P_KEY,bgmOn?"1":"0");
+});
+setInterval(function(){if(bgm&&bgmOn&&!bgm.paused){localStorage.setItem(S_KEY,bgm.currentTime)}},1000);
+
+// Toggle
+window.toggleBgm=function(){
+  bgmOn=!bgmOn;
+  if(bgmOn){
+    bgm.play().then(function(){if(toggle)toggle.textContent="♪"}).catch(function(){bgmOn=false;if(toggle)toggle.textContent="🔇"});
+  }else{
+    bgm.pause();if(toggle)toggle.textContent="🔇";
+  }
+  localStorage.setItem(P_KEY,bgmOn?"1":"0");
+};
+
+window.pauseBgmForVideo=function(){
+  if(bgm&&bgmOn){bgm.pause();localStorage.setItem(S_KEY,bgm.currentTime);localStorage.setItem("bgm_paused_by_video","1")}
+};
+window.resumeBgmAfterVideo=function(){
+  if(localStorage.getItem("bgm_paused_by_video")==="1"){
+    localStorage.removeItem("bgm_paused_by_video");bgmOn=true;
+    bgm.play().then(function(){if(toggle)toggle.textContent="♪"}).catch(function(){bgmOn=false});
+    localStorage.setItem(P_KEY,"1");
+  }
+};
+
+// Auto pause/resume for videos
+document.addEventListener("play",function(e){if(e.target.tagName==="VIDEO"){window.pauseBgmForVideo()}},true);
+document.addEventListener("ended",function(e){if(e.target.tagName==="VIDEO"){window.resumeBgmAfterVideo()}},true);
+
+// First click auto-play
+document.addEventListener("click",function e(){
+  if(!bgmOn){
+    bgmOn=true;
+    bgm.play().then(function(){if(toggle)toggle.textContent="♪"}).catch(function(){bgmOn=false});
+    localStorage.setItem(P_KEY,"1");
+  }
+},{once:true});
 })();
 </script>
 </body>
