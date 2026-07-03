@@ -109,7 +109,7 @@
 
   engine(speed = 0.5, bus = 'sfx') {
     if (!this.initialized) return null;
-    // White noise → bandpass filter → speed-modulated gain
+    // White noise  bandpass filter  speed-modulated gain
     const bufferSize = this.ctx.sampleRate * 2;
     const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
     const data = buffer.getChannelData(0);

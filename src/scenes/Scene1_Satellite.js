@@ -307,7 +307,7 @@ class Scene1Satellite {
       font-family:'Noto Sans SC',sans-serif;
     `;
     this.hudTop.innerHTML = `
-      <span style="font-size:13px;color:#00D4FF;">◄ 返回</span>
+      <span style="font-size:13px;color:#00D4FF;"> 返回</span>
       <div style="text-align:center;">
         <div style="font-size:14px;font-weight:600;color:#F5F0E8;">吉林一号·光学A星</div>
         <div style="font-size:12px;color:rgba(0,212,255,0.7);">轨道高度 <span id="hud-alt">535</span>km</div>
@@ -403,9 +403,9 @@ class Scene1Satellite {
         <div style="position:absolute;top:12px;right:12px;font-size:11px;color:#fff;background:rgba(0,0,0,0.6);padding:2px 8px;border-radius:4px;">2025.10 · 破坏后</div>
       </div>
       <div id="comp-split" style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:#FF4444;box-shadow:0 0 6px rgba(255,68,68,0.4);transform:translateX(-50%);">
-        <div id="comp-handle" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.6);border:2px solid rgba(245,240,232,0.8);display:flex;align-items:center;justify-content:center;color:#F5F0E8;font-size:14px;cursor:grab;">←→</div>
+        <div id="comp-handle" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.6);border:2px solid rgba(245,240,232,0.8);display:flex;align-items:center;justify-content:center;color:#F5F0E8;font-size:14px;cursor:grab;"></div>
       </div>
-      <div style="position:absolute;bottom:44px;left:0;right:0;text-align:center;font-size:14px;color:rgba(245,240,232,0.6);">◁ 滑动对比 ▸</div>
+      <div style="position:absolute;bottom:44px;left:0;right:0;text-align:center;font-size:14px;color:rgba(245,240,232,0.6);"> 滑动对比 ▸</div>
     `;
     this.container.appendChild(this.comparisonContainer);
   }

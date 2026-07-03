@@ -119,7 +119,7 @@ class BootScene {
       <div style="width:80px;height:1px;background:rgba(139,115,85,0.3);margin:0 auto 12px;"></div>
       <div style="font-family:'Noto Sans SC',sans-serif;font-size:13px;font-weight:300;color:rgba(245,240,232,0.6);">基于真实事件改编</div>
       <div style="font-family:'Noto Sans SC',sans-serif;font-size:14px;font-weight:400;color:rgba(245,240,232,0.8);margin-top:4px;">滑动屏幕，开启这段旅程</div>
-      <div style="margin-top:8px;color:rgba(245,240,232,0.5);" class="float-vertical">▼</div>
+      <div style="margin-top:8px;color:rgba(245,240,232,0.5);" class="float-vertical"></div>
     `;
     this.container.appendChild(this.hintContainer);
 
