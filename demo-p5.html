@@ -68,7 +68,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#020810;font-family:
 <div id="auto-play-hint">即将播放卫星影像…</div>
 <div id="video-stage"><video src="assets/satellite-footage.mp4" playsinline></video></div>
 
-<div id="bridge"><video src="assets/bridge-videos/v2_investigate.mp4" muted loop playsinline></video>
+<div id="bridge"><video src="assets/bridge-videos/v2_investigate.mp4" muted playsinline></video>
   <div class="b-line" id="bl1">新华社、人民日报、央视 集中报道</div>
   <div class="b-line" id="bl2">千万级阅读量，引发全国热议</div>
   <div class="b-line" id="bl3">公安机关正式介入调查</div>
@@ -146,9 +146,10 @@ video.addEventListener("ended",function(){
 vControls.style.display="none";ended=true;
 var bridge=document.getElementById("bridge");
 bridge.style.display="flex";
-document.getElementById("bl1").classList.add("show");
-document.getElementById("bl2").classList.add("show");
-document.getElementById("bl3").classList.add("show");
+var bl1=document.getElementById("bl1"),bl2=document.getElementById("bl2"),bl3=document.getElementById("bl3");
+bl1.classList.add("show");bl1.style.opacity="1";bl1.style.transform="translateY(0)";
+bl2.classList.add("show");bl2.style.opacity="1";bl2.style.transform="translateY(0)";
+bl3.classList.add("show");bl3.style.opacity="1";bl3.style.transform="translateY(0)";
 setTimeout(function(){document.getElementById("bsub").classList.add("show")},600);
 setTimeout(function(){
   document.getElementById("bl1").style.opacity="0";
@@ -162,6 +163,7 @@ setTimeout(function(){
   bskip.addEventListener("click",function(){if(window.showOutro)window.showOutro()});
   bv.addEventListener("ended",function(){if(window.showOutro)window.showOutro()});
   bv.addEventListener("error",function(){if(window.showOutro)window.showOutro()});
+  setTimeout(function(){if(window.showOutro)window.showOutro()},10000);
 },3000);
 });
 video.muted=false;
