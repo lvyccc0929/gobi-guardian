@@ -66,7 +66,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#020810;font-family:
 <div id="pips"><div class="pip on"></div><div class="pip"></div><div class="pip"></div></div>
 <div id="nav-hint"> </div>
 <div id="auto-play-hint">即将播放卫星影像…</div>
-<div id="video-stage"><video src="assets/satellite-footage.mp4" muted playsinline></video></div>
+<div id="video-stage"><video src="assets/satellite-footage.mp4" muted autoplay playsinline></video></div>
 
 <div id="bridge">
   <div class="b-line" id="bl1">新华社、人民日报、央视 集中报道</div>
@@ -136,7 +136,7 @@ if(autoTimer){clearTimeout(autoTimer);autoTimer=null}
 navHint.style.display="none";autoHint.classList.remove("visible");
 intro.style.display="none";arrowL.style.display="none";arrowR.style.display="none";
 vStage.style.display="flex";requestAnimationFrame(function(){requestAnimationFrame(function(){vStage.classList.add("show")})});
-video.muted=muted;video.play().then(function(){vControls.style.display="flex";requestAnimationFrame(function(){vControls.classList.add("show")})}).catch(function(){});
+video.muted=muted;video.play().then(function(){vControls.style.display='flex';requestAnimationFrame(function(){vControls.classList.add('show')})}).catch(function(){});
 }
 
 vcMute.addEventListener("click",function(){muted=!muted;video.muted=muted;vcMute.textContent=muted?"🔇":"🔊"});
