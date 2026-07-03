@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>P3 · 寻石记</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--safe-top:env(safe-area-inset-top,44px);--safe-bottom:env(safe-area-inset-bottom,34px)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#1a1410;font-family:'Noto Sans SC',sans-serif;-webkit-tap-highlight-color:transparent;user-select:none;touch-action:none}
+#app{position:relative;width:100%;height:100%;overflow:hidden}
+canvas{display:block}
+
+/* Layer 1: Background */
+#bg-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}
+
+/* Layer 2: Heat shimmer */
+#heat-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;opacity:0.6}
+
+/* Layer 3: Scene UI */
+#scene{position:absolute;top:0;left:0;width:100%;height:100%;z-index:3;display:flex;flex-direction:column;align-items:center;pointer-events:none}
+#scene>*{pointer-events:auto}
+#title-area{padding-top:var(--safe-top);text-align:center;pointer-events:none}
+#title-area .t1{font-family:'Noto Serif SC',serif;font-size:26px;font-weight:700;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,0.6)}
+#title-area .t2{font-family:'Noto Sans SC',sans-serif;font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px}
+
+#gobi-ref{width:70%;max-width:280px;height:90px;margin-top:14px;border-radius:12px;border:1.5px solid rgba(255,255,255,0.18);overflow:hidden;position:relative;box-shadow:0 4px 20px rgba(0,0,0,0.5);transition:all 0.3s;background:rgba(0,0,0,0.3)}
+#gobi-ref canvas{position:absolute;top:0;left:0;width:100%;height:100%}
+#gobi-label{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:10px;color:rgba(255,255,255,0.4);font-family:'Noto Sans SC',sans-serif;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
+#gobi-ref.hover{border-color:rgba(255,215,0,0.5);box-shadow:0 0 20px rgba(255,215,0,0.25),0 4px 20px rgba(0,0,0,0.5)}
+
+#drop-hint{font-size:12px;color:rgba(255,255,255,0.4);margin-top:10px;text-align:center;animation:floatV 2.5s ease-in-out infinite;pointer-events:none}
+@keyframes floatV{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+#stone-shelf{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:4}
+.stone-wrapper{display:flex;flex-direction:column;align-items:center;gap:6px}
+.stone{width:125px;height:111px;cursor:grab;position:relative;touch-action:none;-webkit-touch-callout:none;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.5))}
+.stone:active{cursor:grabbing}
+.stone.dragging{transform:scale(1.2);z-index:20;filter:drop-shadow(0 10px 25px rgba(0,0,0,0.7))}
+.stone canvas{width:100%;height:100%;pointer-events:none}
+.stone-label{font-size:10px;color:rgba(255,255,255,0.45);font-family:'Noto Sans SC',sans-serif;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
+
+/* Layer 4: Particles */
+#particle-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:5;pointer-events:none}
+
+/* Drag clone */
+#drag-clone{position:fixed;width:150px;height:133px;pointer-events:none;z-index:30;display:none;filter:drop-shadow(0 12px 28px rgba(0,0,0,0.6))}
+#drag-clone canvas{width:100%;height:100%}
+
+/* Result */
+#result-overlay{position:absolute;top:0;left:0;width:100%;height:100%;z-index:20;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0);transition:background 0.6s}
+#result-overlay.show{display:flex}
+#result-overlay.darken{background:rgba(0,0,0,0.72)}
+#result-icon{font-size:56px;opacity:0;transform:scale(0);transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+#result-icon.show{opacity:1;transform:scale(1)}
+#result-text{font-family:'Noto Serif SC',serif;font-size:18px;color:#fff;text-align:center;padding:0 30px;margin-top:14px;opacity:0;transform:translateY(20px);transition:all 0.5s 0.2s;line-height:1.7}
+#result-text.show{opacity:1;transform:translateY(0)}
+#result-detail{font-family:'Noto Sans SC',sans-serif;font-size:13px;color:rgba(255,255,255,0.7);text-align:center;padding:0 28px;margin-top:10px;opacity:0;transform:translateY(20px);transition:all 0.5s 0.6s;line-height:1.8}
+#result-detail.show{opacity:1;transform:translateY(0)}
+#retry-btn,#next-btn{margin-top:20px;padding:10px 32px;border-radius:24px;font-family:'Noto Sans SC',sans-serif;font-size:14px;font-weight:500;cursor:pointer;opacity:0;transform:translateY(20px);transition:all 0.5s 0.8s;border:none}
+#retry-btn.show,#next-btn.show{opacity:1;transform:translateY(0)}
+#retry-btn{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)}
+#next-btn{background:#FFD700;color:#1a1410}
+
+.sparkle{position:fixed;pointer-events:none;z-index:31;font-size:20px;animation:sparkleUp 0.8s ease-out forwards}
+@keyframes sparkleUp{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
+
+#gobi-ref.match{box-shadow:0 0 30px rgba(255,215,0,0.5),0 4px 20px rgba(0,0,0,0.4);border-color:rgba(255,215,0,0.6)}
+#gobi-ref.mismatch{box-shadow:0 0 20px rgba(255,80,80,0.4),0 4px 20px rgba(0,0,0,0.4);border-color:rgba(255,80,80,0.5);animation:shake 0.5s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+#progress-dots{display:flex;gap:8px;margin-top:16px}
+
+
+
+
+#p3-intro{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+#p3-intro .t{font-family:"Noto Serif SC",serif;font-size:24px;color:#FFD700;text-align:center;padding:0 32px;line-height:1.8}
+#p3-intro .s{font-family:"Noto Sans SC",sans-serif;font-size:14px;color:rgba(255,255,255,.5);text-align:center;margin-top:20px}
+#p3-intro .c{font-size:16px;color:#C4A46C;text-align:center;margin-top:32px;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+</style>
+</head>
+<body>
+
+<div id="p3-intro">
+  <div class="t">(P3-1) 抵达哈密后，路遥发现<br>(P3-2) 修复标语的关键是——<br>(P3-3) 找到与戈壁地表完全匹配的<br>黑褐色砾石</div>
+  <div class="s">(P3-5) 戈壁地表覆盖着千万年风沙打磨的砾石层<br>(P3-6) 颜色稍有偏差，修复痕迹就会暴露</div>
+  <div class="c">点击屏幕开始寻石</div>
+</div>
+
+<div id="app">
+  <canvas id="bg-canvas"></canvas>
+  <canvas id="heat-canvas"></canvas>
+  <div id="scene">
+    <div id="title-area">
+      <div class="t1">(P3-7) 寻 石 记</div>
+      <div class="t2">(P3-8) 找到与戈壁地表匹配的石料</div>
+    </div>
+    <div id="gobi-ref">
+      <canvas id="gobi-canvas"></canvas>
+      <div id="gobi-label">(P3-9) 戈壁地表颜色参考</div>
+    </div>
+    <div id="drop-hint">↑ 将石料拖拽到此处比对 ↑</div>
+    <!-- Reason banner: shown before selection -->
+    <div id="info-banner" style="margin-top:12px;padding:8px 16px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:10px;max-width:300px;text-align:center;pointer-events:none">
+      <div style="font-family:'Noto Sans SC',sans-serif;font-size:13px;font-weight:500;color:#FFD700;line-height:1.7;text-shadow:0 0 8px rgba(255,215,0,0.3)">
+        戈壁地表覆盖着<b>黑褐色砾石</b>，<br>(P3-10) 这是千万年风沙打磨的自然颜色。<br>(P3-11) 只有找到<b>(P3-12) 颜色完全匹配</b>(P3-13) 的石料，<br>才能不留痕迹地完成修复。
+      </div>
+    </div>
+    <div id="result-overlay">
+      <div id="result-icon"></div>
+      <div id="result-text"></div>
+      <div id="result-detail"></div>
+      <button id="retry-btn">再试一次</button>
+      <button id="next-btn">继续前行 →</button>
+    </div>
+  </div>
+  <div id="stone-shelf">
+    <div class="stone-wrapper">
+      <div class="stone" id="stone-a" data-color="yellow">
+        <canvas width="280" height="248"></canvas>
+      </div>
+      <div class="stone-label">(P3-14) 土黄砾石</div>
+    </div>
+    <div class="stone-wrapper">
+      <div class="stone" id="stone-b" data-color="white">
+        <canvas width="280" height="248"></canvas>
+      </div>
+      <div class="stone-label">(P3-15) 米白碱土</div>
+    </div>
+    <div class="stone-wrapper">
+      <div class="stone" id="stone-c" data-color="black">
+        <canvas width="280" height="248"></canvas>
+      </div>
+      <div class="stone-label">黑褐砾石</div>
+    </div>
+  </div>
+  <canvas id="particle-canvas"></canvas>
+  <div id="drag-clone"><canvas width="280" height="248"></canvas></div>
+</div>
+<script>
+(function(){
+'use strict';
+var W=function(){return window.innerWidth},H=function(){return window.innerHeight};
+var bgCanvas=document.getElementById('bg-canvas'),bgCtx=bgCanvas.getContext('2d');
+var heatCanvas=document.getElementById('heat-canvas'),heatCtx=heatCanvas.getContext('2d');
+var gobiCanvas=document.getElementById('gobi-canvas'),gobiCtx=gobiCanvas.getContext('2d');
+var particleCanvas=document.getElementById('particle-canvas'),pCtx=particleCanvas.getContext('2d');
+var dragClone=document.getElementById('drag-clone'),dcCanvas=dragClone.querySelector('canvas'),dcCtx=dcCanvas.getContext('2d');
+var gobiRef=document.getElementById('gobi-ref'),dropHint=document.getElementById('drop-hint');
+var resultOverlay=document.getElementById('result-overlay'),resultIcon=document.getElementById('result-icon');
+var resultText=document.getElementById('result-text'),resultDetail=document.getElementById('result-detail');
+var retryBtn=document.getElementById('retry-btn'),nextBtn=document.getElementById('next-btn');
+
+var stones=document.querySelectorAll('.stone');
+
+var stage='selecting',correctStone='black',triedStones={};
+var isDragging=false,dragStone=null;
+var time=0,lastDustDevil=0;
+
+// Offscreen canvas for pre-rendered background (used for heat shimmer)
+var offBg=document.createElement('canvas'),offCtx=offBg.getContext('2d');
+var gobiBounds=null;
+function updateGobiBounds(){gobiBounds=gobiRef.getBoundingClientRect()}
+
+// ==================== COLOR PALETTE ====================
+var C={
+  skyTop:'#7a92a8',skyMid:'#b0a090',skyHorizon:'#d4c0a0',
+  mtFar:'#8a7a6a',mtMid:'#6a5040',mtNear:'#4a3020',mtFore:'#352215',
+  groundBase:'#2a1a0a',groundMid:'#352210',groundLight:'#402a14',
+  gravel:['#1a0a00','#302010','#4a3020','#5a3a24','#201408','#3a2818'],
+  dryGrass:['#a89068','#b8a070','#c8b080','#988058','#b09870'],
+  shrub:['#4a5a30','#3a4a20','#3a4a28','#4a5a38','#2a3a18'],
+  crack:'rgba(20,10,0,0.4)',
+  heat:'rgba(200,170,130,0.03)'
+};
+
+// ==================== UTILS ====================
+function lerp(a,b,t){return a+(b-a)*t}
+function rand(a,b){return a+Math.random()*(b-a)}
+function noise(x,y){var n=Math.sin(x*12.9898+y*78.233)*43758.5453;return n-Math.floor(n)}
+
+// ==================== SKY ====================
+function drawSky(ctx,w,h,horizonY){
+  var grad=ctx.createLinearGradient(0,0,0,horizonY);
+  grad.addColorStop(0,C.skyTop);
+  grad.addColorStop(0.55,C.skyMid);
+  grad.addColorStop(1,C.skyHorizon);
+  ctx.fillStyle=grad;ctx.fillRect(0,0,w,horizonY);
+}
+
+// ==================== MOUNTAINS ====================
+function drawMountainLayer(ctx,w,h,yBase,height,color,detail){
+  ctx.beginPath();
+  ctx.moveTo(0,yBase);
+  var segments=40;
+  for(var i=0;i<=segments;i++){
+    var x=i/segments*w;
+    var ny=noise(i*detail,0);
+    var nh=noise(i*detail+50,1);
+    var peakY=yBase-height*(0.3+ny*0.5+nh*0.2);
+    // Add secondary peaks
+    if(i>5&&i<segments-5&&Math.random()<0.15){
+      var sx=x+rand(-15,15);
+      ctx.lineTo(sx,peakY-rand(10,height*0.3));
+      ctx.lineTo(x,peakY);
+    }else{
+      ctx.lineTo(x,peakY);
+    }
+  }
+  ctx.lineTo(w,yBase);
+  ctx.closePath();
+  ctx.fillStyle=color;ctx.fill();
+
+  // Vegetation dots along ridge
+  ctx.fillStyle='rgba(60,80,40,0.3)';
+  for(var i=0;i<segments*3;i++){
+    var vx=rand(0,w),vy=yBase-height*rand(0.6,0.95);
+    if(noise(vx*0.01,vy*0.01)>0.45){
+      ctx.beginPath();ctx.arc(vx,vy,rand(1.5,4),0,Math.PI*2);ctx.fill();
+    }
+  }
+}
+
+function drawAllMountains(ctx,w,h){
+  var baseY=h*0.58;
+  // Layer 1: farthest (hazy, blends with sky)
+  drawMountainLayer(ctx,w,h,baseY-10,h*0.08,C.mtFar,0.8);
+  // Layer 2: mid-distance
+  drawMountainLayer(ctx,w,h,baseY+8,h*0.13,C.mtMid,1.2);
+  // Layer 3: near mountains (darker, more detail)
+  drawMountainLayer(ctx,w,h,baseY+25,h*0.18,C.mtNear,1.8);
+  // Layer 4: foreground ridge (darkest, most vegetation)
+  drawMountainLayer(ctx,w,h,baseY+45,h*0.1,C.mtFore,2.5);
+}
+
+// ==================== GOBI GROUND ====================
+function drawGround(ctx,w,h,groundY){
+  // Base
+  var grad=ctx.createLinearGradient(0,groundY,0,h);
+  grad.addColorStop(0,C.groundMid);
+  grad.addColorStop(0.3,C.groundBase);
+  grad.addColorStop(1,'#0f0803');
+  ctx.fillStyle=grad;ctx.fillRect(0,groundY,w,h-groundY);
+
+  // Gravel layer (thousands of small stones)
+  for(var i=0;i<1200;i++){
+    var gx=rand(0,w),gy=rand(groundY+5,h-20);
+    var sz=rand(1,6);
+    var g=Math.floor(rand(0,C.gravel.length));
+    ctx.fillStyle=C.gravel[g];
+    ctx.beginPath();
+    // Irregular pebble shape
+    var rx=sz*(0.6+noise(gx*0.1,gy*0.1)*0.8);
+    var ry=sz*(0.5+noise(gx*0.13,gy*0.07)*0.8);
+    var ang=noise(gx,gy)*Math.PI;
+    ctx.save();ctx.translate(gx,gy);ctx.rotate(ang);
+    ctx.fillRect(-rx/2,-ry/2,rx,ry);
+    ctx.restore();
+  }
+
+  // Larger scattered rocks (foreground)
+  for(var i=0;i<30;i++){
+    var rx=rand(0,w),ry=rand(groundY+60,h-40);
+    var rs=rand(5,14);
+    ctx.fillStyle=C.gravel[Math.floor(rand(0,3))];
+    ctx.beginPath();
+    var pts=8;
+    for(var j=0;j<pts;j++){
+      var a=j/pts*Math.PI*2;
+      var r=rs*(0.7+noise(rx+j*10,ry+j*5)*0.6);
+      var px=rx+Math.cos(a)*r,py=ry+Math.sin(a)*r;
+      if(j===0) ctx.moveTo(px,py);else ctx.lineTo(px,py);
+    }
+    ctx.closePath();ctx.fill();
+  }
+
+  // Dry cracks
+  ctx.strokeStyle=C.crack;ctx.lineWidth=0.5;
+  for(var i=0;i<15;i++){
+    var cx=rand(0,w),cy=rand(groundY+10,h-50);
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    var segs=3+Math.floor(rand(2,5));
+    for(var j=0;j<segs;j++){
+      cx+=rand(-30,30);cy+=rand(5,30);
+      ctx.lineTo(cx,cy);
+    }
+    ctx.stroke();
+  }
+
+  // Wind erosion grooves (shallow linear scratches)
+  ctx.strokeStyle='rgba(15,8,3,0.3)';ctx.lineWidth=rand(0.5,2);
+  for(var i=0;i<20;i++){
+    var ey=rand(groundY+20,h-30);
+    ctx.beginPath();ctx.moveTo(rand(0,w*0.2),ey);
+    ctx.quadraticCurveTo(w*0.5,ey+rand(-15,15),rand(w*0.8,w),ey+rand(-20,20));
+    ctx.stroke();
+  }
+
+  // Dry grass clumps
+  for(var i=0;i<55;i++){
+    var gx=rand(0,w),gy=rand(groundY+5,h-30);
+    var clumpSize=rand(2,5);
+    ctx.fillStyle=C.dryGrass[Math.floor(rand(0,C.dryGrass.length))];
+    for(var j=0;j<clumpSize;j++){
+      var sx=gx+rand(-4,4),sy=gy+rand(-2,2);
+      ctx.beginPath();
+      ctx.moveTo(sx,sy);
+      ctx.quadraticCurveTo(sx+rand(-3,3),sy-rand(5,14),sx+rand(-1,1),sy-rand(8,18));
+      ctx.lineWidth=rand(0.5,1.2);ctx.stroke();
+    }
+  }
+
+  // Shrubs (saxaul / camel thorn) - foreground only
+  for(var i=0;i<6;i++){
+    var sx=rand(30,w-30),sy=rand(groundY+80,h-50);
+    var size=rand(8,18);
+    ctx.fillStyle=C.shrub[Math.floor(rand(0,C.shrub.length))];
+    // Clustered dots for foliage
+    for(var j=0;j<15;j++){
+      var bx=sx+rand(-size*0.6,size*0.6);
+      var by=sy+rand(-size*0.4,size*0.3);
+      ctx.beginPath();ctx.arc(bx,by,rand(1.5,3.5),0,Math.PI*2);ctx.fill();
+    }
+    // Shadow beneath
+    ctx.fillStyle='rgba(5,3,1,0.35)';
+    ctx.beginPath();ctx.ellipse(sx,sy+size*0.2,size*0.7,size*0.2,0,0,Math.PI*2);ctx.fill();
+    // Thin branches
+    ctx.strokeStyle='rgba(60,40,20,0.5)';ctx.lineWidth=0.8;
+    for(var j=0;j<4;j++){
+      ctx.beginPath();
+      ctx.moveTo(sx,sy);
+      ctx.quadraticCurveTo(sx+rand(-size*0.5,size*0.5),sy-rand(2,size*0.6),sx+rand(-size*0.4,size*0.4),sy-rand(4,size*0.8));
+      ctx.stroke();
+    }
+  }
+}
+
+// ==================== RENDER BACKGROUND ====================
+function renderBackground(w,h){
+  offBg.width=w;offBg.height=h;
+  var gY=h*0.52;
+  drawSky(offCtx,w,h,gY);
+  drawAllMountains(offCtx,w,h);
+  drawGround(offCtx,w,h,gY);
+  // Copy to main bg canvas
+  bgCanvas.width=w;bgCanvas.height=h;
+  bgCtx.drawImage(offBg,0,0);
+}
+
+// ==================== HEAT SHIMMER ====================
+function drawHeatShimmer(){
+  var w=heatCanvas.width,h=heatCanvas.height;
+  heatCtx.clearRect(0,0,w,h);
+  var groundY=h*0.52;
+  // Distort the lower portion with sine wave offsets
+  var stripH=h-groundY;
+  var cols=Math.floor(w/4);
+  for(var x=0;x<cols;x++){
+    var sx=x*4;
+    var offset=Math.sin(time*3+x*0.3)*Math.cos(time*2.1+x*0.17+1.5)*2.5;
+    var yStart=groundY+Math.sin(time*1.7+x*0.2)*3;
+    // Draw distorted slices
+    heatCtx.drawImage(offBg,
+      sx,yStart,4,stripH,
+      sx+offset,yStart,4,stripH
+    );
+  }
+  // Fade overlay
+  heatCtx.fillStyle='rgba(180,150,110,0.015)';
+  heatCtx.fillRect(0,groundY,w,stripH);
+}
+
+// ==================== GOBI REFERENCE ====================
+function drawGobiRef(){
+  var ctx=gobiCtx,w=gobiCanvas.width,h=gobiCanvas.height;
+  ctx.fillStyle='#2a1a08';ctx.fillRect(0,0,w,h);
+  // Gravel
+  for(var i=0;i<200;i++){
+    var sz=rand(1,5);
+    ctx.fillStyle='rgba('+rand(30,70)+','+rand(20,40)+','+rand(8,20)+','+rand(0.4,0.7)+')';
+    ctx.fillRect(rand(0,w),rand(0,h),sz,sz*rand(0.5,0.8));
+  }
+  // Few larger rocks
+  for(var i=0;i<8;i++){
+    ctx.fillStyle='rgba(20,10,4,0.6)';
+    ctx.beginPath();ctx.arc(rand(0,w),rand(0,h),rand(2,6),0,Math.PI*2);ctx.fill();
+  }
+}
+
+// ==================== MANGA STONES ====================
+var palettes={
+  yellow:{base:'#c4a060',medium:'#a08040',dark:'#6b4a20',shadow:'#3a2010',outline:'#2a1808',hatch:'rgba(50,25,8,0.35)',highlight:'rgba(255,235,180,0.5)',dot:'rgba(40,20,8,0.5)',vein:'rgba(180,140,90,0.3)'},
+  white:{base:'#e0d8c8',medium:'#c0b8a8',dark:'#8a7a60',shadow:'#504030',outline:'#3a2a1a',hatch:'rgba(70,50,30,0.28)',highlight:'rgba(255,255,248,0.6)',dot:'rgba(50,35,18,0.4)',vein:'rgba(220,210,190,0.25)'},
+  black:{base:'#4a3a2a',medium:'#352820',dark:'#1a1008',shadow:'#0a0500',outline:'#050200',hatch:'rgba(8,4,0,0.45)',highlight:'rgba(130,110,90,0.35)',dot:'rgba(70,50,30,0.55)',vein:'rgba(90,70,50,0.2)'}
+};
+
+function rockShape(cx,cy,r,seed,pts){
+  var arr=[];
+  for(var i=0;i<pts;i++){
+    var a=i/pts*Math.PI*2;
+    var nr=r*(0.6+0.4*(noise(i*seed*7,seed)*0.7+noise(i*seed*3.1+seed,seed*2)*0.3));
+    arr.push({x:cx+Math.cos(a)*nr,y:cy+Math.sin(a)*nr});
+  }
+  return arr;
+}
+
+function drawMangaStone(ctx,w,h,pal){
+  ctx.clearRect(0,0,w,h);
+  var cx=w/2+4,cy=h/2+6;
+
+  var mainPts=rockShape(cx,cy,52,1.7,14);
+  var r2Pts=rockShape(cx+30,cy-22,37,2.3,10);
+  var r3Pts=rockShape(cx-24,cy+28,28,3.1,8);
+  var r4Pts=rockShape(cx+42,cy-40,20,4.5,7);
+
+  function fillRock(pts,color){
+    ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+    for(var i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y);
+    ctx.closePath();ctx.fillStyle=color;ctx.fill();
+  }
+
+  // Shadows beneath
+  ctx.save();
+  ctx.fillStyle='rgba(0,0,0,0.25)';
+  ctx.beginPath();ctx.ellipse(w/2,h-8,62,16,0,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+
+  fillRock(r4Pts,pal.dark);
+  fillRock(r3Pts,pal.dark);
+  fillRock(r2Pts,pal.medium);
+  fillRock(mainPts,pal.base);
+
+  // Outlines (manga ink)
+  function strokeSet(pts,lw,color){
+    ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+    for(var i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y);
+    ctx.closePath();
+    ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.lineJoin='round';ctx.stroke();
+  }
+
+  strokeSet(r4Pts,2.2,pal.outline);
+  strokeSet(r3Pts,2.5,pal.outline);
+  strokeSet(r2Pts,2.8,pal.outline);
+  strokeSet(mainPts,3.2,pal.outline);
+
+  // Thicker shadow-side outlines
+  ctx.strokeStyle=pal.outline;ctx.lineJoin='round';
+  [mainPts,r2Pts].forEach(function(pts){
+    for(var i=Math.floor(pts.length*0.3);i<Math.floor(pts.length*0.8);i++){
+      ctx.lineWidth=4+rand(0,1.2);
+      ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);
+      ctx.lineTo(pts[(i+1)%pts.length].x,pts[(i+1)%pts.length].y);
+      ctx.stroke();
+    }
+  });
+
+  // Cross-hatching (clip to main shape)
+  ctx.save();
+  ctx.beginPath();ctx.moveTo(mainPts[0].x,mainPts[0].y);
+  for(var i=1;i<mainPts.length;i++) ctx.lineTo(mainPts[i].x,mainPts[i].y);
+  ctx.closePath();ctx.clip();
+
+  for(var i=0;i<55;i++){
+    var t=i/35;
+    var hx0=cx-70+t*115,hy0=cy-40+t*78;
+    ctx.beginPath();ctx.moveTo(hx0,hy0);ctx.lineTo(hx0+14,hy0+26);
+    ctx.strokeStyle=pal.hatch;ctx.lineWidth=0.5+t*0.3;ctx.stroke();
+  }
+  for(var i=0;i<35;i++){
+    var t=i/22;
+    var hx0=cx-40+t*92,hy0=cy+12-t*54;
+    ctx.beginPath();ctx.moveTo(hx0,hy0);ctx.lineTo(hx0-12,hy0+24);
+    ctx.strokeStyle=pal.hatch;ctx.lineWidth=0.4;ctx.stroke();
+  }
+  ctx.restore();
+
+  // Highlight rim
+  ctx.strokeStyle=pal.highlight;ctx.lineWidth=1.8;
+  for(var i=0;i<=Math.floor(mainPts.length/4);i++){
+    ctx.beginPath();ctx.moveTo(mainPts[i].x,mainPts[i].y);
+    ctx.lineTo(mainPts[(i+1)%mainPts.length].x,mainPts[(i+1)%mainPts.length].y);
+    ctx.stroke();
+  }
+
+  // Mineral veins
+  ctx.strokeStyle=pal.vein;ctx.lineWidth=rand(0.4,1.2);
+  for(var i=0;i<3;i++){
+    var vx=rand(cx-30,cx+30),vy=rand(cy-25,cy+25);
+    ctx.beginPath();ctx.moveTo(vx,vy);
+    ctx.quadraticCurveTo(vx+rand(-24,24),vy+rand(-16,24),vx+rand(-30,30),vy+rand(-24,30));
+    ctx.stroke();
+  }
+
+  // Texture dots
+  for(var i=0;i<140;i++){
+    var dx=rand(cx-50,cx+50),dy=rand(cy-44,cy+44);
+    var inShape=false;
+    for(var j=0;j<mainPts.length;j++){
+      var p1=mainPts[j],p2=mainPts[(j+1)%mainPts.length];
+      if((p2.y-p1.y)*(dx-p1.x)-(p2.x-p1.x)*(dy-p1.y)<0) inShape=!inShape;
+    }
+    if(inShape){
+      ctx.fillStyle=pal.dot;ctx.fillRect(dx,dy,rand(0.5,1.5),rand(0.5,1.5));
+    }
+  }
+
+  // Tiny cracks on surface
+  ctx.strokeStyle='rgba(0,0,0,0.2)';ctx.lineWidth=0.4;
+  for(var i=0;i<5;i++){
+    ctx.beginPath();ctx.moveTo(cx+rand(-32,32),cy+rand(-28,28));
+    ctx.quadraticCurveTo(cx+rand(-15,15),cy+rand(-10,10),cx+rand(-12,12),cy+rand(-8,8));
+    ctx.stroke();
+  }
+}
+
+function drawAllStones(){
+  stones.forEach(function(stone){
+    var canvas=stone.querySelector('canvas');
+    if(!canvas) return;
+    var ctx=canvas.getContext('2d');
+    var color=stone.getAttribute('data-color');
+    if(palettes[color]) drawMangaStone(ctx,280,248,palettes[color]);
+  });
+}
+
+// ==================== PARTICLES ====================
+var sandParticles=[];
+var dustDevils=[];
+function initParticles(w,h){
+  sandParticles=[];
+  for(var i=0;i<120;i++){
+    sandParticles.push({
+      x:rand(0,w),y:rand(h*0.55,h-30),
+      r:rand(0.4,1.8),
+      vx:rand(0.3,1.5),vy:rand(-0.3,0.3),
+      alpha:rand(0.15,0.5),
+      life:rand(0,100)
+    });
+  }
+}
+
+function updateParticles(w,h,dt){
+  // Sand drift
+  for(var i=0;i<sandParticles.length;i++){
+    var p=sandParticles[i];
+    p.x+=p.vx*dt*60;p.y+=p.vy*dt*60;
+    p.life+=dt*60;
+    if(p.x>w+10){p.x=-10;p.y=rand(h*0.52,h-20);}
+    if(p.y<h*0.5||p.y>h){p.y=rand(h*0.52,h-20);}
+    p.alpha=0.15+Math.sin(p.life*0.03)*0.15;
+  }
+
+  // Dust devil spawn
+  lastDustDevil+=dt;
+  if(lastDustDevil>rand(10,18)){
+    lastDustDevil=0;
+    dustDevils.push({
+      x:rand(w*0.1,w*0.9),y:rand(h*0.55,h*0.75),
+      radius:rand(8,18),height:0,
+      maxHeight:rand(60,140),
+      life:0,maxLife:rand(3,6),
+      particles:[]
+    });
+    var dd=dustDevils[dustDevils.length-1];
+    for(var i=0;i<30;i++){
+      dd.particles.push({angle:rand(0,Math.PI*2),r:0,speed:rand(2,5),y:0,alpha:rand(0.3,0.7)});
+    }
+  }
+
+  // Update dust devils
+  for(var i=dustDevils.length-1;i>=0;i--){
+    var dd=dustDevils[i];
+    dd.life+=dt;
+    dd.height=lerp(0,dd.maxHeight,Math.min(1,dd.life/dd.maxLife*2));
+    dd.x+=rand(-0.3,0.3)*dt*60;
+    for(var j=0;j<dd.particles.length;j++){
+      var dp=dd.particles[j];
+      dp.angle+=dp.speed*dt*3;
+      dp.r+=dt*15;
+      dp.y=dd.height*(dp.r/(dd.radius*3));
+      dp.alpha-=dt*0.3;
+    }
+    if(dd.life>dd.maxLife||dd.particles[0].alpha<0){
+      dustDevils.splice(i,1);
+    }
+  }
+}
+
+function drawParticles(w,h){
+  pCtx.clearRect(0,0,w,h);
+
+  // Sand
+  for(var i=0;i<sandParticles.length;i++){
+    var p=sandParticles[i];
+    pCtx.fillStyle='rgba(200,170,130,'+p.alpha+')';
+    pCtx.fillRect(p.x,p.y,p.r,p.r*0.6);
+  }
+
+  // Dust devils
+  for(var i=0;i<dustDevils.length;i++){
+    var dd=dustDevils[i];
+    for(var j=0;j<dd.particles.length;j++){
+      var dp=dd.particles[j];
+      if(dp.alpha<=0) continue;
+      var px=dd.x+Math.cos(dp.angle)*dp.r;
+      var py=dd.y-dp.y+Math.sin(dp.angle*2)*dp.r*0.3;
+      pCtx.fillStyle='rgba(190,160,120,'+dp.alpha+')';
+      pCtx.beginPath();pCtx.arc(px,py,rand(1,3),0,Math.PI*2);pCtx.fill();
+    }
+  }
+}
+
+// ==================== DRAG ====================
+function getPos(e){
+  if(e.touches&&e.touches.length>0) return {x:e.touches[0].clientX,y:e.touches[0].clientY};
+  if(e.changedTouches&&e.changedTouches.length>0) return {x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
+  return {x:e.clientX,y:e.clientY};
+}
+
+stones.forEach(function(stone){
+  stone.addEventListener('mousedown',startDrag);
+  stone.addEventListener('touchstart',startDrag,{passive:false});
+});
+
+function startDrag(e){
+  if(stage!=='selecting') return;
+  e.preventDefault();e.stopPropagation();
+  var stone=e.currentTarget;
+  isDragging=true;dragStone=stone;
+  var pos=getPos(e);
+  stone.classList.add('dragging');
+  var srcCanvas=stone.querySelector('canvas');
+  dcCanvas.width=280;dcCanvas.height=248;
+  dcCtx.clearRect(0,0,180,160);
+  if(srcCanvas) dcCtx.drawImage(srcCanvas,0,0);
+  dragClone.style.display='block';
+  dragClone.style.left=(pos.x-75)+'px';
+  dragClone.style.top=(pos.y-66)+'px';
+  stone.style.opacity='0.25';
+}
+
+function doDrag(e){
+  if(!isDragging) return;
+  e.preventDefault();
+  var pos=getPos(e);
+  dragClone.style.left=(pos.x-75)+'px';
+  dragClone.style.top=(pos.y-66)+'px';
+  updateGobiBounds();
+  if(gobiBounds){
+    var cx=pos.x,cy=pos.y;
+    var inZone=cx>gobiBounds.left-40&&cx<gobiBounds.right+40&&cy>gobiBounds.top-40&&cy<gobiBounds.bottom+40;
+    if(inZone) gobiRef.classList.add('hover');else gobiRef.classList.remove('hover');
+  }
+}
+
+function endDrag(e){
+  if(!isDragging) return;
+  isDragging=false;
+  var pos=getPos(e);
+  var stone=dragStone;
+  var color=stone.getAttribute('data-color');
+  dragClone.style.display='none';
+  stone.classList.remove('dragging');
+  stone.style.opacity='1';
+  gobiRef.classList.remove('hover');
+  updateGobiBounds();
+  if(gobiBounds){
+    var cx=pos.x,cy=pos.y;
+    var hit=cx>gobiBounds.left+15&&cx<gobiBounds.right-15&&cy>gobiBounds.top+15&&cy<gobiBounds.bottom-15;
+    if(hit) checkMatch(color,pos);
+  }
+  dragStone=null;
+}
+
+window.addEventListener('mousemove',doDrag);
+window.addEventListener('touchmove',doDrag,{passive:false});
+window.addEventListener('mouseup',endDrag);
+window.addEventListener('touchend',endDrag);
+
+// ==================== MATCH ====================
+function checkMatch(color,pos){
+  if(color===correctStone) onCorrect(pos);else onWrong(color,pos);
+}
+
+function onWrong(color,pos){var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='0.3';
+  stage='result';
+  gobiRef.classList.add('mismatch');dropHint.style.display='none';
+  resultOverlay.classList.add('show');
+  setTimeout(function(){resultOverlay.classList.add('darken')},100);
+  resultIcon.textContent='';resultIcon.classList.add('show');
+  resultText.textContent='颜色不对';resultText.classList.add('show');
+  resultDetail.textContent='再仔细看看戈壁地表的颜色，找到那块真正属于这里的石头。';
+  resultDetail.classList.add('show');
+  retryBtn.textContent='再选一次';retryBtn.classList.add('show');
+  retryBtn.onclick=reset;nextBtn.style.display='none';
+  if(!triedStones[color]) triedStones[color]=true;
+  
+  setTimeout(function(){gobiRef.classList.remove('mismatch')},600);
+}
+
+function onCorrect(pos){var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='0.3';
+  stage='result';
+  gobiRef.classList.add('match');dropHint.style.display='none';
+  spawnSparkles(pos.x,pos.y);
+  resultOverlay.classList.add('show');
+  setTimeout(function(){resultOverlay.classList.add('darken')},100);
+  resultIcon.textContent='';resultIcon.classList.add('show');
+  resultText.textContent='就是它！黑褐砾石';resultText.classList.add('show');
+  resultDetail.innerHTML='"路遥他们跑遍哈密所有矿业公司和砂厂，终于找到了颜色完全匹配的黑色砾石。用小货车分27趟，转运20吨石料——这就是戈壁地表本来的颜色。"';
+  resultDetail.classList.add('show');
+  retryBtn.style.display='none';nextBtn.classList.add('show');
+  nextBtn.onclick=function(){spawnSparkles(W()/2,H()/2)};
+  triedStones[color]=true;
+}
+
+function reset(){var ib=document.getElementById('info-banner');if(ib)ib.style.opacity='1';
+  stage='selecting';
+  resultOverlay.classList.remove('darken','show');
+  resultIcon.classList.remove('show');resultText.classList.remove('show');
+  resultDetail.classList.remove('show');retryBtn.classList.remove('show');
+  nextBtn.classList.remove('show');
+  gobiRef.classList.remove('match','mismatch');
+  dropHint.style.display='';
+}
+
+function spawnSparkles(cx,cy){
+  var emojis=['✨','💫','⭐','🌟','💛'];
+  for(var i=0;i<14;i++){
+    var el=document.createElement('div');el.className='sparkle';
+    el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    el.style.left=cx+'px';el.style.top=cy+'px';
+    el.style.setProperty('--dx',(Math.random()-0.5)*120+'px');
+    el.style.setProperty('--dy',-(40+Math.random()*80)+'px');
+    el.style.animationDuration=(0.5+Math.random()*0.6)+'s';
+    el.style.fontSize=(14+Math.random()*18)+'px';
+    document.body.appendChild(el);
+    setTimeout(function(){el.remove()},900);
+  }
+}
+
+// ==================== RESIZE ====================
+function resize(){
+  var w=W(),h=H();
+  bgCanvas.width=w;bgCanvas.height=h;
+  heatCanvas.width=w;heatCanvas.height=h;
+  particleCanvas.width=w;particleCanvas.height=h;
+  gobiCanvas.width=gobiRef.clientWidth||280;
+  gobiCanvas.height=gobiRef.clientHeight||90;
+  renderBackground(w,h);
+  drawGobiRef();
+  updateGobiBounds();
+  initParticles(w,h);
+}
+window.addEventListener('resize',function(){setTimeout(resize,200)});
+
+// ==================== MAIN LOOP ====================
+resize();
+drawAllStones();
+var lastTime=performance.now();
+
+function loop(now){
+  requestAnimationFrame(loop);
+  var dt=Math.min((now-lastTime)/1000,0.1);
+  lastTime=now;time+=dt;
+
+  var w=W(),h=H();
+  updateParticles(w,h,dt);
+  drawParticles(w,h);
+  drawHeatShimmer();
+}
+
+requestAnimationFrame(loop);
+})();
+</script>
+
+<script>
+document.getElementById("p3-intro").addEventListener("click",function(){
+  this.style.opacity="0";
+  this.style.transition="opacity 1s";
+  setTimeout(function(){document.getElementById("p3-intro").style.display="none"},1000);
+});
+</script>
+</body>
+</html>

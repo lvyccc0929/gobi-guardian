@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>P0 · 发现</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:"Noto Serif SC","Noto Sans SC",sans-serif}
+#app{position:fixed;inset:0}
+canvas{position:absolute;top:0;left:0}
+#gps-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:#00FF88;left:50%;top:45%;transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(0,255,136,0.6),0 0 20px rgba(0,255,136,0.3);opacity:0;transition:opacity 0.5s}
+#title{position:absolute;left:0;right:0;top:42%;text-align:center;font-family:"Noto Serif SC",serif;font-size:48px;font-weight:700;color:#F5F0E8;letter-spacing:8px;opacity:0;text-shadow:0 0 16px rgba(200,170,100,0.3),0 2px 4px rgba(0,0,0,0.5);transition:opacity 0.3s}
+#subtitle{position:absolute;left:0;right:0;top:53%;text-align:center;font-family:"Noto Sans SC",sans-serif;font-size:14px;font-weight:400;color:#8B7355;letter-spacing:4px;opacity:0;transition:opacity 0.3s}
+</style>
+</head>
+<body>
+<div id="app">
+  <canvas id="c"></canvas>
+  <div id="gps-dot"></div>
+  <div id="title">(P0-1) 戈壁守护者</div>
+  <div id="subtitle"></div>
+</div>
+<script>
+(function(){
+var canvas=document.getElementById("c"),ctx=canvas.getContext("2d");
+var W,H;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener("resize",resize);
+
+var gpsDot=document.getElementById("gps-dot");
+var titleEl=document.getElementById("title");
+var subtitleEl=document.getElementById("subtitle");
+
+// Title particles
+var titleParticles=[];
+var titleChars="戈壁守护者";
+var cols=0,rows=0;
+function initParticles(){
+  titleParticles=[];
+  ctx.font='bold 48px "Noto Serif SC",serif';
+  var metrics=ctx.measureText(titleChars);
+  var tw=metrics.width,th=48;
+  var ox=(W-tw)/2,oy=H*0.42;
+  ctx.fillStyle="#c8aa64";
+  ctx.fillText(titleChars,ox,oy+th);
+  var imageData=ctx.getImageData(0,0,W,H);
+  ctx.clearRect(0,0,W,H);
+  for(var y=0;y<H;y+=3){
+    for(var x=0;x<W;x+=3){
+      var i=(y*W+x)*4;
+      if(imageData.data[i+3]>128){
+        titleParticles.push({
+          x:Math.random()*W,y:Math.random()*H,
+          tx:x,ty:y,
+          r:180,g:150,b:110,
+          size:1.5+Math.random()*2,
+          delay:Math.random()*0.3
+        });
+      }
+    }
+  }
+}
+initParticles();
+
+// Grid
+var gridEl=document.createElement("div");
+var gridSvg='<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">';
+for(var i=1;i<20;i++){gridSvg+='<line x1="'+((i/20)*100)+'%" y1="0" x2="'+((i/20)*100)+'%" y2="100%" stroke="#00FF88" stroke-opacity="0.15" stroke-width="0.5"/>'}
+for(var j=1;j<30;j++){gridSvg+='<line x1="0" y1="'+((j/30)*100)+'%" x2="100%" y2="'+((j/30)*100)+'%" stroke="#00FF88" stroke-opacity="0.15" stroke-width="0.5"/>'}
+gridSvg+='</svg>';
+gridEl.style.cssText='position:absolute;inset:0;opacity:0;transition:opacity 0.8s;pointer-events:none';
+gridEl.innerHTML=gridSvg;
+document.getElementById("app").appendChild(gridEl);
+
+var active=true,startTime=0;
+var titleFormed=false;
+var subtitleComplete=false,timer=0;
+
+function update(elapsed){
+  // GPS dot
+  if(gpsDot.style.opacity===""||gpsDot.style.opacity==="0"){gpsDot.style.opacity="1"}
+
+  // Grid flash
+  if(elapsed>=0.5&&gridEl.style.opacity==="0"){
+    gridEl.style.opacity="0.15";
+    setTimeout(function(){if(gridEl)gridEl.style.opacity="0"},800);
+  }
+
+  // Title particles form
+  if(elapsed>=0.6&&!titleFormed){
+    var p=Math.min((elapsed-0.6)/0.3,1);
+    var eased=1-Math.pow(1-p,3);
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<titleParticles.length;i++){
+      var pt=titleParticles[i];
+      var lp=Math.max(0,Math.min(1,(eased-pt.delay)/(1-pt.delay)));
+      if(lp<=0)continue;
+      var x=pt.x+(pt.tx-pt.x)*lp;
+      var y=pt.y+(pt.ty-pt.y)*lp;
+      var alpha=0.5+0.5*lp;
+      ctx.fillStyle="rgba("+pt.r+","+pt.g+","+pt.b+","+alpha+")";
+      ctx.fillRect(x-pt.size*lp/2,y-pt.size*lp/2,pt.size*lp,pt.size*lp);
+    }
+    if(p>=1){titleFormed=true;titleEl.style.opacity="1"}
+  }
+
+  // Subtitle typewriter
+  if(elapsed>=1.0&&!subtitleComplete){
+    var full="(P0-2) GUARDIAN OF THE GOBI";
+    timer+=16;
+    var n=Math.min(Math.floor(timer/45),full.length);
+    subtitleEl.textContent=full.slice(0,n)+(n<full.length?"|":"");
+    subtitleEl.style.opacity="1";
+    if(n>=full.length){subtitleComplete=true;subtitleEl.textContent=full}
+  }
+}
+
+function loop(t){
+  if(!active)return;
+  if(!startTime)startTime=t;
+  var elapsed=(t-startTime)/1000;
+  if(elapsed>10)return;
+  update(elapsed);
+  requestAnimationFrame(loop);
+}
+
+// Start
+initParticles();
+requestAnimationFrame(loop);
+
+
+
+console.log("P0 ready");
+})();
+</script>
+</body>
+</html>

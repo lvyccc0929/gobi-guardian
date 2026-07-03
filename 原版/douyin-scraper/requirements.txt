@@ -1,0 +1,4 @@
+﻿playwright>=1.40.0
+jieba>=0.42.1
+httpx>=0.25.0
+rich>=13.0.0

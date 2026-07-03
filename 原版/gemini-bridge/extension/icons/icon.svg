@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4285f4"/>
+      <stop offset="50%" stop-color="#9b72cb"/>
+      <stop offset="100%" stop-color="#d96570"/>
+    </linearGradient>
+    <mask id="arches">
+      <rect width="128" height="128" fill="white"/>
+      <ellipse cx="22"  cy="118" rx="11" ry="18" fill="black"/>
+      <ellipse cx="50"  cy="118" rx="11" ry="18" fill="black"/>
+      <ellipse cx="78"  cy="118" rx="11" ry="18" fill="black"/>
+      <ellipse cx="106" cy="118" rx="11" ry="18" fill="black"/>
+    </mask>
+  </defs>
+
+  <rect width="128" height="128" rx="24" fill="url(#bg)"/>
+
+  <!-- 4-point sparkle: same outer points as the upright variant; control points sit
+       on the axes for a sharp star, then rotated 45° and nudged toward the bridge. -->
+  <path fill="#fff" opacity="0.98"
+    transform="translate(0 12) rotate(45 64 48)"
+    d="M64 12 C 64 40, 72 48, 100 48 C 72 48, 64 56, 64 84 C 64 56, 56 48, 28 48 C 56 48, 64 40, 64 12 Z"/>
+
+  <rect x="8" y="86" width="112" height="32" fill="#fff" opacity="0.95" mask="url(#arches)"/>
+  <line x1="14" y1="123" x2="114" y2="123" stroke="#fff" stroke-opacity="0.45" stroke-width="1.2"/>
+</svg>

@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="preload" as="image" href="assets/p4-00.jpg">
+<link rel="preload" as="image" href="assets/p4-01.jpg">
+<link rel="preload" as="image" href="assets/p4-02.jpg">
+<link rel="preload" as="image" href="assets/p4-03.jpg">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>P4 · 二十四天</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"PingFang SC","Microsoft YaHei",sans-serif;user-select:none}
+#scene{position:absolute;inset:0;z-index:1;visibility:visible}
+#scene img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.6s}
+#scene img.active{opacity:1}
+#page-dots{position:absolute;bottom:36px;left:0;right:0;z-index:5;display:flex;justify-content:center;gap:8px;pointer-events:none}
+#page-dots .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.3);transition:all 0.3s}
+#page-dots .dot.on{background:#FFD700;box-shadow:0 0 6px rgba(255,215,0,0.5)}
+#tap-left{position:absolute;top:0;left:0;width:40%;height:100%;z-index:3}
+#tap-right{position:absolute;top:0;right:0;width:60%;height:100%;z-index:3}
+#opening{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);cursor:pointer;transition:opacity 1s}
+#opening .q-text{font-size:min(4.5vw,18px);font-weight:700;color:#fff;text-align:center;line-height:2;padding:0 30px;text-shadow:0 2px 12px rgba(0,0,0,0.8)}
+#opening .q-hint{font-size:min(3vw,12px);color:rgba(255,255,255,0.4);margin-top:24px;animation:floatAnim 2.5s ease-in-out infinite}
+@keyframes floatAnim{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+#subtitle{position:absolute;bottom:22%;left:10%;right:10%;z-index:8;pointer-events:none;opacity:0;transition:opacity 0.8s;text-align:center}
+#subtitle .s-text{display:inline-block;background:rgba(0,0,0,0.55);color:#fff;font-size:min(3.5vw,14px);padding:10px 18px;border-radius:6px;line-height:1.8}
+#nav-hint{position:absolute;bottom:80px;left:0;right:0;text-align:center;z-index:5;font-size:min(2.5vw,10px);color:rgba(255,255,255,0.3);letter-spacing:2px;pointer-events:none;transition:opacity 0.5s}
+
+#chapter-intro{pointer-events:none}#chapter-intro,#chapter-outro{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:1;transition:opacity 0.8s}
+#chapter-intro.hide,#chapter-outro.hide{opacity:0;pointer-events:none}
+#chapter-outro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99999;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}#chapter-outro:hover{background:rgba(0,0,0,.95)}
+#chapter-intro .ci-title{font-family:"Noto Serif SC",serif;font-size:min(7vw,30px);font-weight:700;color:#FFD700;text-align:center;margin-bottom:12px;text-shadow:0 0 20px rgba(255,215,0,.3)}
+#chapter-intro .ci-sub{font-family:"Noto Serif SC",serif;font-size:min(4vw,17px);color:#C4A46C;text-align:center;max-width:300px;line-height:1.8}
+#chapter-outro .co-text{font-family:"Noto Serif SC",serif;font-size:min(4vw,17px);color:#C4A46C;text-align:center;max-width:300px;line-height:1.8;margin-bottom:32px}
+#chapter-outro .co-next{font-family:"Noto Sans SC",sans-serif;font-size:min(3.5vw,14px);color:#8B7355;text-align:center;animation:coPulse 2s infinite}
+@keyframes coPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+#back-btn{position:fixed;top:16px;left:16px;z-index:9998;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);font-size:min(4.5vw,18px);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;font-family:sans-serif;line-height:1}
+#back-btn:hover{background:rgba(0,0,0,.7);color:#FFD700;border-color:rgba(255,215,0,.4)}
+
+</style>
+</head>
+<body>
+<button id="back-btn" title="返回上一章">&#10094;</button>
+
+<div id="scene">
+<img loading="eager" src="assets/p4-00.jpg" class="active" id="img0">
+<img loading="eager" src="assets/p4-01.jpg" id="img1">
+<img loading="eager" src="assets/p4-02.jpg" id="img2">
+<img loading="eager" src="assets/p4-03.jpg" id="img3">
+</div>
+<div id="tap-left"></div><div id="tap-right"></div>
+<div id="nav-hint"> 点击左右翻页 </div>
+<div id="page-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div id="opening" onclick="dismissOpening()"><div class="q-text">这些大字扛住了60年的风沙。<br>但很遗憾，没有扛住某些人几分钟的撒欢。</div><div class="q-hint">轻触继续</div></div>
+<div id="subtitle"><div class="s-text"></div></div>
+<script>
+var page=0,totalPages=4,started=false;
+var imgs=[document.getElementById("img0"),document.getElementById("img1"),document.getElementById("img2"),document.getElementById("img3")];
+var dots=document.querySelectorAll("#page-dots .dot");
+var opening=document.getElementById("opening");
+var subtitle=document.getElementById("subtitle"),subText=subtitle.querySelector(".s-text");
+var navHint=document.getElementById("nav-hint");navHint.style.opacity="0";
+var subtitles=["「我们站在标语边上才看清——越野车碾过的深沟，最深处能埋进半条手臂。修复的第一步，是把松动的砾石清理干净，再从戈壁滩上筛选颜色一致的黑褐色石料，一车一车运过来。」","「烈日下，我们用铁锹一铲一铲地把石料填进沟壑，再用脚踩实。一个下午过去了，五个人只修完了四分之一个圈。抬头一看，还有十几处破坏痕迹等着我们。」","「消息传开后，朋友们带着工具来了。五个人排成一排，像当年写下标语的空军学员一样——弯腰、铲石、铺撒、踩实。没有人喊累。」","「第27车石料撒完的那一刻，我们爬上旁边的土坡往下看——标语周围那些黑色的伤疤，终于消失了。24天，27趟，近20吨石料。五个大字，完好如初。」"];
+function goToPage(idx){if(idx<0)return;if(idx>=totalPages){if(window.showOutro)window.showOutro();return;}
+imgs[page].classList.remove("active");page=idx;imgs[page].classList.add("active");
+dots.forEach(function(d,i){d.classList.toggle("on",i===page)});
+if(subtitles[page]){subText.textContent=subtitles[page];subtitle.style.opacity="1";
+  clearTimeout(subtitle._t);subtitle._t=setTimeout(function(){subtitle.style.opacity="0"},4000)}
+}
+function nextPage(){if(!started)return;goToPage(page+1)}
+function prevPage(){if(!started)return;goToPage(page-1)}
+window.dismissOpening=function(){if(started)return;started=true;opening.style.opacity="0";setTimeout(function(){opening.style.display="none"},1000);navHint.style.opacity="1";goToPage(0)};
+document.getElementById("tap-right").addEventListener("click",nextPage);
+document.getElementById("tap-right").addEventListener("touchend",function(e){nextPage();e.preventDefault()});
+document.getElementById("tap-left").addEventListener("click",prevPage);
+document.getElementById("tap-left").addEventListener("touchend",function(e){prevPage();e.preventDefault()});
+document.addEventListener("keydown",function(e){if(e.key==="ArrowRight")nextPage();if(e.key==="ArrowLeft")prevPage()});
+</script>
+<div class="ci-sub">一点一滴，把伤痕填回去。</div></div>
+
+
+<script>document.getElementById("back-btn").addEventListener("click",function(){window.location.href="demo-p3.html"})</script>
+<script>window.showOutro=function(){window.location.href="demo-p5.html"}</script>
+
+<audio id="bgm" src="assets/bgm.m4a" loop preload="auto"></audio>
+<div id="bgm-toggle" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99999;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;backdrop-filter:blur(4px)" onclick="toggleBgm()" title="音乐">🔇</div><script>
+(function(){
+var bgm=document.getElementById("bgm"),toggle=document.getElementById("bgm-toggle"),bgmOn=false;
+var S_KEY="bgm_time",P_KEY="bgm_playing";
+function restoreBgm(){
+  var savedTime=parseFloat(sessionStorage.getItem(S_KEY)||"0");
+  var wasPlaying=sessionStorage.getItem(P_KEY)==="1";
+  if(savedTime>0.5&&bgm&&bgm.readyState>=1){bgm.currentTime=savedTime}
+  if(wasPlaying){
+    bgmOn=true;
+    bgm.play().then(function(){if(toggle)toggle.textContent="♪"}).catch(function(){bgmOn=false;if(toggle)toggle.textContent="🔇"})
+  }
+}
+if(bgm){if(bgm.readyState>=1){restoreBgm()}else{bgm.addEventListener("loadedmetadata",restoreBgm,{once:true})}}
+window.addEventListener("beforeunload",function(){if(bgm){sessionStorage.setItem(S_KEY,bgm.currentTime);sessionStorage.setItem(P_KEY,bgmOn?"1":"0")}});
+setInterval(function(){if(bgm&&bgmOn&&!bgm.paused){sessionStorage.setItem(S_KEY,bgm.currentTime)}},1000);
+window.toggleBgm=function(){bgmOn=!bgmOn;if(bgmOn){bgm.play().then(function(){toggle.textContent="♪"}).catch(function(){bgmOn=false;toggle.textContent="🔇"})}else{bgm.pause();toggle.textContent="🔇"}sessionStorage.setItem(P_KEY,bgmOn?"1":"0")};
+window.pauseBgmForVideo=function(){if(bgm&&bgmOn){bgm.pause();sessionStorage.setItem(S_KEY,bgm.currentTime)}};
+window.resumeBgmAfterVideo=function(){if(!bgmOn)return;bgm.play().then(function(){toggle.textContent="♪"}).catch(function(){})};
+document.addEventListener("play",function(e){if(e.target.tagName==="VIDEO"){var v=e.target;var el=v;while(el){var s=getComputedStyle(el);if(s.display==="none"||parseFloat(s.opacity)<0.1)return;el=el.parentElement}window.pauseBgmForVideo()}},true);
+document.addEventListener("ended",function(e){if(e.target.tagName==="VIDEO"){window.resumeBgmAfterVideo()}},true);
+document.addEventListener("click",function e(){if(!bgmOn){bgmOn=true;bgm.play().then(function(){toggle.textContent="♪"}).catch(function(){bgmOn=false});sessionStorage.setItem(P_KEY,"1")}},{once:true});
+})();
+</script>
+</body>
+
+
+
+</html>

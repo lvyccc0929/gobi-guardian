@@ -1,0 +1,41 @@
+# Tool versions for gemini-bridge.
+# Install everything with: mise install
+# Then ./start.sh (or run tasks below) — mise auto-activates these tools when
+# you cd into the project (requires `mise activate` in your shell rc).
+
+[tools]
+python = "3.13"
+uv = "latest"
+ruff = "latest"
+"pipx:pip-audit" = "latest"
+
+[env]
+# Keep server/.venv on PATH so `python` / `pytest` / etc. resolve to the
+# project's deps without a manual `source .venv/bin/activate`.
+_.python.venv = { path = "server/.venv", create = false }
+
+[tasks.setup]
+description = "First-run install: create server/.venv and install deps"
+run = "./start.sh --setup-only"
+
+[tasks.serve]
+description = "Run the bridge on :6969"
+run = "./start.sh"
+
+[tasks.test]
+description = "Run the server unit tests"
+dir = "server"
+env = { PYTHONPATH = "src" }
+run = "python -m unittest discover tests -v"
+
+[tasks.lint]
+description = "Lint server code (pyflakes/bugbear/pyupgrade/imports/simplify/comprehensions/pathlib/quotes)"
+run = "ruff check --select F,E,W,B,I,UP,RUF,SIM,PIE,RET,C4,PTH,Q --line-length 120 server/src server/tests"
+
+[tasks.fix]
+description = "Apply ruff safe auto-fixes only (imports, quotes, etc.) — semantics-preserving"
+run = "ruff check --select F,E,W,B,I,UP,RUF,SIM,PIE,RET,C4,PTH,Q --line-length 120 --fix server/src server/tests"
+
+[tasks.audit]
+description = "Scan runtime deps for known vulnerabilities"
+run = "pip-audit -r server/requirements.txt --strict"

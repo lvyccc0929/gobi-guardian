@@ -1,0 +1,18 @@
+[Unit]
+Description=Gemini Bridge — local OpenAI-compatible API for Google Gemini
+After=network-online.target
+Wants=network-online.target
+# Cap restarts: 3 failures in 60 s, then stop (avoid tight loop on misconfig).
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+# Edit the two paths below to match where you cloned the repo.
+WorkingDirectory=%h/gemini-bridge
+ExecStart=%h/gemini-bridge/start.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

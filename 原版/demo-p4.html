@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>P4 · 戈壁一日</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"PingFang SC","Microsoft YaHei",sans-serif;user-select:none}
+#scene{position:absolute;inset:0;z-index:1}
+#scene img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.6s}
+#scene img.active{opacity:1}
+#page-dots{position:absolute;bottom:36px;left:0;right:0;z-index:5;display:flex;justify-content:center;gap:8px;pointer-events:none}
+#page-dots .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.3);transition:all 0.3s}
+#page-dots .dot.on{background:#FFD700;box-shadow:0 0 6px rgba(255,215,0,0.5)}
+#tap-left{position:absolute;top:0;left:0;width:40%;height:100%;z-index:3}
+#tap-right{position:absolute;top:0;right:0;width:60%;height:100%;z-index:3}
+#opening{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);cursor:pointer;transition:opacity 1s}
+#opening .q-text{font-size:18px;font-weight:700;color:#fff;text-align:center;line-height:2;padding:0 30px;text-shadow:0 2px 12px rgba(0,0,0,0.8)}
+#opening .q-hint{font-size:12px;color:rgba(255,255,255,0.4);margin-top:24px;animation:floatAnim 2.5s ease-in-out infinite}
+@keyframes floatAnim{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+#subtitle{position:absolute;bottom:22%;left:10%;right:10%;z-index:8;pointer-events:none;opacity:0;transition:opacity 0.8s;text-align:center}
+#subtitle .s-text{display:inline-block;background:rgba(0,0,0,0.55);color:#fff;font-size:14px;padding:10px 18px;border-radius:6px;line-height:1.8}
+#nav-hint{position:absolute;bottom:80px;left:0;right:0;text-align:center;z-index:5;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:2px;pointer-events:none;transition:opacity 0.5s}
+</style>
+</head>
+<body>
+<div id="scene">
+<img src="assets/p4-00.png" class="active" id="img0">
+<img src="assets/p4-01.png" id="img1">
+<img src="assets/p4-02.png" id="img2">
+<img src="assets/p4-03.png" id="img3">
+</div>
+<div id="tap-left"></div><div id="tap-right"></div>
+<div id="nav-hint">← 点击左右翻页 →</div>
+<div id="page-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div id="opening" onclick="dismissOpening()"><div class="q-text">(P4-1) 这些大字扛住了60年的风沙。<br>但很遗憾，没有扛住某些人几分钟的撒欢。</div><div class="q-hint">轻触继续</div></div>
+<div id="subtitle"><div class="s-text"></div></div>
+<script>
+var page=0,totalPages=4,started=false;
+var imgs=[document.getElementById("img0"),document.getElementById("img1"),document.getElementById("img2"),document.getElementById("img3")];
+var dots=document.querySelectorAll("#page-dots .dot");
+var opening=document.getElementById("opening");
+var subtitle=document.getElementById("subtitle"),subText=subtitle.querySelector(".s-text");
+var navHint=document.getElementById("nav-hint");navHint.style.opacity="0";
+var subtitles=["(P4-2) 「这种沟壑很深的。比我的手掌还要大和深得多。」\n—— 触目惊心的伤痕，要一颗一颗填回去。","(P4-3) 「效果很不错。但一下午的劳动成果，只够修复 1/4 个小圈。」\n—— 比想象中慢得多。","(P4-4) 「恒哥的朋友又联系了他的朋友，最终我们凑足了 5 个人。」\n—— 人多了，效率飞快。","(P4-5) 「随着第 27 车的石头被全部撒完，我们结束了施工。」\n—— 整整 24 天，往返 27 趟，运来 20 多吨黑褐砾石。结束。"];
+function goToPage(idx){if(idx<0||idx>=totalPages)return;
+imgs[page].classList.remove("active");page=idx;imgs[page].classList.add("active");
+dots.forEach(function(d,i){d.classList.toggle("on",i===page)});
+if(subtitles[page]){subText.textContent=subtitles[page];subtitle.style.opacity="1";
+  clearTimeout(subtitle._t);subtitle._t=setTimeout(function(){subtitle.style.opacity="0"},4000)}
+}
+function nextPage(){if(!started)return;goToPage(page+1)}
+function prevPage(){if(!started)return;goToPage(page-1)}
+window.dismissOpening=function(){if(started)return;started=true;opening.style.opacity="0";setTimeout(function(){opening.style.display="none"},1000);navHint.style.opacity="1";goToPage(0)};
+document.getElementById("tap-right").addEventListener("click",nextPage);
+document.getElementById("tap-right").addEventListener("touchend",function(e){nextPage();e.preventDefault()});
+document.getElementById("tap-left").addEventListener("click",prevPage);
+document.getElementById("tap-left").addEventListener("touchend",function(e){prevPage();e.preventDefault()});
+document.addEventListener("keydown",function(e){if(e.key==="ArrowRight")nextPage();if(e.key==="ArrowLeft")prevPage()});
+</script>
+</body>
+</html>
