@@ -177,9 +177,9 @@ function SD(){
   ST="map";DS2=true;
   document.getElementById("bz").style.opacity="0";
   NP.style.opacity="0";DH.style.opacity="0";
-  QE.style.opacity="1";
-  setTimeout(function(){QE.style.opacity="0"},1200);
-  setTimeout(function(){SD2()},1500);
+  QE.style.transition="none";QE.style.opacity="1";
+  setTimeout(function(){QE.style.transition="opacity 0.3s";QE.style.opacity="0"},3000);
+  setTimeout(function(){SD2()},3500);
 }
 
 function SD2(){
