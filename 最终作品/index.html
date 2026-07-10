@@ -44,7 +44,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 #wx-guide .wx-copied{margin-top:10px;font-size:min(3vw,11px);color:#00FF88;opacity:0;transition:opacity 0.3s}
 #wx-guide .wx-copied.show{opacity:1}
 @keyframes wxB{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-</style>
+@media (orientation:landscape){#rotate-hint{display:none!important}}</style>
 
 <link rel="preload" as="video" href="assets/satellite-footage.mp4"></head>
 <body>
@@ -67,7 +67,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 (function(){
 var h=document.getElementById("rotate-hint");
 function isL(){return window.innerWidth>window.innerHeight};window.isLandscape=isL
-function check(){if(isL()||window.innerWidth>768){h.style.display="none";if(window._startGlobalLoader)window._startGlobalLoader()}else{h.style.display="flex"}}
+function check(){if(isL()||window.innerWidth>768){h.style.display="none";if(window._startGlobalLoader)window._startGlobalLoader()}else{h.style.display="flex"}};setInterval(check,500)
 check();
 window.addEventListener("resize",check);
 window.addEventListener("orientationchange",function(){setTimeout(check,50)});
