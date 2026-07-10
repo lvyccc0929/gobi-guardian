@@ -66,8 +66,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 <script>
 (function(){
 var h=document.getElementById("rotate-hint");
-function isL(){return window.innerWidth>window.innerHeight};window.isLandscape=isL
-function check(){if(isL()||window.innerWidth>768){h.style.display="none";if(window._startGlobalLoader)window._startGlobalLoader()}else{h.style.display="flex"}};setInterval(check,500)
+
+function isLand(){return window.innerWidth>window.innerHeight||(window.screen&&window.screen.orientation&&window.screen.orientation.type.includes("landscape"))||Math.abs(window.orientation||0)===90};window.isLandscape=isLand;function check(){if(isLand()||window.innerWidth>768){h.style.display="none";h.removeAttribute("style");h.style.cssText="display:none!important";if(window._startGlobalLoader)window._startGlobalLoader()}else{h.style.display="flex"}};check();setInterval(check,300);window.addEventListener("orientationchange",function(){setTimeout(check,100);setTimeout(check,500)})
 check();
 window.addEventListener("resize",check);
 window.addEventListener("orientationchange",function(){setTimeout(check,50)});
