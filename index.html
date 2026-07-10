@@ -15,7 +15,7 @@
 <title>序章 · 戈壁守护者</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:"Noto Serif SC","Noto Sans SC",sans-serif;-webkit-text-size-adjust:100%!important}
+html,body{width:100%;height:100%;overflow:hidden;background:rgba(13,10,6,0.85);backdrop-filter:blur(4px);border-top:1px solid rgba(200,170,100,0.15);font-family:"Noto Serif SC","Noto Sans SC",sans-serif;-webkit-text-size-adjust:100%!important}
 #app{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 
 #gps-dot{width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 10px rgba(0,255,136,0.6),0 0 25px rgba(0,255,136,0.3);opacity:1;margin-bottom:24px;z-index:2}
@@ -24,7 +24,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 #subtitle{font-family:"Noto Sans SC",sans-serif;font-size:min(3vw,3.5vh,16px);color:#8B7355;letter-spacing:0.25em;opacity:0;transition:opacity 0.5s;margin-top:min(14px,2vh);z-index:2;text-align:center}
 #tag{font-family:"Noto Serif SC",serif;font-size:min(3.8vw,4vh,19px);color:#C4A46C;letter-spacing:0.2em;opacity:0;transition:opacity 0.6s;margin-top:min(28px,4vh);z-index:2;text-align:center;line-height:1.8;padding:0 16px}
 
-#chapter-outro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99999;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+#chapter-outro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99999;flex-direction:column;align-items:center;justify-content:center}
 #chapter-outro .co-text{font-family:"Noto Serif SC",serif;font-size:min(4vw,17px);color:#C4A46C;text-align:center;max-width:min(300px,80vw);line-height:1.8;margin-bottom:32px;padding:0 16px}
 #chapter-outro .co-next{font-family:"Noto Sans SC",sans-serif;font-size:min(3.5vw,14px);color:#8B7355;text-align:center;animation:coPulse 2s infinite}
 @keyframes coPulse{0%,100%{opacity:.5}50%{opacity:1}}
@@ -39,7 +39,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 #wx-guide .wx-desc b{color:#FFD700;font-weight:700}
 #wx-guide .wx-browsers{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;justify-content:center;padding:0 20px}
 #wx-guide .wx-browsers span{font-size:min(3vw,12px);color:rgba(232,224,213,0.4);padding:6px 16px;border:1px solid rgba(200,170,100,0.2);border-radius:16px}
-#wx-guide .wx-copy{margin-top:24px;padding:10px 32px;background:rgba(200,170,100,0.15);border:1px solid rgba(200,170,100,0.4);border-radius:20px;color:#c8aa64;font-size:min(3.5vw,13px);cursor:pointer}
+#wx-guide .wx-copy{margin-top:24px;padding:10px 32px;background:rgba(200,170,100,0.15);border:1px solid rgba(200,170,100,0.4);border-radius:20px;color:#c8aa64;font-size:min(3.5vw,13px)}
 #wx-guide .wx-copy:active{background:rgba(200,170,100,0.3)}
 #wx-guide .wx-copied{margin-top:10px;font-size:min(3vw,11px);color:#00FF88;opacity:0;transition:opacity 0.3s}
 #wx-guide .wx-copied.show{opacity:1}
@@ -53,27 +53,25 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 <div class="wx-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2"/><circle cx="12" cy="19" r="2"/></svg></div>
 <div class="wx-title">请用浏览器打开</div>
 <div class="wx-desc">点击右上角 <b>···</b><br>选择 <b>「在浏览器打开」</b></div>
-<div class="wx-browsers"><span>夸克</span><span>百度</span><span>Safari</span><span>Chrome</span><div style="margin-top:40px;font-size:min(3.5vw,13px);color:#C4A46C;animation:pulse 2s infinite;padding:12px 40px;border:1px solid rgba(200,170,100,0.4);border-radius:24px;font-size:min(4vw,16px);letter-spacing:2px">点击强制横屏</div></div>
+<div class="wx-browsers"><span>夸克</span><span>百度</span><span>Safari</span><span>Chrome</span><div style="margin-top:40px;font-size:min(3.5vw,13px);color:#C4A46C;animation:pulse 2s infinite;padding:12px 40px;border:1px solid rgba(200,170,100,0.4);border-radius:24px;font-size:min(4vw,16px);letter-spacing:2px"></div></div>
 <div class="wx-copy" onclick="copyLink()">&#x1F4CB; 复制链接</div>
 <div class="wx-copied" id="wx-copied">链接已复制</div>
 </div>
 
 
-<div id="rotate-hint" style="display:none;position:fixed;inset:0;z-index:99999;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:Noto Serif SC,serif;cursor:pointer" onclick="document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().then(function(){screen.orientation.lock('landscape').catch(function(){})}).catch(function(){});var h=document.getElementById('rotate-hint');h.style.display='none';if(window._startGlobalLoader)window._startGlobalLoader()">
-<div style="font-size:min(14vw,56px);margin-bottom:20px">&#x1F4F1;</div>
-<div style="font-size:min(5vw,20px);color:#C4A46C;text-align:center;line-height:2.4">请旋转手机横屏观看<br><span style="font-size:min(3.5vw,14px);color:#8B7355">Please rotate your phone</span><div style="margin-top:40px;font-size:min(3.5vw,13px);color:#C4A46C;animation:pulse 2s infinite;padding:12px 40px;border:1px solid rgba(200,170,100,0.4);border-radius:24px;font-size:min(4vw,16px);letter-spacing:2px">点击强制横屏</div></div>
+<div id="rotate-hint" style="display:flex;position:fixed;bottom:0;left:0;right:0;z-index:99998;transition:opacity 0.5s;padding:16px;justify-content:center;flex-direction:column;align-items:center;justify-content:center;background:rgba(13,10,6,0.85);backdrop-filter:blur(4px);border-top:1px solid rgba(200,170,100,0.15);font-family:Noto Serif SC,serif">建议横屏观看，体验更佳　<button onclick="var h=document.getElementById('rotate-hint');h.style.opacity='0';h.style.pointerEvents='none'" style="background:rgba(200,170,100,0.2);border:1px solid rgba(200,170,100,0.5);color:#C4A46C;padding:6px 16px;border-radius:14px;font-size:min(3.5vw,13px);cursor:pointer;letter-spacing:1px">继续</button></div>
 </div>
 <script>
 (function(){
 var h=document.getElementById("rotate-hint");
 
-function isLand(){return window.innerWidth>window.innerHeight||(window.screen&&window.screen.orientation&&window.screen.orientation.type.includes("landscape"))||Math.abs(window.orientation||0)===90};window.isLandscape=isLand;function check(){if(isLand()||window.innerWidth>768){h.style.display="none";h.removeAttribute("style");h.style.cssText="display:none!important";if(window._startGlobalLoader)window._startGlobalLoader()}else{h.style.display="flex"}};check();setInterval(check,300);window.addEventListener("orientationchange",function(){setTimeout(check,100);setTimeout(check,500)})
+function isLand(){return window.innerWidth>window.innerHeight||(window.screen&&window.screen.orientation&&window.screen.orientation.type.includes("landscape"))||Math.abs(window.orientation||0)===90};window.isLandscape=isLand;function check(){if(isLand()||window.innerWidth>768){h.style.opacity="0";h.style.pointerEvents="none"}else{h.style.opacity="1";h.style.pointerEvents="auto"}};check();setInterval(check,300);window.addEventListener("orientationchange",function(){setTimeout(check,100);setTimeout(check,500)})
 check();
 window.addEventListener("resize",check);
 window.addEventListener("orientationchange",function(){setTimeout(check,50)});
 })();
 </script>
-<div id="global-loader" style="display:none;position:fixed;inset:0;z-index:99998;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:Noto Serif SC,serif">
+<div id="global-loader" style="display:none;position:fixed;inset:0;z-index:99998;flex-direction:column;align-items:center;justify-content:center;background:rgba(13,10,6,0.85);backdrop-filter:blur(4px);border-top:1px solid rgba(200,170,100,0.15);font-family:Noto Serif SC,serif">
 <div style="font-size:min(5vw,20px);color:#C4A46C;text-align:center;margin-bottom:24px">正在加载作品...</div>
 <div id="loader-bar" style="width:60%;max-width:260px;height:3px;background:rgba(200,170,100,0.15);border-radius:2px;overflow:hidden"><div id="loader-fill" style="width:0%;height:100%;background:#C4A46C;transition:width 0.3s"></div></div>
 <div id="loader-pct" style="font-size:min(3vw,12px);color:rgba(200,170,100,0.4);margin-top:10px">0%</div>
@@ -86,10 +84,10 @@ var loader=document.getElementById("global-loader");
 var fill=document.getElementById("loader-fill");
 var pct=document.getElementById("loader-pct");
 function update(){var p=Math.round(loaded/total*100);fill.style.width=p+"%";pct.textContent=p+"%";if(loaded>=total)finish()}
-function finish(){setTimeout(function(){if(!isLandscape()&&window.innerWidth<=768){var wait=setInterval(function(){if(isLandscape()||window.innerWidth>768){clearInterval(wait);loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)}},300);return}loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)},400)}
+function finish(){setTimeout(function(){loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)},400)}
 assets.forEach(function(url){var img=new Image();img.onload=function(){loaded++;update()};img.onerror=function(){loaded++;update()};img.src=url});
 setTimeout(function(){if(loaded<total){loaded=total;update()}},30000);
-window._startGlobalLoader=function(){loader.style.display="flex"};
+window._startGlobalLoader=function(){loader.style.display="flex"};setTimeout(function(){if(window._startGlobalLoader)window._startGlobalLoader()},100);
 })();
 </script>
 
@@ -124,7 +122,7 @@ window._startP0Animation=function(){active=true;startTime=0;requestAnimationFram
 
 
 <audio id="bgm" src="assets/bgm.m4a" loop preload="auto"></audio>
-<div id="bgm-toggle" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99999;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;backdrop-filter:blur(4px)" onclick="toggleBgm()" title="音乐">🔇</div><script>
+<div id="bgm-toggle" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99999;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:16px;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;backdrop-filter:blur(4px)" onclick="toggleBgm()" title="音乐">🔇</div><script>
 (function(){
 var bgm=document.getElementById("bgm"),toggle=document.getElementById("bgm-toggle"),bgmOn=false;
 var S_KEY="bgm_time",P_KEY="bgm_playing";
