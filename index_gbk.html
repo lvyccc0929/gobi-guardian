@@ -2,17 +2,17 @@
 <html lang="zh-CN">
 <head>
 <link rel="preload" as="image" href="assets/p1-earth.jpg"><link rel="preload" as="image" href="assets/p1-terrain.jpg"><link rel="preload" as="image" href="assets/p2-panorama.jpg"><link rel="preload" as="image" href="assets/p4-00.jpg"><link rel="preload" as="image" href="assets/p4-01.jpg"><link rel="preload" as="image" href="assets/p4-02.jpg"><link rel="preload" as="image" href="assets/p4-03.jpg">
-<link rel="preload" as="image" href="assets/city-icons/æˆéƒ½.jpg">
-<link rel="preload" as="image" href="assets/city-icons/å¹¿å…ƒ.jpg">
-<link rel="preload" as="image" href="assets/city-icons/é™‡å—.jpg">
-<link rel="preload" as="image" href="assets/city-icons/å¤©æ°´.jpg">
-<link rel="preload" as="image" href="assets/city-icons/å…°å·.jpg">
-<link rel="preload" as="image" href="assets/city-icons/å¼ æ–.jpg">
-<link rel="preload" as="image" href="assets/city-icons/å“ˆå¯†ï¼ˆç›®çš„åœ°ï¼‰.jpg">
-<link rel="preload" as="image" href="assets/èˆªæ‹å›¾ç ´æŸ.jpg">
+<link rel="preload" as="image" href="assets/city-icons/³É¶¼.jpg">
+<link rel="preload" as="image" href="assets/city-icons/¹ãÔª.jpg">
+<link rel="preload" as="image" href="assets/city-icons/Â¤ÄÏ.jpg">
+<link rel="preload" as="image" href="assets/city-icons/ÌìË®.jpg">
+<link rel="preload" as="image" href="assets/city-icons/À¼Öİ.jpg">
+<link rel="preload" as="image" href="assets/city-icons/ÕÅÒ´.jpg">
+<link rel="preload" as="image" href="assets/city-icons/¹şÃÜ£¨Ä¿µÄµØ£©.jpg">
+<link rel="preload" as="image" href="assets/º½ÅÄÍ¼ÆÆËğ.jpg">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>åºç«  Â· æˆˆå£å®ˆæŠ¤è€…</title>
+<title>ĞòÕÂ ¡¤ ¸ê±ÚÊØ»¤Õß</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:"Noto Serif SC","Noto Sans SC",sans-serif;-webkit-text-size-adjust:100%!important}
@@ -51,22 +51,22 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 <div id="wx-guide">
 <div class="wx-arrow">&#x2197;</div>
 <div class="wx-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2"/><circle cx="12" cy="19" r="2"/></svg></div>
-<div class="wx-title">è¯·ç”¨æµè§ˆå™¨æ‰“å¼€</div>
-<div class="wx-desc">ç‚¹å‡»å³ä¸Šè§’ <b>Â·Â·Â·</b><br>é€‰æ‹© <b>ã€Œåœ¨æµè§ˆå™¨æ‰“å¼€ã€</b></div>
-<div class="wx-browsers"><span>å¤¸å…‹</span><span>ç™¾åº¦</span><span>Safari</span><span>Chrome</span></div>
-<div class="wx-copy" onclick="copyLink()">&#x1F4CB; å¤åˆ¶é“¾æ¥</div>
-<div class="wx-copied" id="wx-copied">é“¾æ¥å·²å¤åˆ¶</div>
+<div class="wx-title">ÇëÓÃä¯ÀÀÆ÷´ò¿ª</div>
+<div class="wx-desc">µã»÷ÓÒÉÏ½Ç <b>¡¤¡¤¡¤</b><br>Ñ¡Ôñ <b>¡¸ÔÚä¯ÀÀÆ÷´ò¿ª¡¹</b></div>
+<div class="wx-browsers"><span>¿ä¿Ë</span><span>°Ù¶È</span><span>Safari</span><span>Chrome</span></div>
+<div class="wx-copy" onclick="copyLink()">&#x1F4CB; ¸´ÖÆÁ´½Ó</div>
+<div class="wx-copied" id="wx-copied">Á´½ÓÒÑ¸´ÖÆ</div>
 </div>
 
 
 <div id="rotate-hint" style="display:none;position:fixed;inset:0;z-index:99999;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:Noto Serif SC,serif">
 <div style="font-size:min(14vw,56px);margin-bottom:20px">&#x1F4F1;</div>
-<div style="font-size:min(5vw,20px);color:#C4A46C;text-align:center;line-height:2.4">è¯·æ—‹è½¬æ‰‹æœºæ¨ªå±è§‚çœ‹<br><span style="font-size:min(3.5vw,14px);color:#8B7355">Please rotate your phone</span></div>
+<div style="font-size:min(5vw,20px);color:#C4A46C;text-align:center;line-height:2.4">ÇëĞı×ªÊÖ»úºáÆÁ¹Û¿´<br><span style="font-size:min(3.5vw,14px);color:#8B7355">Please rotate your phone</span></div>
 </div>
 <script>
 (function(){
 var h=document.getElementById("rotate-hint");
-function isL(){return window.innerWidth>window.innerHeight};window.isLandscape=isL
+function isL(){return window.innerWidth>window.innerHeight}
 function check(){if(isL()||window.innerWidth>768){h.style.display="none";if(window._startGlobalLoader)window._startGlobalLoader()}else{h.style.display="flex"}}
 check();
 window.addEventListener("resize",check);
@@ -74,19 +74,19 @@ window.addEventListener("orientationchange",function(){setTimeout(check,50)});
 })();
 </script>
 <div id="global-loader" style="display:none;position:fixed;inset:0;z-index:99998;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:Noto Serif SC,serif">
-<div style="font-size:min(5vw,20px);color:#C4A46C;text-align:center;margin-bottom:24px">æ­£åœ¨åŠ è½½ä½œå“...</div>
+<div style="font-size:min(5vw,20px);color:#C4A46C;text-align:center;margin-bottom:24px">ÕıÔÚ¼ÓÔØ×÷Æ·...</div>
 <div id="loader-bar" style="width:60%;max-width:260px;height:3px;background:rgba(200,170,100,0.15);border-radius:2px;overflow:hidden"><div id="loader-fill" style="width:0%;height:100%;background:#C4A46C;transition:width 0.3s"></div></div>
 <div id="loader-pct" style="font-size:min(3vw,12px);color:rgba(200,170,100,0.4);margin-top:10px">0%</div>
 </div>
 <script>
 (function(){
-var assets=["assets/p1-earth.jpg","assets/p1-terrain.jpg","assets/p2-panorama.jpg","assets/èˆªæ‹å›¾ç ´æŸ.jpg","assets/p4-00.jpg","assets/p4-01.jpg","assets/p4-02.jpg","assets/p4-03.jpg","assets/city-icons/æˆéƒ½.jpg","assets/city-icons/å¹¿å…ƒ.jpg","assets/city-icons/é™‡å—.jpg","assets/city-icons/å¤©æ°´.jpg","assets/city-icons/å…°å·.jpg","assets/city-icons/å¼ æ–.jpg","assets/city-icons/å“ˆå¯†ï¼ˆç›®çš„åœ°ï¼‰.jpg","assets/comments/bç«™/åé¢è¯„è®º Bç«™2.png","assets/comments/bç«™/åé¢è¯„è®º Bç«™5.png","assets/comments/bç«™/åé¢è¯„è®º Bç«™6.png","assets/comments/bç«™/åé¢è¯„è®º Bç«™7.png","assets/comments/bç«™/æ­£é¢è¯„è®º Bç«™1.png","assets/comments/bç«™/æ­£é¢è¯„è®º Bç«™3.png","assets/comments/bç«™/æ­£é¢è¯„è®º Bç«™4.png","assets/comments/bç«™/æ­£é¢è¯„è®º Bç«™8.png","assets/comments/å°çº¢ä¹¦/æ­£é¢è¯„è®º1.jpg","assets/comments/å°çº¢ä¹¦/æ­£é¢è¯„è®º2.jpg","assets/comments/å°çº¢ä¹¦/æ­£é¢è¯„è®º3.jpg","assets/comments/å°çº¢ä¹¦/æ­£é¢è¯„è®º4.jpg","assets/comments/å°çº¢ä¹¦/æ­£é¢è¯„è®º5.jpg","assets/comments/å°çº¢ä¹¦/è´Ÿé¢è¯„è®º1.jpg","assets/comments/å°çº¢ä¹¦/è´Ÿé¢è¯„è®º2.jpg","assets/comments/å°çº¢ä¹¦/è´Ÿé¢è¯„è®º3.jpg","assets/comments/å°çº¢ä¹¦/è´Ÿé¢è¯„è®º4.jpg","assets/comments/å¾®åš/å¾®åšåé¢1.jpg","assets/comments/å¾®åš/å¾®åšåé¢2.jpg","assets/comments/å¾®åš/å¾®åšåé¢3.jpg","assets/comments/å¾®åš/å¾®åšåé¢4.jpg","assets/comments/å¾®åš/å¾®åšåé¢5.jpg","assets/comments/å¾®åš/å¾®åšåé¢6.jpg","assets/comments/å¾®åš/å¾®åšå»ºè®®1.jpg","assets/comments/å¾®åš/å¾®åšæ„Ÿæ…¨1.jpg","assets/comments/å¾®åš/å¾®åšæ­£é¢1.jpg","assets/comments/å¾®åš/å¾®åšæ­£é¢10.jpg","assets/comments/å¾®åš/å¾®åšæ­£é¢2.jpg","assets/comments/å¾®åš/å¾®åšæ­£é¢3.jpg","assets/comments/å¾®åš/å¾®åšæ­£é¢4.jpg","assets/comments/å¾®åš/å¾®åšæ­£é¢5.jpg","assets/comments/å¾®åš/å¾®åšæ­£é¢6.jpg","assets/comments/å¾®åš/å¾®åšæ­£é¢7.jpg","assets/comments/å¾®åš/å¾®åšæ­£é¢8.jpg","assets/comments/å¾®åš/å¾®åšæ­£é¢9.jpg","assets/comments/æŠ–éŸ³/æ­£é¢è¯„ä»·-æŠ–éŸ³1.png","assets/comments/æŠ–éŸ³/æ­£é¢è¯„ä»·-æŠ–éŸ³11.png","assets/comments/æŠ–éŸ³/æ­£é¢è¯„ä»·-æŠ–éŸ³3.png","assets/comments/æŠ–éŸ³/æ­£é¢è¯„ä»·-æŠ–éŸ³5.png","assets/comments/æŠ–éŸ³/æ­£é¢è¯„ä»·-æŠ–éŸ³6.png","assets/comments/æŠ–éŸ³/æ­£é¢è¯„ä»·-æŠ–éŸ³7.png","assets/comments/æŠ–éŸ³/æ­£é¢è¯„ä»·-æŠ–éŸ³8.png","assets/comments/æŠ–éŸ³/æ­£é¢è¯„ä»·-æŠ–éŸ³9.png","assets/comments/æŠ–éŸ³/è´Ÿé¢è¯„ä»·-æŠ–éŸ³10.png","assets/comments/æŠ–éŸ³/è´Ÿé¢è¯„ä»·-æŠ–éŸ³2.png","assets/comments/æŠ–éŸ³/è´Ÿé¢è¯„ä»·-æŠ–éŸ³4.png"];
+var assets=["assets/p1-earth.jpg","assets/p1-terrain.jpg","assets/p2-panorama.jpg","assets/º½ÅÄÍ¼ÆÆËğ.jpg","assets/p4-00.jpg","assets/p4-01.jpg","assets/p4-02.jpg","assets/p4-03.jpg","assets/city-icons/³É¶¼.jpg","assets/city-icons/¹ãÔª.jpg","assets/city-icons/Â¤ÄÏ.jpg","assets/city-icons/ÌìË®.jpg","assets/city-icons/À¼Öİ.jpg","assets/city-icons/ÕÅÒ´.jpg","assets/city-icons/¹şÃÜ£¨Ä¿µÄµØ£©.jpg","assets/comments/bÕ¾/·´ÃæÆÀÂÛ BÕ¾2.png","assets/comments/bÕ¾/·´ÃæÆÀÂÛ BÕ¾5.png","assets/comments/bÕ¾/·´ÃæÆÀÂÛ BÕ¾6.png","assets/comments/bÕ¾/·´ÃæÆÀÂÛ BÕ¾7.png","assets/comments/bÕ¾/ÕıÃæÆÀÂÛ BÕ¾1.png","assets/comments/bÕ¾/ÕıÃæÆÀÂÛ BÕ¾3.png","assets/comments/bÕ¾/ÕıÃæÆÀÂÛ BÕ¾4.png","assets/comments/bÕ¾/ÕıÃæÆÀÂÛ BÕ¾8.png","assets/comments/Ğ¡ºìÊé/ÕıÃæÆÀÂÛ1.jpg","assets/comments/Ğ¡ºìÊé/ÕıÃæÆÀÂÛ2.jpg","assets/comments/Ğ¡ºìÊé/ÕıÃæÆÀÂÛ3.jpg","assets/comments/Ğ¡ºìÊé/ÕıÃæÆÀÂÛ4.jpg","assets/comments/Ğ¡ºìÊé/ÕıÃæÆÀÂÛ5.jpg","assets/comments/Ğ¡ºìÊé/¸ºÃæÆÀÂÛ1.jpg","assets/comments/Ğ¡ºìÊé/¸ºÃæÆÀÂÛ2.jpg","assets/comments/Ğ¡ºìÊé/¸ºÃæÆÀÂÛ3.jpg","assets/comments/Ğ¡ºìÊé/¸ºÃæÆÀÂÛ4.jpg","assets/comments/Î¢²©/Î¢²©·´Ãæ1.jpg","assets/comments/Î¢²©/Î¢²©·´Ãæ2.jpg","assets/comments/Î¢²©/Î¢²©·´Ãæ3.jpg","assets/comments/Î¢²©/Î¢²©·´Ãæ4.jpg","assets/comments/Î¢²©/Î¢²©·´Ãæ5.jpg","assets/comments/Î¢²©/Î¢²©·´Ãæ6.jpg","assets/comments/Î¢²©/Î¢²©½¨Òé1.jpg","assets/comments/Î¢²©/Î¢²©¸Ğ¿®1.jpg","assets/comments/Î¢²©/Î¢²©ÕıÃæ1.jpg","assets/comments/Î¢²©/Î¢²©ÕıÃæ10.jpg","assets/comments/Î¢²©/Î¢²©ÕıÃæ2.jpg","assets/comments/Î¢²©/Î¢²©ÕıÃæ3.jpg","assets/comments/Î¢²©/Î¢²©ÕıÃæ4.jpg","assets/comments/Î¢²©/Î¢²©ÕıÃæ5.jpg","assets/comments/Î¢²©/Î¢²©ÕıÃæ6.jpg","assets/comments/Î¢²©/Î¢²©ÕıÃæ7.jpg","assets/comments/Î¢²©/Î¢²©ÕıÃæ8.jpg","assets/comments/Î¢²©/Î¢²©ÕıÃæ9.jpg","assets/comments/¶¶Òô/ÕıÃæÆÀ¼Û-¶¶Òô1.png","assets/comments/¶¶Òô/ÕıÃæÆÀ¼Û-¶¶Òô11.png","assets/comments/¶¶Òô/ÕıÃæÆÀ¼Û-¶¶Òô3.png","assets/comments/¶¶Òô/ÕıÃæÆÀ¼Û-¶¶Òô5.png","assets/comments/¶¶Òô/ÕıÃæÆÀ¼Û-¶¶Òô6.png","assets/comments/¶¶Òô/ÕıÃæÆÀ¼Û-¶¶Òô7.png","assets/comments/¶¶Òô/ÕıÃæÆÀ¼Û-¶¶Òô8.png","assets/comments/¶¶Òô/ÕıÃæÆÀ¼Û-¶¶Òô9.png","assets/comments/¶¶Òô/¸ºÃæÆÀ¼Û-¶¶Òô10.png","assets/comments/¶¶Òô/¸ºÃæÆÀ¼Û-¶¶Òô2.png","assets/comments/¶¶Òô/¸ºÃæÆÀ¼Û-¶¶Òô4.png"];
 var total=assets.length,loaded=0;
 var loader=document.getElementById("global-loader");
 var fill=document.getElementById("loader-fill");
 var pct=document.getElementById("loader-pct");
 function update(){var p=Math.round(loaded/total*100);fill.style.width=p+"%";pct.textContent=p+"%";if(loaded>=total)finish()}
-function finish(){setTimeout(function(){if(!isLandscape()&&window.innerWidth<=768){var wait=setInterval(function(){if(isLandscape()||window.innerWidth>768){clearInterval(wait);loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)}},300);return}loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)},400)}
+function finish(){setTimeout(function(){loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)},400)}
 assets.forEach(function(url){var img=new Image();img.onload=function(){loaded++;update()};img.onerror=function(){loaded++;update()};img.src=url});
 setTimeout(function(){if(loaded<total){loaded=total;update()}},30000);
 window._startGlobalLoader=function(){loader.style.display="flex"};
@@ -95,7 +95,7 @@ window._startGlobalLoader=function(){loader.style.display="flex"};
 
 <div id="app">
   <div id="gps-dot"></div>
-  <div id="title">æˆˆå£å®ˆæŠ¤è€…</div>
+  <div id="title">¸ê±ÚÊØ»¤Õß</div>
   <div id="loc"></div>
   <div id="subtitle"></div>
   <div id="tag"></div>
@@ -103,17 +103,17 @@ window._startGlobalLoader=function(){loader.style.display="flex"};
 
 <script>
 var isWeChat=/MicroMessenger/i.test(navigator.userAgent);
-// WeChat overlay disabled for direct access
+if(isWeChat){document.getElementById("wx-guide").classList.add("show")}
 function copyLink(){var u=location.href;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){var e=document.getElementById("wx-copied");e.classList.add("show");setTimeout(function(){e.classList.remove("show")},2500)}).catch(function(){})}else{var t=document.createElement("textarea");t.value=u;t.style.cssText="position:fixed;left:-9999px";document.body.appendChild(t);t.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(t);document.getElementById("wx-copied").classList.add("show");setTimeout(function(){document.getElementById("wx-copied").classList.remove("show")},2500)}}
 
-if(true){
+if(!isWeChat){
 (function(){
 var locEl=document.getElementById("loc"),tagEl=document.getElementById("tag"),titleEl=document.getElementById("title"),subtitleEl=document.getElementById("subtitle");
 var active=false,startTime=0,titleShown=false,subtitleComplete=false,timer=0;
 function update(elapsed){
-  if(elapsed>=0.8&&locEl.style.opacity==="0"){locEl.textContent="2025å¹´10æœˆ Â· æ–°ç–†å“ˆå¯†æˆˆå£";locEl.style.opacity="1";setTimeout(function(){locEl.style.opacity="0"},2000)}
+  if(elapsed>=0.8&&locEl.style.opacity==="0"){locEl.textContent="2025Äê10ÔÂ ¡¤ ĞÂ½®¹şÃÜ¸ê±Ú";locEl.style.opacity="1";setTimeout(function(){locEl.style.opacity="0"},2000)}
   if(elapsed>=1.2&&!titleShown){titleShown=true;titleEl.style.opacity="1"}
-  if(elapsed>=2.0&&!subtitleComplete){var full="GUARDIAN OF THE GOBI";timer+=16;var n=Math.min(Math.floor(timer/45),full.length);subtitleEl.textContent=full.slice(0,n)+(n<full.length?"|":"");subtitleEl.style.opacity="1";if(n>=full.length){subtitleComplete=true;subtitleEl.textContent=full;setTimeout(function(){tagEl.innerHTML='ä¸¤åƒå…¬é‡Œï¼ŒäºŒåå››ä¸ªæ—¥å¤œï¼Œä¸€åœºä¿®å¤ä¹‹æ—…<br><span style="font-size:min(3vw,13px);color:#8B7355">åŸºäºçœŸå®äº‹ä»¶æ”¹ç¼–</span>';tagEl.style.opacity="1";setTimeout(function(){var bg=document.createElement('div');bg.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;opacity:0;transition:opacity 0.8s';document.body.appendChild(bg);requestAnimationFrame(function(){bg.style.opacity='1'});setTimeout(function(){location.href='demo-p1.html'},900)},2500)},400)}}
+  if(elapsed>=2.0&&!subtitleComplete){var full="GUARDIAN OF THE GOBI";timer+=16;var n=Math.min(Math.floor(timer/45),full.length);subtitleEl.textContent=full.slice(0,n)+(n<full.length?"|":"");subtitleEl.style.opacity="1";if(n>=full.length){subtitleComplete=true;subtitleEl.textContent=full;setTimeout(function(){tagEl.innerHTML='Á½Ç§¹«Àï£¬¶şÊ®ËÄ¸öÈÕÒ¹£¬Ò»³¡ĞŞ¸´Ö®ÂÃ<br><span style="font-size:min(3vw,13px);color:#8B7355">»ùÓÚÕæÊµÊÂ¼ş¸Ä±à</span>';tagEl.style.opacity="1";setTimeout(function(){var bg=document.createElement('div');bg.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;opacity:0;transition:opacity 0.8s';document.body.appendChild(bg);requestAnimationFrame(function(){bg.style.opacity='1'});setTimeout(function(){location.href='demo-p1.html'},900)},2500)},400)}}
 }
 function loop(t){if(!active)return;if(!startTime)startTime=t;var elapsed=(t-startTime)/1000;if(elapsed>12)return;update(elapsed);requestAnimationFrame(loop)}
 window._startP0Animation=function(){active=true;startTime=0;requestAnimationFrame(loop)};
@@ -124,7 +124,7 @@ window._startP0Animation=function(){active=true;startTime=0;requestAnimationFram
 
 
 <audio id="bgm" src="assets/bgm.m4a" loop preload="auto"></audio>
-<div id="bgm-toggle" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99999;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;backdrop-filter:blur(4px)" onclick="toggleBgm()" title="éŸ³ä¹">ğŸ”‡</div><script>
+<div id="bgm-toggle" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99999;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;backdrop-filter:blur(4px)" onclick="toggleBgm()" title="ÒôÀÖ">??</div><script>
 (function(){
 var bgm=document.getElementById("bgm"),toggle=document.getElementById("bgm-toggle"),bgmOn=false;
 var S_KEY="bgm_time",P_KEY="bgm_playing";
@@ -134,18 +134,18 @@ function restoreBgm(){
   if(savedTime>0.5&&bgm&&bgm.readyState>=1){bgm.currentTime=savedTime}
   if(wasPlaying){
     bgmOn=true;
-    bgm.play().then(function(){if(toggle)toggle.textContent="â™ª"}).catch(function(){bgmOn=false;if(toggle)toggle.textContent="ğŸ”‡"})
+    bgm.play().then(function(){if(toggle)toggle.textContent="?"}).catch(function(){bgmOn=false;if(toggle)toggle.textContent="??"})
   }
 }
 if(bgm){if(bgm.readyState>=1){restoreBgm()}else{bgm.addEventListener("loadedmetadata",restoreBgm,{once:true})}}
 window.addEventListener("beforeunload",function(){if(bgm){sessionStorage.setItem(S_KEY,bgm.currentTime);sessionStorage.setItem(P_KEY,bgmOn?"1":"0")}});
 setInterval(function(){if(bgm&&bgmOn&&!bgm.paused){sessionStorage.setItem(S_KEY,bgm.currentTime)}},1000);
-if(typeof WeixinJSBridge!=="undefined"){document.addEventListener("WeixinJSBridgeReady",function(){wechatReady=true;bgm.play().then(function(){}).catch(function(){})},false)}window.toggleBgm=function(){bgmOn=!bgmOn;if(bgmOn){bgm.play().then(function(){toggle.textContent="â™ª"}).catch(function(){bgmOn=false;toggle.textContent="ğŸ”‡"})}else{bgm.pause();toggle.textContent="ğŸ”‡"}sessionStorage.setItem(P_KEY,bgmOn?"1":"0")};
+window.toggleBgm=function(){bgmOn=!bgmOn;if(bgmOn){bgm.play().then(function(){toggle.textContent="?"}).catch(function(){bgmOn=false;toggle.textContent="??"})}else{bgm.pause();toggle.textContent="??"}sessionStorage.setItem(P_KEY,bgmOn?"1":"0")};
 window.pauseBgmForVideo=function(){if(bgm&&bgmOn){bgm.pause();sessionStorage.setItem(S_KEY,bgm.currentTime)}};
-window.resumeBgmAfterVideo=function(){if(!bgmOn)return;bgm.play().then(function(){toggle.textContent="â™ª"}).catch(function(){})};
+window.resumeBgmAfterVideo=function(){if(!bgmOn)return;bgm.play().then(function(){toggle.textContent="?"}).catch(function(){})};
 document.addEventListener("play",function(e){if(e.target.tagName==="VIDEO"){var v=e.target;var el=v;while(el){var s=getComputedStyle(el);if(s.display==="none"||parseFloat(s.opacity)<0.1)return;el=el.parentElement}window.pauseBgmForVideo()}},true);
 document.addEventListener("ended",function(e){if(e.target.tagName==="VIDEO"){window.resumeBgmAfterVideo()}},true);
-document.addEventListener("click",function e(){if(!bgmOn){bgmOn=true;bgm.play().then(function(){toggle.textContent="â™ª"}).catch(function(){bgmOn=false});sessionStorage.setItem(P_KEY,"1")}},{once:true});
+document.addEventListener("click",function e(){if(!bgmOn){bgmOn=true;bgm.play().then(function(){toggle.textContent="?"}).catch(function(){bgmOn=false});sessionStorage.setItem(P_KEY,"1")}},{once:true});
 })();
 </script>
 </body>

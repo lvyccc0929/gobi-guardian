@@ -66,7 +66,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 <script>
 (function(){
 var h=document.getElementById("rotate-hint");
-function isL(){return window.innerWidth>window.innerHeight}
+function isL(){return window.innerWidth>window.innerHeight};window.isLandscape=isL
 function check(){if(isL()||window.innerWidth>768){h.style.display="none";if(window._startGlobalLoader)window._startGlobalLoader()}else{h.style.display="flex"}}
 check();
 window.addEventListener("resize",check);
@@ -86,7 +86,7 @@ var loader=document.getElementById("global-loader");
 var fill=document.getElementById("loader-fill");
 var pct=document.getElementById("loader-pct");
 function update(){var p=Math.round(loaded/total*100);fill.style.width=p+"%";pct.textContent=p+"%";if(loaded>=total)finish()}
-function finish(){setTimeout(function(){loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)},400)}
+function finish(){setTimeout(function(){if(!isLandscape()&&window.innerWidth<=768){var wait=setInterval(function(){if(isLandscape()||window.innerWidth>768){clearInterval(wait);loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)}},300);return}loader.style.opacity="0";loader.style.transition="opacity 0.5s";setTimeout(function(){loader.style.display="none";if(window._startP0Animation)window._startP0Animation()},500)},400)}
 assets.forEach(function(url){var img=new Image();img.onload=function(){loaded++;update()};img.onerror=function(){loaded++;update()};img.src=url});
 setTimeout(function(){if(loaded<total){loaded=total;update()}},30000);
 window._startGlobalLoader=function(){loader.style.display="flex"};
@@ -103,10 +103,10 @@ window._startGlobalLoader=function(){loader.style.display="flex"};
 
 <script>
 var isWeChat=/MicroMessenger/i.test(navigator.userAgent);
-if(isWeChat){document.getElementById("wx-guide").classList.add("show")}
+// WeChat overlay disabled for direct access
 function copyLink(){var u=location.href;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){var e=document.getElementById("wx-copied");e.classList.add("show");setTimeout(function(){e.classList.remove("show")},2500)}).catch(function(){})}else{var t=document.createElement("textarea");t.value=u;t.style.cssText="position:fixed;left:-9999px";document.body.appendChild(t);t.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(t);document.getElementById("wx-copied").classList.add("show");setTimeout(function(){document.getElementById("wx-copied").classList.remove("show")},2500)}}
 
-if(!isWeChat){
+if(true){
 (function(){
 var locEl=document.getElementById("loc"),tagEl=document.getElementById("tag"),titleEl=document.getElementById("title"),subtitleEl=document.getElementById("subtitle");
 var active=false,startTime=0,titleShown=false,subtitleComplete=false,timer=0;
@@ -140,7 +140,7 @@ function restoreBgm(){
 if(bgm){if(bgm.readyState>=1){restoreBgm()}else{bgm.addEventListener("loadedmetadata",restoreBgm,{once:true})}}
 window.addEventListener("beforeunload",function(){if(bgm){sessionStorage.setItem(S_KEY,bgm.currentTime);sessionStorage.setItem(P_KEY,bgmOn?"1":"0")}});
 setInterval(function(){if(bgm&&bgmOn&&!bgm.paused){sessionStorage.setItem(S_KEY,bgm.currentTime)}},1000);
-window.toggleBgm=function(){bgmOn=!bgmOn;if(bgmOn){bgm.play().then(function(){toggle.textContent="♪"}).catch(function(){bgmOn=false;toggle.textContent="🔇"})}else{bgm.pause();toggle.textContent="🔇"}sessionStorage.setItem(P_KEY,bgmOn?"1":"0")};
+if(typeof WeixinJSBridge!=="undefined"){document.addEventListener("WeixinJSBridgeReady",function(){wechatReady=true;bgm.play().then(function(){}).catch(function(){})},false)}window.toggleBgm=function(){bgmOn=!bgmOn;if(bgmOn){bgm.play().then(function(){toggle.textContent="♪"}).catch(function(){bgmOn=false;toggle.textContent="🔇"})}else{bgm.pause();toggle.textContent="🔇"}sessionStorage.setItem(P_KEY,bgmOn?"1":"0")};
 window.pauseBgmForVideo=function(){if(bgm&&bgmOn){bgm.pause();sessionStorage.setItem(S_KEY,bgm.currentTime)}};
 window.resumeBgmAfterVideo=function(){if(!bgmOn)return;bgm.play().then(function(){toggle.textContent="♪"}).catch(function(){})};
 document.addEventListener("play",function(e){if(e.target.tagName==="VIDEO"){var v=e.target;var el=v;while(el){var s=getComputedStyle(el);if(s.display==="none"||parseFloat(s.opacity)<0.1)return;el=el.parentElement}window.pauseBgmForVideo()}},true);
