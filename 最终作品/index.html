@@ -44,7 +44,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 #wx-guide .wx-copied{margin-top:10px;font-size:min(3vw,11px);color:#00FF88;opacity:0;transition:opacity 0.3s}
 #wx-guide .wx-copied.show{opacity:1}
 @keyframes wxB{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-@media (orientation:landscape){#rotate-hint{display:none!important}}</style>
+@media (orientation:landscape){#rotate-hint{display:none!important}}@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}</style>
 
 <link rel="preload" as="video" href="assets/satellite-footage.mp4"></head>
 <body>
@@ -53,15 +53,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0d0a06;font-family:
 <div class="wx-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2"/><circle cx="12" cy="19" r="2"/></svg></div>
 <div class="wx-title">请用浏览器打开</div>
 <div class="wx-desc">点击右上角 <b>···</b><br>选择 <b>「在浏览器打开」</b></div>
-<div class="wx-browsers"><span>夸克</span><span>百度</span><span>Safari</span><span>Chrome</span></div>
+<div class="wx-browsers"><span>夸克</span><span>百度</span><span>Safari</span><span>Chrome</span><div style="margin-top:40px;font-size:min(3.5vw,13px);color:#C4A46C;animation:pulse 2s infinite;padding:12px 40px;border:1px solid rgba(200,170,100,0.4);border-radius:24px;font-size:min(4vw,16px);letter-spacing:2px">点击强制横屏</div></div>
 <div class="wx-copy" onclick="copyLink()">&#x1F4CB; 复制链接</div>
 <div class="wx-copied" id="wx-copied">链接已复制</div>
 </div>
 
 
-<div id="rotate-hint" style="display:none;position:fixed;inset:0;z-index:99999;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:Noto Serif SC,serif">
+<div id="rotate-hint" style="display:none;position:fixed;inset:0;z-index:99999;flex-direction:column;align-items:center;justify-content:center;background:#0d0a06;font-family:Noto Serif SC,serif;cursor:pointer" onclick="document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().then(function(){screen.orientation.lock('landscape').catch(function(){})}).catch(function(){});var h=document.getElementById('rotate-hint');h.style.display='none';if(window._startGlobalLoader)window._startGlobalLoader()">
 <div style="font-size:min(14vw,56px);margin-bottom:20px">&#x1F4F1;</div>
-<div style="font-size:min(5vw,20px);color:#C4A46C;text-align:center;line-height:2.4">请旋转手机横屏观看<br><span style="font-size:min(3.5vw,14px);color:#8B7355">Please rotate your phone</span></div>
+<div style="font-size:min(5vw,20px);color:#C4A46C;text-align:center;line-height:2.4">请旋转手机横屏观看<br><span style="font-size:min(3.5vw,14px);color:#8B7355">Please rotate your phone</span><div style="margin-top:40px;font-size:min(3.5vw,13px);color:#C4A46C;animation:pulse 2s infinite;padding:12px 40px;border:1px solid rgba(200,170,100,0.4);border-radius:24px;font-size:min(4vw,16px);letter-spacing:2px">点击强制横屏</div></div>
 </div>
 <script>
 (function(){
