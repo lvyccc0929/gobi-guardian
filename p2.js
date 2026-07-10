@@ -190,7 +190,7 @@ function SD2(){
   DTB.innerHTML='这些字是谁写的？<br>为什么刻在无人区的戈壁上？<br><br><span style="font-size:13px;color:#FFD700">翻开历史卡片<br>看看58年前的故事</span>';
   DTC.innerHTML='';
   SH.innerHTML='';
-  setTimeout(function(){CT.style.height="60px";CB.style.height="60px"},500);
+  setTimeout(function(){CT.style.height=Math.min(60,window.innerHeight*0.06)+"px";CB.style.height=Math.min(60,window.innerHeight*0.06)+"px"},500);
   setTimeout(function(){DTT.style.opacity="1"},1200);
   setTimeout(function(){DTB.style.opacity="1";DTT.style.opacity="0"},2200);
   setTimeout(function(){DDN.style.background="rgba(0,0,0,.55)";DTC.style.opacity="1";setTimeout(function(){SH.style.opacity="1";SE=true;BC();EHBTN.style.display="block"},2200)},3800);

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -178,7 +178,7 @@ function drawSurface(time){
   var dx=0,dy=0,dw=W,dh=H;
   if(sw<vw){dw=W*(sw/vw);dx=(W-dw)/2}
   if(sh<vh){dh=H*(sh/vh);dy=(H-dh)/2}
-  if(sw>0&&sh>0)ctx.drawImage(terrain,sx,sy,sw,sh,dx,dy,dw,dh);
+  if(sw>0&&sh>0){var ir2=sw/sh,cr2=W/H,ddx,ddy,ddw,ddh;if(ir2>cr2){ddw=W;ddh=W/ir2;ddx=0;ddy=(H-ddh)/2}else{ddh=H;ddw=H*ir2;ddx=(W-ddw)/2;ddy=0};ctx.drawImage(terrain,sx,sy,sw,sh,ddx,ddy,ddw,ddh)}
   ctx.restore();
 
   // Vignette
